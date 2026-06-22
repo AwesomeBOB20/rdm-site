@@ -132,7 +132,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
       <section class="screen active" id="screen-intro">
         <span class="eyebrow">Find your path · 60 seconds</span>
         <h1>Not sure where to start? <span class="co">Let's figure it out.</span></h1>
-        <p class="sub">Answer 5 quick questions about where you're at and what you're chasing. I'll show you the exact RDM path to get there, the same way I'd size you up in the DMs.</p>
+        <p class="sub">Answer 6 quick questions about where you're at and what you're chasing. I'll show you the exact RDM path to get there, the same way I'd size you up in the DMs.</p>
         <button class="btn full" onclick="start()">Start &rarr;</button>
         <button class="skip" onclick="show('screen-q0picker')">I already know what I want &rarr;</button>
       </section>
@@ -144,6 +144,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <div class="opts">
           <a class="opt" href="https://playalongs.rudimentaldrummingmastery.com/sign-up"><span class="dot"></span> RDM Playalongs: the practice tool ($1 trial)</a>
           <a class="opt" href="landing.html"><span class="dot"></span> RDM Method: the full course ($147)</a>
+          <a class="opt" href="BUNDLE_STRIPE_LINK_HERE"><span class="dot"></span> RDM Method + 3 Lessons ($247)</a>
           <a class="opt" href="academy-vsl.html"><span class="dot"></span> RDM Academy: private coaching (apply)</a>
         </div>
         <div class="row"><button class="back" onclick="show('screen-intro')">&larr; Back</button></div>
@@ -182,7 +183,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
           <div class="result-block"><h3>Your next step</h3><p id="r-next"></p></div>
           <a class="btn full" id="r-cta" href="#">Get Started</a>
         </div>
-        <div class="result-foot"><a id="r-other" href="#" onclick="show('screen-q0picker');return false;">See all three options instead</a></div>
+        <div class="result-foot"><a id="r-other" href="#" onclick="show('screen-q0picker');return false;">See all the options instead</a></div>
       </section>
 
     </div>
@@ -191,8 +192,10 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 
 <script>
 /* ---------------- QUIZ DATA ----------------
-   Each option carries points toward P (Playalongs), M (Method), A (Academy).
-   Highest total at the end picks the recommended product. */
+   Each option carries points toward P (Playalongs), M (Method),
+   L (Method + Lessons bundle), or A (Academy).
+   Q5 (how much help) + Q6 (commitment) are weighted heaviest because the
+   level-of-help is what really separates the 4 products. Highest total wins. */
 const QUESTIONS = [
   {
     title: "What's your #1 goal with snare drumming right now?",
@@ -229,11 +232,21 @@ const QUESTIONS = [
     ]
   },
   {
+    title: "How much help do you want to get there?",
+    opts: [
+      {t:"Just a tool to practice with on my own", s:{P:4}},
+      {t:"The full system to follow on my own", s:{M:4}},
+      {t:"The system PLUS a few 1-on-1 sessions with you", s:{L:5}},
+      {t:"Intensive 1-on-1 coaching until I make it", s:{A:4,L:2}},
+    ]
+  },
+  {
     title: "How serious are you about this?",
     opts: [
-      {t:"Mostly for fun / casual", s:{P:2}},
-      {t:"Committed. I practice regularly and want real progress", s:{M:2}},
-      {t:"All-in. I'll do whatever it takes to make my line", s:{A:3}},
+      {t:"Mostly for fun / casual", s:{P:3}},
+      {t:"Committed. I'll put in the work on my own", s:{M:3}},
+      {t:"Serious. I want some guidance to speed it up", s:{L:4}},
+      {t:"All-in. I'll do whatever it takes (and invest in it)", s:{A:4,L:1}},
     ]
   },
 ];
@@ -260,6 +273,16 @@ const RESULTS = {
     cta:"See the RDM Method",
     url:"landing.html"
   },
+  L: {
+    flag:"Your path: the system + my eyes on you",
+    title:"RDM Method + 3 Private Lessons",
+    price:"$247 &middot; the full course + 3 one-on-one sessions with me",
+    where:"You want the whole system AND some real guidance, without going all-in on the full Academy. Smart middle ground.",
+    why:"A course alone is slower when you're not sure your hands are right. A few sessions with me catch what you can't see and answer your specific questions.",
+    next:"Get the Method + Lessons. You go through the course and the Playalongs, and we hop on 3 calls so I can fix your hands and drum through whatever's tripping you up.",
+    cta:"Get the Method + Lessons",
+    url:"BUNDLE_STRIPE_LINK_HERE"
+  },
   A: {
     flag:"Your path: private coaching",
     title:"Apply for the RDM Academy",
@@ -275,14 +298,14 @@ const RESULTS = {
 /* ---------------- ENGINE ---------------- */
 let qi = 0;
 const answers = [];
-const score = {P:0,M:0,A:0};
+const score = {P:0,M:0,L:0,A:0};
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function start(){ qi=0; answers.length=0; score.P=score.M=score.A=0; renderQ(); }
+function start(){ qi=0; answers.length=0; score.P=score.M=score.L=score.A=0; renderQ(); }
 
 function renderQ(){
   const q = QUESTIONS[qi];
@@ -357,7 +380,7 @@ function showEmailErr(msg){
 
 function saveLead(firstName, email){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
-  const productNames = {P:'Playalongs', M:'Method', A:'Academy'};
+  const productNames = {P:'Playalongs', M:'Method', L:'Method + Lessons', A:'Academy'};
   const payload = {
     formType: 'quiz',
     firstName: firstName || '',
@@ -376,13 +399,17 @@ function saveLead(firstName, email){
 }
 
 function winner(){
-  // Academy only wins if Q1 = "Make a specific competitive line" (option index 2).
-  // If they didn't pick that goal, route up to Method, then Playalongs, never the $2k apply page.
+  // Academy only competes if Q1 = "Make a specific competitive line" (option index 2).
   const academyEligible = answers[0] === 2;
-  const keys = academyEligible ? ['A','M','P'] : ['M','P'];
-  // highest score; iteration order is the tie-break (A > M > P)
-  let best='P', bestVal=-1;
-  keys.forEach(k=>{ if(score[k] > bestVal){ bestVal=score[k]; best=k; } });
+  // Overall strongest signal across all four products (tie-break A > L > M > P).
+  let top = 'P', topVal = -1;
+  ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
+  // If their strongest pull is full coaching: Academy if they're chasing a line,
+  // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
+  if(top === 'A') return academyEligible ? 'A' : 'L';
+  // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
+  let best = 'P', bestVal = -1;
+  ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
   return best;
 }
 
