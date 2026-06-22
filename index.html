@@ -162,6 +162,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <h2 class="q-title">Where should I send your <span class="co">result + a free practice plan?</span></h2>
         <p class="sub">Drop your email and I'll show your path now and send you a starter plan to go with it.</p>
         <form id="email-form" onsubmit="return submitEmail(event)">
+          <input class="field" id="fname-input" type="text" placeholder="First name" autocomplete="given-name">
           <input class="field" id="email-input" type="email" placeholder="you@email.com" autocomplete="email">
           <button class="btn full" type="submit">Show my result &rarr;</button>
         </form>
@@ -332,23 +333,26 @@ function finishProgress(){
 
 // ===== LEAD CAPTURE → GOOGLE SHEET =====
 // Paste your Google Apps Script Web App URL between the quotes (setup steps from Claude).
-const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwl7GjiKjED2KWRDgJ4rGLAZxOnasi-v6bEM3aoJu_KCSW9CWm8PCXYOv_RX7DNQ4k9/exec";
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
 
 function submitEmail(e){
   e.preventDefault();
   const email = document.getElementById('email-input').value;
-  saveLead(email);   // fire-and-forget; never blocks the result
+  const firstName = document.getElementById('fname-input').value;
+  saveLead(firstName, email);   // fire-and-forget; never blocks the result
   showResult();
   return false;
 }
 
-function saveLead(email){
+function saveLead(firstName, email){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const productNames = {P:'Playalongs', M:'Method', A:'Academy'};
   const payload = {
+    formType: 'quiz',
+    firstName: firstName || '',
     email: email,
     product: productNames[winner()] || winner(),
-    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : '').join(' | ')
+    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : '')
   };
   try{
     fetch(SHEET_ENDPOINT, {

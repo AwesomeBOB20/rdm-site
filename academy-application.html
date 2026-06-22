@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDM Academy — Application</title>
+<meta name="description" content="Apply for the RDM Academy. A few questions so Anthony can see if you're a fit before your call.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="Steller%20Drums%20-%20PNG%20file-07.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RDM — ACADEMY APPLICATION (qualifying quiz)
+   Same brand identity as quiz.html / landing / VSL.
+   ============================================================ */
+:root{
+  --purple:#96318d; --purple-deep:#792671;
+  --blue:#06aeb9; --blue-deep:#058890;
+  --orange:#fe6429; --orange-deep:#d35400;
+  --tan:#fff0d3; --ink:#000; --dark:#0c0810;
+  --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);color:#fff;line-height:1.6;
+  min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{max-width:100%;height:auto;}
+.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.46),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
+.site{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;}
+
+.topbar{display:flex;align-items:center;justify-content:center;padding:16px;border-bottom:var(--b);background:var(--purple);}
+.topbar img{height:38px;}
+
+.shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
+.stage{width:100%;max-width:680px;}
+
+/* progress */
+.progress-wrap{max-width:680px;margin:0 auto;padding:18px 18px 0;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.8rem;color:rgba(255,255,255,.7);font-weight:500;}
+.progress-bar{height:10px;background:rgba(0,0,0,.35);border:2px solid #000;border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:var(--orange);transition:width .35s cubic-bezier(.2,.7,.2,1);}
+.progress-wrap.hide{display:none;}
+
+.screen{display:none;animation:fade .4s ease;}
+.screen.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:14px;}
+.q-title{font-size:clamp(1.35rem,3.4vw,2rem);font-weight:700;line-height:1.16;margin-bottom:10px;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.q-hint{color:rgba(255,255,255,.8);font-size:.98rem;margin-bottom:20px;}
+.sub{color:rgba(255,255,255,.85);font-size:clamp(1.02rem,1.7vw,1.18rem);margin-bottom:28px;}
+.co{color:var(--orange);} .cb{color:var(--blue);} .cp{color:#e9b8e4;}
+
+/* option cards */
+.opts{display:flex;flex-direction:column;gap:12px;}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:inherit;
+  background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  padding:16px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
+.opt:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.opt.sel{background:var(--blue);color:#fff;}
+.opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
+.opt.sel .dot{background:var(--orange);}
+.opt .box{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:2px solid #000;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
+.opt.sel .box{background:var(--orange);}
+.opt .box::after{content:"✓";opacity:0;font-size:.9rem;}
+.opt.sel .box::after{opacity:1;}
+
+/* buttons */
+.btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
+  padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.btn.blue{background:var(--blue);} .btn.purple{background:var(--purple);}
+.btn.full{display:block;width:100%;}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
+.row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
+.back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
+.back:hover{color:#fff;}
+
+.intro-note{margin-top:18px;font-size:.9rem;color:rgba(255,255,255,.62);}
+.intro-note b{color:var(--tan);font-weight:500;}
+
+/* fields */
+.field-label{display:block;font-weight:700;font-size:.95rem;margin:0 0 6px 2px;}
+.field-label .opt-tag{font-weight:400;color:rgba(255,255,255,.6);font-size:.85rem;}
+.field{width:100%;font-family:inherit;font-size:1.05rem;padding:14px 16px;border:var(--b);border-radius:var(--rad);
+  background:#fff;color:#000;margin-bottom:16px;}
+.field::placeholder{color:#999;}
+textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
+.err{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
+.err.show{display:block;}
+
+/* booking / final card */
+.result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:34px 30px;text-align:left;}
+.result-flag{display:inline-block;background:var(--purple);color:#fff;border:2px solid #000;border-radius:999px;font-size:.72rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 15px;margin-bottom:14px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.result-card h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;line-height:1.12;margin-bottom:10px;color:#000;}
+.result-card p{color:#222;font-size:1.02rem;margin-bottom:14px;}
+.result-card .btn{margin-top:6px;}
+
+@media (max-width:560px){
+  .result-card,.shell{padding-left:16px;padding-right:16px;}
+  .result-card{padding:26px 22px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="site">
+
+  <div class="topbar"><a href="landing.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a></div>
+
+  <div class="progress-wrap hide" id="progress">
+    <div class="progress-row"><span id="pstep"></span><span id="ppct"></span></div>
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+  </div>
+
+  <div class="shell">
+    <div class="stage">
+
+      <!-- ===== INTRO (the filter) ===== -->
+      <section class="screen active" id="screen-intro">
+        <span class="eyebrow">RDM Academy · Application</span>
+        <h1>Before we talk, <span class="co">a few real questions.</span></h1>
+        <p class="sub">The Academy is hard. It's a 12-week proving, and I only take drummers who are willing to rise to it. This application helps me see if you're that drummer, so our call is about your goals, not paperwork. Takes about 2 minutes.</p>
+        <button class="btn full" onclick="startApp()">Start my application &rarr;</button>
+        <p class="intro-note">Already watched the training video and ready? <b>Good. Let's go.</b></p>
+      </section>
+
+      <!-- ===== DYNAMIC STEP ===== -->
+      <section class="screen" id="screen-step">
+        <h2 class="q-title" id="s-title"></h2>
+        <p class="q-hint" id="s-hint"></p>
+        <div class="err" id="s-err"></div>
+        <div id="s-body"></div>
+        <div class="row">
+          <button class="back" id="s-back" onclick="prevStep()">&larr; Back</button>
+          <button class="btn blue" id="s-next" onclick="nextStep()" style="display:none;">Continue &rarr;</button>
+        </div>
+      </section>
+
+      <!-- ===== FINAL: BOOK THE CALL ===== -->
+      <section class="screen" id="screen-book">
+        <div class="result-card">
+          <span class="result-flag">Application received</span>
+          <h2>Last step: <span style="color:var(--purple-deep)">book your call.</span></h2>
+          <p>Thanks, <span id="book-name">drummer</span>. I've got your application. Now grab a time for your 1-on-1 call below.</p>
+          <p style="font-size:.95rem;color:#444;"><b>Important:</b> if a parent or guardian helps with the decision, have them on the call with you. Buyers are often the parent, and I want everyone's questions answered.</p>
+          <a href="#" class="btn full" data-cal-namespace="rdm-strategy" data-cal-link="anthony-steller-zy5ahs/rdm-strategy" data-cal-config='{"layout":"month_view"}'>Book My Call &rarr;</a>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* =================== APPLICATION STEPS ===================
+   type 'fields' : labeled text inputs (key per field)
+   type 'single' : one choice, auto-advances (stores label)
+   type 'multi'  : checklist, Continue button (stores joined labels)
+   type 'text'   : textarea, Continue button (stores text)
+   Everything is saved to the "Academy Applications" tab. */
+const STEPS = [
+  { type:'fields', key:'contact', title:"First, how do I reach you?", hint:"So I can follow up and send your call details.",
+    fields:[
+      {k:'firstName', label:'First name', ph:'First name', type:'text', req:true},
+      {k:'lastName',  label:'Last name',  ph:'Last name',  type:'text', req:true},
+      {k:'email',     label:'Email',      ph:'you@email.com', type:'email', req:true},
+      {k:'phone',     label:'Phone (for call reminders)', ph:'(555) 555-5555', type:'tel', req:true},
+      {k:'instagram', label:'Instagram username', tag:'(optional)', ph:'@username', type:'text', req:false},
+    ]
+  },
+  { type:'single', key:'age', title:"How old are you?", hint:"The audition clock matters (DCI ages out at 21, WGI at 22), so this helps me plan with you.",
+    opts:["13–14 (early player)","15–16 (early high school)","17–18 (late high school)","19–20 (college age)","21+ (aged out or other)"]
+  },
+  { type:'single', key:'level', title:"Where are you at as a snare player right now?", hint:"Be honest. It only helps.",
+    opts:[
+      "Beginner, still getting the basics down",
+      "I know some basics, but harder music feels overwhelming",
+      "I can play, but it's messy or not clean with others",
+      "I play well but struggle with consistency",
+      "I've auditioned or marched before and want to level up"
+    ]
+  },
+  { type:'text', key:'goal', title:"If you could hit ONE snare goal, what would it be?", hint:"Your real dream. (ex: make a top DCI or WGI line, win a solo contest, finally play advanced music clean.)",
+    ph:"Type your #1 goal here..."
+  },
+  { type:'multi', key:'challenges', title:"What are you struggling with most? Check all that fit.", hint:"This tells me exactly where to start with you.",
+    opts:[
+      "Technique & grip: my hands don't look or feel right",
+      "Speed & endurance: my chops aren't fast enough",
+      "Vocabulary: I don't know enough exercises or variations",
+      "Plateau: I feel stuck and I'm not getting better",
+      "Structure: I don't know what to practice or how to organize it",
+      "Tension: I play stiff or get tired quickly",
+      "Cleanliness & timing: I struggle to play clean with others or tracks",
+      "Sound: I can't get things (flams, rolls) to sound good"
+    ]
+  },
+  { type:'single', key:'hours', title:"How many hours a week would you commit if you knew it would get you there?", hint:"Trusting the process. The Academy rewards the work.",
+    opts:["Less than 3 hours","3–6 hours","7–10 hours","10+ hours"]
+  },
+  { type:'single', key:'watchedVideo', title:"Have you watched the training video yet?", hint:"It makes our call 10x better, we skip the basics and go straight to you.",
+    opts:["Yes, I've finished it","Not yet, but I'll watch it before our call"]
+  },
+  { type:'single', key:'parents', title:"Are your parents or family on board with this?", hint:"Most of my drummers are 15–20, so the people who help with the decision should be in the loop, and ideally on the call.",
+    opts:[
+      "Yes, and they'll be on the call with me",
+      "Yes, they support me but won't be on the call",
+      "Not yet, I still need to talk to them",
+      "I'm 21+ and handle this myself"
+    ]
+  },
+  { type:'single', key:'finances', title:"If the Academy was clearly the right fit, where's your family financially?", hint:"No wrong answer. It just helps me know how to support you. We figure out the details on the call.",
+    opts:[
+      "We're ready to invest in the right thing",
+      "Open to a payment plan that works for us",
+      "We'd need to talk it through on the call",
+      "Not financially ready right now"
+    ]
+  },
+];
+
+/* =================== ENGINE =================== */
+let si = 0;
+const data = {};
+let questionCount = STEPS.length;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function startApp(){ si=0; renderStep(); }
+
+function setProgress(){
+  document.getElementById('progress').classList.remove('hide');
+  document.getElementById('pstep').textContent = `Step ${si+1} of ${questionCount}`;
+  const pct = Math.round((si/questionCount)*100);
+  document.getElementById('ppct').textContent = pct + '%';
+  document.getElementById('pfill').style.width = pct + '%';
+}
+
+function renderStep(){
+  const step = STEPS[si];
+  setProgress();
+  document.getElementById('s-title').innerHTML = step.title;
+  document.getElementById('s-hint').innerHTML = step.hint || '';
+  document.getElementById('s-err').classList.remove('show');
+  document.getElementById('s-back').style.visibility = si===0 ? 'hidden' : 'visible';
+  const body = document.getElementById('s-body');
+  const next = document.getElementById('s-next');
+  body.innerHTML = '';
+  next.style.display = 'none';
+
+  if(step.type === 'fields'){
+    step.fields.forEach(f=>{
+      const lab = document.createElement('label');
+      lab.className = 'field-label';
+      lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
+      const inp = document.createElement('input');
+      inp.className = 'field'; inp.type = f.type; inp.id = 'f-'+f.k;
+      inp.placeholder = f.ph || ''; inp.value = (data[f.k]||'');
+      if(f.k==='firstName') inp.autocomplete='given-name';
+      if(f.k==='lastName') inp.autocomplete='family-name';
+      if(f.k==='email') inp.autocomplete='email';
+      if(f.k==='phone') inp.autocomplete='tel';
+      body.appendChild(lab); body.appendChild(inp);
+    });
+    next.style.display = 'inline-block';
+  }
+  else if(step.type === 'single'){
+    const wrap = document.createElement('div'); wrap.className='opts';
+    step.opts.forEach((o,idx)=>{
+      const b = document.createElement('button');
+      b.className = 'opt' + (data[step.key]===o ? ' sel' : '');
+      b.innerHTML = '<span class="dot"></span> <span>'+o+'</span>';
+      b.onclick = ()=>pickSingle(step.key, o, idx);
+      wrap.appendChild(b);
+    });
+    body.appendChild(wrap);
+  }
+  else if(step.type === 'multi'){
+    const chosen = (data[step.key] ? data[step.key].split(' | ') : []);
+    const wrap = document.createElement('div'); wrap.className='opts';
+    step.opts.forEach((o)=>{
+      const b = document.createElement('button');
+      b.className = 'opt' + (chosen.includes(o) ? ' sel' : '');
+      b.innerHTML = '<span class="box"></span> <span>'+o+'</span>';
+      b.onclick = ()=>{ b.classList.toggle('sel'); };
+      b.dataset.val = o;
+      wrap.appendChild(b);
+    });
+    body.appendChild(wrap);
+    next.style.display = 'inline-block';
+  }
+  else if(step.type === 'text'){
+    const ta = document.createElement('textarea');
+    ta.className='field'; ta.id='f-text'; ta.placeholder=step.ph||''; ta.value=(data[step.key]||'');
+    body.appendChild(ta);
+    next.style.display = 'inline-block';
+  }
+  show('screen-step');
+}
+
+function pickSingle(key, val, idx){
+  data[key] = val;
+  const btns = document.querySelectorAll('#s-body .opt');
+  btns.forEach((b,i)=>b.classList.toggle('sel', i===idx));
+  setTimeout(advance, 220);
+}
+
+function nextStep(){
+  const step = STEPS[si];
+  if(step.type === 'fields'){
+    let missing = [];
+    step.fields.forEach(f=>{
+      const v = document.getElementById('f-'+f.k).value.trim();
+      data[f.k] = v;
+      if(f.req && !v) missing.push(f.label);
+    });
+    const email = (data.email||'');
+    if(missing.length){ return showErr("Please fill in: " + missing.join(', ') + "."); }
+    if(email && email.indexOf('@')<1){ return showErr("That email doesn't look right."); }
+  }
+  else if(step.type === 'multi'){
+    const sel = Array.from(document.querySelectorAll('#s-body .opt.sel')).map(b=>b.dataset.val);
+    if(!sel.length){ return showErr("Pick at least one so I know where to start."); }
+    data[step.key] = sel.join(' | ');
+  }
+  else if(step.type === 'text'){
+    data[step.key] = document.getElementById('f-text').value.trim();
+    if(!data[step.key]){ return showErr("Give me a sentence here. It matters."); }
+  }
+  advance();
+}
+
+function showErr(msg){
+  const e = document.getElementById('s-err');
+  e.textContent = msg; e.classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function advance(){
+  if(si < STEPS.length-1){ si++; renderStep(); }
+  else { finishApp(); }
+}
+
+function prevStep(){
+  if(si>0){ si--; renderStep(); }
+}
+
+function finishApp(){
+  document.getElementById('progress').classList.add('hide');
+  document.getElementById('book-name').textContent = (data.firstName || 'drummer');
+  saveApplication();
+  show('screen-book');
+}
+
+/* =================== SAVE → GOOGLE SHEET =================== */
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
+
+function saveApplication(){
+  if(SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
+  const payload = {
+    formType:'academy',
+    firstName:data.firstName||'', lastName:data.lastName||'', email:data.email||'',
+    phone:data.phone||'', instagram:data.instagram||'', age:data.age||'',
+    level:data.level||'', goal:data.goal||'', challenges:data.challenges||'',
+    hours:data.hours||'', watchedVideo:data.watchedVideo||'', parents:data.parents||'',
+    finances:data.finances||''
+  };
+  try{
+    fetch(SHEET_ENDPOINT, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+  }catch(err){ /* never block the booking step */ }
+}
+</script>
+
+<!-- Cal.com element-click embed -->
+<script type="text/javascript">
+(function(C,A,L){let p=function(a,ar){a.q.push(ar);};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true;}if(ar[0]===L){const api=function(){p(api,arguments);};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,["initNamespace",namespace]);}else p(cal,ar);return;}p(cal,ar);};})(window,"https://app.cal.com/embed/embed.js","init");
+Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
+Cal.ns["rdm-strategy"]("ui",{"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
+</body>
+</html>
