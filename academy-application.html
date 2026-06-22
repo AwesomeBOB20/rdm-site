@@ -259,7 +259,7 @@ function startApp(){ si=0; renderStep(); }
 function setProgress(){
   document.getElementById('progress').classList.remove('hide');
   document.getElementById('pstep').textContent = `Step ${si+1} of ${questionCount}`;
-  const pct = Math.round((si/questionCount)*100);
+  const pct = Math.min(100, Math.max(0, Math.round((si/questionCount)*100)));
   document.getElementById('ppct').textContent = pct + '%';
   document.getElementById('pfill').style.width = pct + '%';
 }
