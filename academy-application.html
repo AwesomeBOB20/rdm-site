@@ -92,6 +92,10 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   background:#fff;color:#000;margin-bottom:16px;}
 .field::placeholder{color:#999;}
 textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
+.phone-wrap{display:flex;align-items:stretch;margin-bottom:16px;}
+.phone-cc{display:flex;align-items:center;justify-content:center;background:#fff;border:var(--b);border-right:none;
+  border-radius:var(--rad) 0 0 var(--rad);padding:0 14px;font-weight:700;color:#000;font-size:1.05rem;white-space:nowrap;}
+.phone-wrap .field{margin-bottom:0;border-radius:0 var(--rad) var(--rad) 0;}
 .err{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .err.show{display:block;}
 
@@ -151,7 +155,7 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
           <h2>Last step: <span style="color:var(--purple-deep)">book your call.</span></h2>
           <p>Thanks, <span id="book-name">drummer</span>. I've got your application. Now grab a time for your 1-on-1 call below.</p>
           <p style="font-size:.95rem;color:#444;"><b>Important:</b> if a parent or guardian helps with the decision, have them on the call with you. Buyers are often the parent, and I want everyone's questions answered.</p>
-          <a href="#" class="btn full" data-cal-namespace="rdm-strategy" data-cal-link="anthony-steller-zy5ahs/rdm-strategy" data-cal-config='{"layout":"month_view"}'>Book My Call &rarr;</a>
+          <a href="#" class="btn full" data-cal-namespace="rdm-strategy" data-cal-link="anthony-steller-zy5ahs/rdm-strategy" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>Book My Call &rarr;</a>
         </div>
       </section>
 
@@ -264,14 +268,26 @@ function renderStep(){
       const lab = document.createElement('label');
       lab.className = 'field-label';
       lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
-      const inp = document.createElement('input');
-      inp.className = 'field'; inp.type = f.type; inp.id = 'f-'+f.k;
-      inp.placeholder = f.ph || ''; inp.value = (data[f.k]||'');
-      if(f.k==='firstName') inp.autocomplete='given-name';
-      if(f.k==='lastName') inp.autocomplete='family-name';
-      if(f.k==='email') inp.autocomplete='email';
-      if(f.k==='phone') inp.autocomplete='tel';
-      body.appendChild(lab); body.appendChild(inp);
+      body.appendChild(lab);
+      if(f.k === 'phone'){
+        const wrap = document.createElement('div'); wrap.className = 'phone-wrap';
+        const cc = document.createElement('span'); cc.className = 'phone-cc'; cc.textContent = '🇺🇸 +1';
+        const inp = document.createElement('input');
+        inp.className = 'field'; inp.type = 'tel'; inp.id = 'f-'+f.k;
+        inp.placeholder = '(555) 555-5555'; inp.autocomplete = 'tel-national'; inp.inputMode = 'numeric';
+        inp.value = data[f.k] ? data[f.k].replace(/^\+1\s*/,'') : '';
+        inp.addEventListener('input', function(){ this.value = formatUSPhone(this.value); });
+        wrap.appendChild(cc); wrap.appendChild(inp);
+        body.appendChild(wrap);
+      } else {
+        const inp = document.createElement('input');
+        inp.className = 'field'; inp.type = f.type; inp.id = 'f-'+f.k;
+        inp.placeholder = f.ph || ''; inp.value = (data[f.k]||'');
+        if(f.k==='firstName') inp.autocomplete='given-name';
+        if(f.k==='lastName') inp.autocomplete='family-name';
+        if(f.k==='email') inp.autocomplete='email';
+        body.appendChild(inp);
+      }
     });
     next.style.display = 'inline-block';
   }
@@ -319,15 +335,22 @@ function pickSingle(key, val, idx){
 function nextStep(){
   const step = STEPS[si];
   if(step.type === 'fields'){
-    let missing = [];
+    let problems = [];
     step.fields.forEach(f=>{
       const v = document.getElementById('f-'+f.k).value.trim();
-      data[f.k] = v;
-      if(f.req && !v) missing.push(f.label);
+      if(f.k === 'phone'){
+        const digits = v.replace(/\D/g,'');
+        if(f.req && digits.length !== 10){ problems.push('a valid 10-digit phone number'); data.phone = ''; }
+        else { data.phone = digits ? ('+1 ' + v) : ''; }
+      } else if(f.k === 'email'){
+        if(f.req && !isEmail(v)){ problems.push('a valid email address'); }
+        data.email = v;
+      } else {
+        data[f.k] = v;
+        if(f.req && !v) problems.push(f.label.toLowerCase());
+      }
     });
-    const email = (data.email||'');
-    if(missing.length){ return showErr("Please fill in: " + missing.join(', ') + "."); }
-    if(email && email.indexOf('@')<1){ return showErr("That email doesn't look right."); }
+    if(problems.length){ return showErr("Please enter " + problems.join(', ') + "."); }
   }
   else if(step.type === 'multi'){
     const sel = Array.from(document.querySelectorAll('#s-body .opt.sel')).map(b=>b.dataset.val);
@@ -363,6 +386,17 @@ function finishApp(){
   show('screen-book');
 }
 
+// Format raw input into a US phone: (123) 456-7890, capped at 10 digits.
+function formatUSPhone(v){
+  var d = v.replace(/\D/g,'').slice(0,10);
+  if(d.length > 6) return '(' + d.slice(0,3) + ') ' + d.slice(3,6) + '-' + d.slice(6);
+  if(d.length > 3) return '(' + d.slice(0,3) + ') ' + d.slice(3);
+  if(d.length > 0) return '(' + d;
+  return '';
+}
+// Basic but solid email shape check.
+function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
 /* =================== SAVE → GOOGLE SHEET =================== */
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
 
@@ -390,7 +424,9 @@ function saveApplication(){
 <script type="text/javascript">
 (function(C,A,L){let p=function(a,ar){a.q.push(ar);};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true;}if(ar[0]===L){const api=function(){p(api,arguments);};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,["initNamespace",namespace]);}else p(cal,ar);return;}p(cal,ar);};})(window,"https://app.cal.com/embed/embed.js","init");
 Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
-Cal.ns["rdm-strategy"]("ui",{"hideEventTypeDetails":false,"layout":"month_view"});
+Cal.config = Cal.config || {};
+Cal.config.forwardQueryParams = true;
+Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#4D1948"},"dark":{"cal-brand":"#06aeb9"}},"hideEventTypeDetails":false,"layout":"month_view"});
 </script>
 </body>
 </html>
