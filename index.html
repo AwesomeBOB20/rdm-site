@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDM: Find Your Path</title>
+<meta name="description" content="Answer a few quick questions and find the exact RDM path to clean your hands, break your plateau, and make your line.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="Steller%20Drums%20-%20PNG%20file-07.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RDM — FIND YOUR PATH (diagnostic quiz / router)
+   Same brand identity as the landing + VSL pages.
+   ============================================================ */
+:root{
+  --purple:#96318d; --purple-deep:#792671;
+  --blue:#06aeb9; --blue-deep:#058890;
+  --orange:#fe6429; --orange-deep:#d35400;
+  --tan:#fff0d3; --ink:#000; --dark:#0c0810;
+  --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);color:#fff;line-height:1.6;
+  min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{max-width:100%;height:auto;}
+.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.46),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
+.site{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:center;padding:16px;border-bottom:var(--b);background:var(--purple);}
+.topbar img{height:38px;}
+
+/* shell */
+.shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
+.stage{width:100%;max-width:680px;}
+
+/* progress */
+.progress-wrap{max-width:680px;margin:0 auto;padding:18px 18px 0;}
+.progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:.8rem;color:rgba(255,255,255,.7);font-weight:500;}
+.progress-bar{height:10px;background:rgba(0,0,0,.35);border:2px solid #000;border-radius:999px;overflow:hidden;}
+.progress-fill{height:100%;width:0;background:var(--orange);transition:width .35s cubic-bezier(.2,.7,.2,1);}
+.progress-wrap.hide{display:none;}
+
+/* cards / screens */
+.screen{display:none;animation:fade .4s ease;}
+.screen.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:14px;}
+.q-title{font-size:clamp(1.4rem,3.6vw,2.1rem);font-weight:700;line-height:1.14;margin-bottom:22px;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.sub{color:rgba(255,255,255,.85);font-size:clamp(1.02rem,1.7vw,1.18rem);margin-bottom:28px;}
+.co{color:var(--orange);} .cb{color:var(--blue);} .cp{color:#e9b8e4;}
+
+/* option cards */
+.opts{display:flex;flex-direction:column;gap:12px;}
+.opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:inherit;
+  background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  padding:18px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
+.opt:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.opt.sel{background:var(--blue);color:#fff;}
+.opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
+.opt.sel .dot{background:var(--orange);}
+
+/* buttons */
+.btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
+  padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.btn.blue{background:var(--blue);} .btn.purple{background:var(--purple);}
+.btn.full{display:block;width:100%;}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
+.row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
+.back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
+.back:hover{color:#fff;}
+.skip{color:rgba(255,255,255,.62);font-size:.92rem;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;margin-top:18px;display:inline-block;}
+.skip:hover{color:#fff;}
+
+/* intro extras */
+.intro-note{margin-top:18px;font-size:.9rem;color:rgba(255,255,255,.62);}
+.intro-note b{color:var(--tan);font-weight:500;}
+
+/* email capture */
+.field{width:100%;font-family:inherit;font-size:1.05rem;padding:15px 18px;border:var(--b);border-radius:var(--rad);
+  background:#fff;color:#000;margin-bottom:16px;}
+.field::placeholder{color:#888;}
+
+/* RESULT */
+.result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:34px 30px;text-align:left;}
+.result-flag{display:inline-block;background:var(--purple);color:#fff;border:2px solid #000;border-radius:999px;font-size:.72rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 15px;margin-bottom:14px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.result-card h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;line-height:1.12;margin-bottom:6px;color:#000;}
+.result-card .price{font-weight:700;color:var(--purple-deep);font-size:1.05rem;margin-bottom:16px;}
+.result-block{margin-bottom:16px;}
+.result-block h3{font-size:.78rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:5px;}
+.result-block p{color:#222;font-size:1.02rem;}
+.result-card .btn{margin-top:8px;}
+.result-foot{text-align:center;margin-top:22px;}
+.result-foot a{color:rgba(255,255,255,.7);font-size:.9rem;text-decoration:underline;}
+.result-foot a:hover{color:#fff;}
+
+@media (max-width:560px){
+  .result-card,.shell{padding-left:16px;padding-right:16px;}
+  .result-card{padding:26px 22px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="site">
+
+  <div class="topbar"><a href="landing.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a></div>
+
+  <!-- progress -->
+  <div class="progress-wrap hide" id="progress">
+    <div class="progress-row"><span id="pstep">Question 1 of 5</span><span id="ppct">20%</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
+  </div>
+
+  <div class="shell">
+    <div class="stage">
+
+      <!-- ===== INTRO ===== -->
+      <section class="screen active" id="screen-intro">
+        <span class="eyebrow">Find your path · 60 seconds</span>
+        <h1>Not sure where to start? <span class="co">Let's figure it out.</span></h1>
+        <p class="sub">Answer 5 quick questions about where you're at and what you're chasing. I'll show you the exact RDM path to get there, the same way I'd size you up in the DMs.</p>
+        <button class="btn full" onclick="start()">Start &rarr;</button>
+        <button class="skip" onclick="show('screen-q0picker')">I already know what I want &rarr;</button>
+      </section>
+
+      <!-- ===== "I KNOW WHAT I WANT" QUICK PICKER ===== -->
+      <section class="screen" id="screen-q0picker">
+        <span class="eyebrow">Pick your product</span>
+        <h1 class="q-title">Jump straight to it.</h1>
+        <div class="opts">
+          <a class="opt" href="https://playalongs.rudimentaldrummingmastery.com/sign-up"><span class="dot"></span> RDM Playalongs: the practice tool ($1 trial)</a>
+          <a class="opt" href="landing.html"><span class="dot"></span> RDM Method: the full course ($147)</a>
+          <a class="opt" href="academy-vsl.html"><span class="dot"></span> RDM Academy: private coaching (apply)</a>
+        </div>
+        <div class="row"><button class="back" onclick="show('screen-intro')">&larr; Back</button></div>
+      </section>
+
+      <!-- ===== QUESTIONS render here ===== -->
+      <section class="screen" id="screen-question">
+        <h2 class="q-title" id="q-title"></h2>
+        <div class="opts" id="q-opts"></div>
+        <div class="row">
+          <button class="back" id="q-back" onclick="prevQ()">&larr; Back</button>
+        </div>
+      </section>
+
+      <!-- ===== EMAIL CAPTURE ===== -->
+      <section class="screen" id="screen-email">
+        <span class="eyebrow">One last thing</span>
+        <h2 class="q-title">Where should I send your <span class="co">result + a free practice plan?</span></h2>
+        <p class="sub">Drop your email and I'll show your path now and send you a starter plan to go with it.</p>
+        <form id="email-form" onsubmit="return submitEmail(event)">
+          <input class="field" id="email-input" type="email" placeholder="you@email.com" autocomplete="email">
+          <button class="btn full" type="submit">Show my result &rarr;</button>
+        </form>
+        <button class="skip" onclick="showResult()">Skip and just show my result</button>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="screen" id="screen-result">
+        <div class="result-card">
+          <span class="result-flag" id="r-flag">Your path</span>
+          <h2 id="r-title"></h2>
+          <p class="price" id="r-price"></p>
+          <div class="result-block"><h3>Where you're at</h3><p id="r-where"></p></div>
+          <div class="result-block"><h3>What's holding you back</h3><p id="r-why"></p></div>
+          <div class="result-block"><h3>Your next step</h3><p id="r-next"></p></div>
+          <a class="btn full" id="r-cta" href="#">Get Started</a>
+        </div>
+        <div class="result-foot"><a id="r-other" href="#" onclick="show('screen-q0picker');return false;">See all three options instead</a></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- QUIZ DATA ----------------
+   Each option carries points toward P (Playalongs), M (Method), A (Academy).
+   Highest total at the end picks the recommended product. */
+const QUESTIONS = [
+  {
+    title: "What's your #1 goal with snare drumming right now?",
+    opts: [
+      {t:"Just get better: cleaner hands, for fun or for my section", s:{P:2}},
+      {t:"Break my plateau and finally learn HOW to actually get good", s:{M:2}},
+      {t:"Make a specific competitive line (DCI, WGI, college, top HS)", s:{A:2}},
+    ]
+  },
+  {
+    title: "Where are you at as a player?",
+    opts: [
+      {t:"Beginner: still getting the basics down", s:{P:2}},
+      {t:"Intermediate, but stuck on a plateau", s:{M:2}},
+      {t:"Advanced: grinding for the next level", s:{A:1,M:1}},
+    ]
+  },
+  {
+    title: "What's your biggest challenge right now?",
+    opts: [
+      {t:"I don't know what to practice, or how", s:{M:2}},
+      {t:"I can't get clean. I can't even hear my own mistakes yet", s:{P:2}},
+      {t:"I can't play fast enough, or my timing falls apart", s:{P:1,M:1}},
+      {t:"I freeze at auditions and can't make the line", s:{A:2}},
+    ]
+  },
+  {
+    title: "What's your timeline?",
+    opts: [
+      {t:"I've got an audition coming up I need to be ready for", s:{A:2}},
+      {t:"No deadline, I'm just tired of being stuck on a plateau", s:{M:2}},
+      {t:"No rush, I just want to keep getting cleaner", s:{P:2}},
+      {t:"Building now for next season's auditions", s:{A:1,M:1}},
+    ]
+  },
+  {
+    title: "How serious are you about this?",
+    opts: [
+      {t:"Mostly for fun / casual", s:{P:2}},
+      {t:"Committed. I practice regularly and want real progress", s:{M:2}},
+      {t:"All-in. I'll do whatever it takes to make my line", s:{A:3}},
+    ]
+  },
+];
+
+/* ---------------- PRODUCT RESULTS ---------------- */
+const RESULTS = {
+  P: {
+    flag:"Your path: the practice tool",
+    title:"Start with the RDM Playalongs",
+    price:"$1 for 7 days, then $9.99/mo &middot; cancel anytime",
+    where:"You're building your foundation and your hands just need the right reps every day. No matter your level, this is where clean comes from.",
+    why:"You don't have a tool that forces good reps and trains your ear to hear clean vs. dirty. That's exactly the gap.",
+    next:"Use the RDM Playalongs tool every day. It'll make you cleaner, more accurate, and sharpen your ears, no matter what.",
+    cta:"Start the $1 Trial",
+    url:"https://playalongs.rudimentaldrummingmastery.com/sign-up"
+  },
+  M: {
+    flag:"Your path: the system",
+    title:"Get the RDM Method",
+    price:"$147 one-time &middot; lifetime access (includes the $9.99/mo Playalongs tool free)",
+    where:"You're past the basics and putting in work, but you're plateaued because no one's handed you the system.",
+    why:"You don't need more reps. You need to know HOW: how to break down any music, what's limiting you, and how to practice so it actually sticks.",
+    next:"Go through the RDM Method. You'll learn the full system and mindset, and you'll never be stuck wondering what to do again. Stuck on something? Post in the community and I'll help.",
+    cta:"See the RDM Method",
+    url:"landing.html"
+  },
+  A: {
+    flag:"Your path: private coaching",
+    title:"Apply for the RDM Academy",
+    price:"By application &middot; limited spots",
+    where:"You're serious about a specific line and you're willing to do hard work to get there. You don't want to guess anymore. You want a coach.",
+    why:"You need eyes on YOUR hands every day plus accountability. Going it alone is exactly why serious players stall out.",
+    next:"Apply for the Academy. We work together 1-on-1 until you can play the 5 etudes and make your goal line. It's hard. That's the point.",
+    cta:"Apply for the Academy",
+    url:"academy-vsl.html"
+  }
+};
+
+/* ---------------- ENGINE ---------------- */
+let qi = 0;
+const answers = [];
+const score = {P:0,M:0,A:0};
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function start(){ qi=0; answers.length=0; score.P=score.M=score.A=0; renderQ(); }
+
+function renderQ(){
+  const q = QUESTIONS[qi];
+  document.getElementById('progress').classList.remove('hide');
+  document.getElementById('pstep').textContent = `Question ${qi+1} of ${QUESTIONS.length}`;
+  const pct = Math.round(((qi)/QUESTIONS.length)*100);
+  document.getElementById('ppct').textContent = pct + '%';
+  document.getElementById('pfill').style.width = pct + '%';
+  document.getElementById('q-title').innerHTML = q.title;
+  const wrap = document.getElementById('q-opts');
+  wrap.innerHTML = '';
+  q.opts.forEach((o,idx)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="dot"></span> <span>'+o.t+'</span>';
+    b.onclick = ()=>pick(idx);
+    wrap.appendChild(b);
+  });
+  document.getElementById('q-back').style.visibility = qi===0 ? 'hidden' : 'visible';
+  show('screen-question');
+}
+
+function pick(idx){
+  // remove previous answer's score if re-answering
+  if(answers[qi]!=null){
+    const prev = QUESTIONS[qi].opts[answers[qi]].s;
+    for(const k in prev) score[k]-=prev[k];
+  }
+  answers[qi]=idx;
+  const s = QUESTIONS[qi].opts[idx].s;
+  for(const k in s) score[k]=(score[k]||0)+s[k];
+  // brief highlight then advance
+  const btns = document.querySelectorAll('#q-opts .opt');
+  btns.forEach((b,i)=>b.classList.toggle('sel', i===idx));
+  setTimeout(()=>{
+    if(qi < QUESTIONS.length-1){ qi++; renderQ(); }
+    else { finishProgress(); show('screen-email'); }
+  }, 240);
+}
+
+function prevQ(){
+  if(qi>0){ qi--; renderQ(); }
+}
+
+function finishProgress(){
+  document.getElementById('pstep').textContent = 'Done!';
+  document.getElementById('ppct').textContent = '100%';
+  document.getElementById('pfill').style.width = '100%';
+}
+
+// ===== LEAD CAPTURE → GOOGLE SHEET =====
+// Paste your Google Apps Script Web App URL between the quotes (setup steps from Claude).
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbwl7GjiKjED2KWRDgJ4rGLAZxOnasi-v6bEM3aoJu_KCSW9CWm8PCXYOv_RX7DNQ4k9/exec";
+
+function submitEmail(e){
+  e.preventDefault();
+  const email = document.getElementById('email-input').value;
+  saveLead(email);   // fire-and-forget; never blocks the result
+  showResult();
+  return false;
+}
+
+function saveLead(email){
+  if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
+  const productNames = {P:'Playalongs', M:'Method', A:'Academy'};
+  const payload = {
+    email: email,
+    product: productNames[winner()] || winner(),
+    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : '').join(' | ')
+  };
+  try{
+    fetch(SHEET_ENDPOINT, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    });
+  }catch(err){ /* fail silently so a capture hiccup never stops the user */ }
+}
+
+function winner(){
+  // Academy only wins if Q1 = "Make a specific competitive line" (option index 2).
+  // If they didn't pick that goal, route up to Method, then Playalongs, never the $2k apply page.
+  const academyEligible = answers[0] === 2;
+  const keys = academyEligible ? ['A','M','P'] : ['M','P'];
+  // highest score; iteration order is the tie-break (A > M > P)
+  let best='P', bestVal=-1;
+  keys.forEach(k=>{ if(score[k] > bestVal){ bestVal=score[k]; best=k; } });
+  return best;
+}
+
+function showResult(){
+  document.getElementById('progress').classList.add('hide');
+  const r = RESULTS[winner()];
+  document.getElementById('r-flag').innerHTML = r.flag;
+  document.getElementById('r-title').innerHTML = r.title;
+  document.getElementById('r-price').innerHTML = r.price;
+  document.getElementById('r-where').innerHTML = r.where;
+  document.getElementById('r-why').innerHTML = r.why;
+  document.getElementById('r-next').innerHTML = r.next;
+  const cta = document.getElementById('r-cta');
+  cta.textContent = r.cta;
+  cta.href = r.url;
+  show('screen-result');
+}
+</script>
+</body>
+</html>

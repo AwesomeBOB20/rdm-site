@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to The RDM Method: Next Steps</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="Steller%20Drums%20-%20PNG%20file-07.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#96318d; --blue:#06aeb9; --orange:#fe6429; --tan:#fff0d3;
+  --black:#000; --b:3px solid #000; --r:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Ubuntu',sans-serif; color:#fff; min-height:100vh;
+  background:var(--purple);
+  display:flex; align-items:center; justify-content:center; padding:32px 18px;
+}
+.bg{position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.45),rgba(18,4,18,.62)),url('Background%203.png') center/cover no-repeat;}
+.wrap{position:relative; z-index:1; width:100%; max-width:640px;}
+.logo{display:block; height:64px; margin:0 auto 22px;}
+.card{
+  background:var(--tan); color:#000; border:var(--b); border-radius:var(--r);
+  box-shadow:0 14px 40px rgba(0,0,0,.45); padding:38px 34px; text-align:center;
+}
+.badge{
+  display:inline-block; background:var(--blue); color:#fff; border:2px solid #000;
+  border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:6px 16px; margin-bottom:18px; text-shadow:0 1px 1px rgba(0,0,0,.3);
+}
+h1{font-size:clamp(1.7rem,4.5vw,2.4rem); line-height:1.1; margin-bottom:12px;}
+h1 .o{color:var(--orange);} h1 .p{color:var(--purple);}
+.sub{color:#444; font-size:1.02rem; max-width:480px; margin:0 auto 26px;}
+.steps{text-align:left; display:flex; flex-direction:column; gap:14px; margin:0 auto 28px; max-width:520px;}
+.step{display:flex; gap:14px; align-items:flex-start; background:#fff7e6; border:2px solid #000; border-radius:14px; padding:16px 18px;}
+.step .n{flex:0 0 auto; width:34px; height:34px; border-radius:50%; background:var(--purple); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; border:2px solid #000;}
+.step h3{font-size:1.05rem; margin-bottom:3px;}
+.step p{font-size:.94rem; color:#333; line-height:1.5;}
+.btn{
+  display:inline-block; background:var(--orange); color:#fff; text-decoration:none;
+  border:var(--b); border-radius:var(--r); padding:15px 34px; font-weight:700; font-size:1.05rem;
+  text-shadow:0 1px 1px rgba(0,0,0,.3); transition:transform .14s ease, filter .2s ease;
+}
+.btn:hover{transform:translateY(-2px); filter:brightness(1.05);}
+.btn.blue{background:var(--blue);}
+.note{margin-top:18px; font-size:.86rem; color:#555;}
+.foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
+a.link{color:var(--purple); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM" class="logo">
+  <div class="card">
+    <span class="badge">Payment Confirmed</span>
+    <h1>Welcome to <span class="o">The RDM Method!</span> 🥁</h1>
+    <p class="sub">Your spot is locked in. Here are your next 3 steps to get started. It takes about 2 minutes.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div><h3>Check your email</h3><p>Your receipt and a copy of these instructions are on the way. (Check spam if you don't see it.)</p></div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div><h3>Join the RDM community on Skool</h3><p>Tap the button below to join the community where your course lives.</p></div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div><h3>Message Anthony to unlock your course</h3><p>Once you're in Skool, send Anthony a quick message (<strong>"Just bought the Method!"</strong>) and he'll unlock your full course access. You'll be in within a few hours at the most. Your <strong>lifetime RDM Playalongs</strong> access comes with it.</p></div>
+      </div>
+    </div>
+
+    <a href="https://www.skool.com/rudimental-drumming-mastery-8341" class="btn">Join the RDM Community →</a>
+    <p class="note">Questions? Reach Anthony at <a class="link" href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a>.</p>
+  </div>
+  <p class="foot">© 2026 RDM: Rudimental Drumming Mastery</p>
+</div>
+</body>
+</html>

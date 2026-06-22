@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The RDM Method: Break Past the Intermediate Plateau</title>
+<meta name="description" content="The complete, structured snare drum system for drumline percussionists who want to clean their hands, read anything on sight, and walk into auditions ready. Built by Anthony Steller.">
+<meta property="og:title" content="The RDM Method: Master Your Snare Drum Mechanics">
+<meta property="og:description" content="A self-paced system that takes your hands from inconsistent to audition-ready. Lifetime access. One payment.">
+<meta property="og:type" content="website">
+<link rel="icon" href="Steller%20Drums%20-%20PNG%20file-07.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE RDM METHOD — styled to match the RDM Playalongs identity
+   Ubuntu · dark image bg · tan cards w/ 3px black borders ·
+   colored heading word-spans · blue/orange/purple CTAs
+   purple #96318d · blue #06aeb9 · orange #fe6429 · tan #fff0d3
+   ============================================================ */
+:root{
+  --purple:#96318d;
+  --purple-deep:#792671;
+  --blue:#06aeb9;
+  --blue-deep:#058890;
+  --orange:#fe6429;
+  --orange-deep:#d35400;
+  --tan:#fff0d3;
+  --ink:#000;
+  --dark:#0c0810;
+  --b:3px solid #000;
+  --rad:20px;
+  --shadow:5px 5px 0 rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:Ubuntu,Helvetica,Arial,sans-serif;
+  background:var(--purple);
+  color:#fff;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;height:auto;}
+
+/* fixed brand background image (purple/teal/orange), lightly darkened for legibility.
+   Uses a fixed-position layer instead of background-attachment:fixed so it behaves on iOS. */
+.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.42),rgba(18,4,18,.60)),url('Background%203.png') center/cover no-repeat;
+  background-color:var(--purple);}
+
+.site{position:relative;z-index:1;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px;}
+
+/* word-color helpers (the signature multi-color headline treatment) */
+.cb{color:var(--blue);}
+.cp{color:var(--purple);}
+.co{color:var(--orange);}
+
+/* ---------- TAN CARD (container-5 / container-23 look) ---------- */
+.card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);}
+
+/* ---------- SIGNATURE CTA BUTTON (link-block-13 look) ---------- */
+.cta{display:inline-block;text-align:center;text-decoration:none;color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--blue);
+  border:var(--b);border-radius:var(--rad);padding:14px 30px;
+  box-shadow:var(--shadow);transition:transform .14s ease,box-shadow .14s ease,filter .14s ease;}
+.cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.cta.orange{background:var(--orange);}
+.cta.purple{background:var(--purple);}
+.cta.solid-tan{background:var(--tan);color:#000;text-shadow:none;}
+.cta .big{display:block;font-size:clamp(1.25rem,2.6vw,1.75rem);font-weight:700;line-height:1.15;}
+.cta .small{display:block;font-size:.92rem;font-weight:400;color:rgba(255,255,255,.92);margin-top:5px;}
+.cta.solid-tan .small{color:rgba(0,0,0,.6);}
+.cta.ghost{background:transparent;border:3px solid rgba(255,255,255,.55);color:#fff;box-shadow:none;}
+.cta.ghost:hover{border-color:#fff;background:rgba(255,255,255,.07);transform:translateY(-2px);box-shadow:none;}
+
+/* ---------- SECTION SCAFFOLD ---------- */
+.pad{padding:84px 0;}
+.eyebrow{display:inline-block;background:rgba(0,0,0,.45);color:#fff;border:var(--b);
+  font-size:.74rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 16px;border-radius:999px;margin-bottom:20px;}
+.h2{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;line-height:1.12;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.45);}
+.lead{color:rgba(255,255,255,.82);font-size:clamp(1.02rem,1.7vw,1.18rem);max-width:660px;letter-spacing:.3px;}
+.center{text-align:center;}
+.center .lead{margin-left:auto;margin-right:auto;}
+
+/* ---------- NAV ---------- */
+nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:12px 22px;background:var(--purple);border-bottom:var(--b);}
+.nav-logo{height:40px;display:block;}
+.nav-links{display:flex;gap:12px;align-items:center;}
+.nav-links a{background:var(--blue);color:#fff;text-decoration:none;text-align:center;
+  border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
+  text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
+.nav-cta{justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
+  padding:10px 22px;font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);
+  transition:transform .14s,filter .2s;}
+.nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
+
+/* ---------- HERO ---------- */
+.hero{text-align:center;padding:78px 0 70px;}
+.hero-eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);
+  font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:7px 18px;border-radius:999px;margin-bottom:26px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:700;line-height:1.05;
+  letter-spacing:-.5px;max-width:940px;margin:0 auto 22px;text-shadow:0 3px 18px rgba(0,0,0,.5);}
+.hero-sub{font-size:clamp(1.05rem,1.9vw,1.3rem);color:rgba(255,255,255,.85);max-width:680px;margin:0 auto 38px;letter-spacing:.3px;}
+.hero-cta{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.hero-cta .row{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:center;}
+.hero .cta{padding:16px 38px;}
+.cta-note{font-size:.88rem;color:rgba(255,255,255,.6);}
+.cta-note b{color:var(--tan);font-weight:500;}
+
+/* ---------- SOCIAL PROOF BAR ---------- */
+.proof{border-top:var(--b);border-bottom:var(--b);background:rgba(0,0,0,.35);padding:36px 0;}
+.proof-label{text-align:center;font-size:.86rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:24px;}
+.logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,2.5vw,26px);}
+.logo-badge{width:84px;height:84px;flex:0 0 auto;border-radius:50%;background:#fff;border:var(--b);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;padding:14px;transition:transform .2s;}
+.logo-badge:hover{transform:translateY(-3px) scale(1.04);}
+.logo-badge img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;}
+.proof-sub{text-align:center;font-size:.78rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.5);margin:32px 0 18px;}
+.proof-foot{text-align:center;margin-top:22px;color:rgba(255,255,255,.55);font-size:.92rem;}
+.proof-foot b{color:#fff;}
+
+/* ---------- PROBLEM ---------- */
+.problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px;}
+.pcard{padding:24px 22px;}
+.pcard .ic{font-size:1.9rem;display:block;margin-bottom:12px;}
+.pcard h3{font-size:1.08rem;font-weight:700;margin-bottom:8px;color:var(--purple);}
+.pcard p{color:#222;font-size:.95rem;}
+
+/* ---------- SOLUTION ---------- */
+.sol-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:stretch;margin-top:46px;}
+.sol-card{padding:32px 30px;}
+.sol-steps{display:flex;flex-direction:column;gap:18px;}
+.step{display:flex;gap:16px;align-items:flex-start;}
+.step .n{flex:0 0 auto;width:44px;height:44px;border-radius:12px;border:var(--b);background:var(--orange);
+  display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.15rem;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.step h3{font-size:1.12rem;font-weight:700;margin-bottom:2px;color:#000;}
+.step p{color:#333;font-size:.96rem;}
+.mech{background:var(--purple-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:30px;}
+.mech h3{font-size:1.3rem;font-weight:700;margin-bottom:6px;}
+.mech .small{color:rgba(255,255,255,.75);font-size:.92rem;margin-bottom:20px;}
+.pillars{display:flex;flex-direction:column;gap:11px;}
+.pill{display:flex;align-items:center;gap:13px;background:rgba(0,0,0,.25);border:2px solid rgba(255,255,255,.18);border-radius:13px;padding:13px 16px;font-weight:500;}
+.pill .pn{width:28px;height:28px;flex:0 0 auto;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;border:2px solid #000;}
+
+/* ---------- MODULES ---------- */
+.modules-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:46px;}
+.mod{display:flex;gap:16px;padding:20px 22px;align-items:flex-start;transition:transform .18s;}
+.mod:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.3);}
+.mod .num{font-size:1.9rem;font-weight:700;line-height:1;color:var(--orange);flex:0 0 auto;min-width:48px;}
+.mod h3{font-size:1.08rem;font-weight:700;margin-bottom:3px;color:var(--purple);}
+.mod p{color:#333;font-size:.93rem;}
+.bonus{margin-top:30px;background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:28px 30px;}
+.bonus h3{font-size:1.18rem;font-weight:700;margin-bottom:18px;color:#fff;}
+.bonus h3 .tag{font-size:.68rem;background:var(--orange);color:#fff;font-weight:700;padding:4px 10px;border-radius:999px;border:2px solid #000;vertical-align:middle;margin-left:8px;letter-spacing:.04em;}
+.bonus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px 28px;}
+.bonus-grid div{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;font-weight:500;color:rgba(255,255,255,.95);}
+.bonus-grid .ck{color:var(--tan);font-weight:700;flex:0 0 auto;}
+
+/* ---------- TIERS ---------- */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px;align-items:stretch;}
+.tier{display:flex;flex-direction:column;padding:30px 26px;position:relative;}
+.tier.featured{background:var(--tan);transform:translateY(-8px);box-shadow:8px 8px 0 var(--orange);}
+.tier-flag{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;
+  border:var(--b);font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 16px;border-radius:999px;white-space:nowrap;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.tier-name{font-size:1.3rem;font-weight:700;margin-bottom:4px;}
+.tier-tagline{color:#444;font-size:.9rem;min-height:40px;}
+.tier-price{font-size:2.7rem;font-weight:700;line-height:1;margin:14px 0 2px;color:#000;}
+.tier-price .per{font-size:.95rem;font-weight:500;color:#555;}
+.tier-price.apply{font-size:1.6rem;color:var(--purple);}
+.tier-sub{font-size:.85rem;color:#555;min-height:20px;margin-bottom:20px;}
+.tier-feats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;flex:1;}
+.tier-feats li{display:flex;gap:10px;align-items:flex-start;font-size:.93rem;color:#222;}
+.tier-feats li .ck{color:var(--blue-deep);font-weight:700;flex:0 0 auto;}
+.tier-feats li.head{color:#000;font-weight:700;font-size:.84rem;text-transform:uppercase;letter-spacing:.05em;margin-top:4px;}
+.tier .cta{width:100%;padding:14px;}
+.tier .cta .big{font-size:1.05rem;}
+
+/* ---------- ABOUT ---------- */
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:stretch;margin-top:10px;}
+.about-photo{border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  overflow:hidden;min-height:340px;}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.about-card{padding:34px 32px;}
+.about-card .eyebrow{margin-bottom:14px;}
+.about-card h2{margin-bottom:16px;color:#000;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;line-height:1.15;}
+.about-card p{color:#333;margin-bottom:13px;font-size:1.02rem;}
+.about-sign{margin-top:10px;font-weight:700;color:var(--purple);font-size:1.05rem;}
+.about-sign span{display:block;font-weight:400;color:#666;font-size:.85rem;}
+
+/* ---------- TESTIMONIALS (placeholders) ---------- */
+.tst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px;}
+.tst{padding:26px 24px;border-style:dashed;}
+.tst p{color:#555;font-style:italic;font-size:.96rem;margin-bottom:16px;}
+.tst .who{display:flex;align-items:center;gap:12px;}
+.tst .ava{width:46px;height:46px;border-radius:50%;background:#fff;border:2px solid #000;flex:0 0 auto;display:flex;align-items:center;justify-content:center;padding:5px;overflow:hidden;}
+.tst .ava img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;}
+.tst .who small{color:#666;font-size:.82rem;}
+.tst .who strong{color:#000;}
+.editor-note{text-align:center;margin-top:22px;font-size:.84rem;color:rgba(255,255,255,.5);}
+
+/* ---------- FAQ ---------- */
+.faq{max-width:820px;margin:0 auto;}
+.faq-list{margin-top:38px;display:flex;flex-direction:column;gap:14px;}
+.faq-item{overflow:hidden;padding:0;}
+.faq-q{width:100%;text-align:left;background:none;border:none;color:#000;cursor:pointer;
+  padding:20px 24px;font-size:1.05rem;font-weight:700;font-family:inherit;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;}
+.faq-icon{flex:0 0 auto;font-size:1.6rem;font-weight:400;color:var(--purple);transition:transform .25s;line-height:1;}
+.faq-item.open .faq-icon{transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+.faq-a-in{padding:0 24px 22px;color:#333;font-size:.98rem;}
+
+/* ---------- FINAL CTA ---------- */
+.final{text-align:center;padding:90px 0;}
+.final-card{background:var(--purple);border:var(--b);border-radius:26px;box-shadow:var(--shadow);padding:54px 32px;}
+.final-card h2{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;color:var(--tan);max-width:780px;margin:0 auto 14px;line-height:1.12;}
+.final-card p{color:rgba(255,240,211,.85);max-width:560px;margin:0 auto 30px;}
+.final-card .row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;}
+
+/* ---------- FOOTER ---------- */
+footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0,0,0,.4);}
+.footer-logo{height:38px;opacity:.9;margin-bottom:14px;}
+.footer-text{color:rgba(255,255,255,.5);font-size:.85rem;}
+.footer-links{margin-top:10px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;}
+.footer-links a{color:rgba(255,255,255,.55);font-size:.82rem;text-decoration:none;}
+.footer-links a:hover{color:#fff;}
+
+/* ---------- REVEAL ---------- */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+/* ---------- HERO STATS ---------- */
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:34px;}
+.hero-stat{background:rgba(0,0,0,.34);border:var(--b);border-radius:14px;padding:12px 18px;min-width:118px;}
+.hero-stat b{display:block;font-size:1.5rem;font-weight:700;color:var(--tan);line-height:1.15;}
+.hero-stat span{font-size:.76rem;color:rgba(255,255,255,.78);letter-spacing:.02em;}
+
+/* ---------- WHO IT'S FOR ---------- */
+.fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:40px;max-width:920px;margin-left:auto;margin-right:auto;}
+.fit-col{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:26px;text-align:left;}
+.fit-col.no{background:#efe6d2;}
+.fit-col h3{font-size:1.15rem;font-weight:700;margin-bottom:14px;}
+.fit-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fit-col li{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;font-weight:500;}
+.fit-col .mk{font-weight:700;flex:0 0 auto;}
+.fit-col.yes .mk{color:#0a8f4a;}
+.fit-col.no .mk{color:#c0392b;}
+
+/* ---------- RESULTS ---------- */
+.results-wrap{margin-top:16px;display:flex;flex-direction:column;gap:32px;}
+.results-sub{font-size:.84rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:16px;}
+.results-sub b{color:var(--tan);}
+.chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.chip{background:rgba(0,0,0,.32);border:2px solid #000;border-radius:999px;padding:8px 16px;font-weight:600;font-size:.92rem;color:#fff;}
+.chip.lead{background:var(--orange);}
+
+/* ---------- OFFER / VALUE STACK ---------- */
+.offer{max-width:620px;margin:0 auto;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:34px 32px;text-align:left;}
+.offer-flag{display:inline-block;background:var(--orange);color:#fff;border:2px solid #000;border-radius:999px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 14px;margin-bottom:14px;}
+.offer h3{font-size:1.5rem;font-weight:700;margin-bottom:4px;}
+.offer .sub{color:#555;font-size:.92rem;margin-bottom:18px;}
+.stack{list-style:none;}
+.stack li{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px dashed rgba(0,0,0,.18);font-size:.96rem;font-weight:500;}
+.stack li>span:first-child{display:flex;gap:8px;}
+.stack .ck{color:var(--purple);font-weight:700;flex:0 0 auto;}
+.stack .v{font-weight:700;white-space:nowrap;}
+.stack .v.free{color:#0a8f4a;}
+.stack-total{display:flex;justify-content:space-between;align-items:baseline;margin:14px 0 2px;font-weight:700;font-size:1.05rem;}
+.stack-total s{color:#a33;}
+.offer-price{text-align:center;margin:12px 0 4px;}
+.offer-price .now{font-size:3rem;font-weight:700;line-height:1;}
+.offer-price .terms{display:block;color:#555;font-size:.85rem;margin-top:4px;}
+.offer .cta{width:100%;margin-top:12px;}
+.promise{margin-top:16px;background:#fff7e6;border:2px solid #000;border-radius:14px;padding:16px 18px;}
+.promise b{display:block;font-size:.98rem;margin-bottom:5px;}
+.promise p{font-size:.87rem;color:#333;margin:0;line-height:1.5;}
+.urgency{display:flex;gap:10px;align-items:center;justify-content:center;max-width:600px;margin:22px auto 26px;background:rgba(254,100,41,.16);border:2px solid var(--orange);border-radius:12px;padding:12px 18px;color:#fff;font-size:.92rem;font-weight:600;text-align:left;}
+.compare-lead{text-align:center;color:rgba(255,255,255,.72);font-weight:600;margin:42px 0 0;font-size:.95rem;}
+
+/* ---------- MID CTA ---------- */
+.midcta{max-width:760px;margin:0 auto;text-align:center;background:var(--purple);border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:40px 30px;}
+.midcta h2{color:var(--tan);font-size:clamp(1.5rem,3.4vw,2.2rem);font-weight:700;margin-bottom:10px;text-shadow:none;}
+.midcta p{color:rgba(255,240,211,.85);margin-bottom:22px;}
+
+/* ---------- TIER NOTE ---------- */
+.tier-note{font-size:.82rem;color:#555;margin-top:12px;text-align:center;}
+.tier-note.urgent{color:#b5430f;font-weight:600;}
+.tier-quote{font-style:italic;color:#555;font-size:.82rem;line-height:1.4;margin-top:10px;text-align:center;border-top:1px dashed rgba(0,0,0,.18);padding-top:10px;}
+
+/* ---------- new-component responsive ---------- */
+@media (max-width:680px){
+  .fit-grid{grid-template-columns:1fr;}
+  .offer{padding:26px 20px;}
+  .hero-stat{flex:1 1 42%;min-width:0;}
+  .urgency{font-size:.86rem;}
+}
+
+/* ---------- RESPONSIVE ---------- */
+/* Tablet & small laptop */
+@media (max-width:980px){
+  .wrap{padding:0 20px;}
+  .pad{padding:72px 0;}
+  .problem-grid{grid-template-columns:repeat(2,1fr);}
+  .sol-grid,.about-grid{grid-template-columns:1fr;}
+  .tiers{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto;}
+  .tier.featured{transform:none;order:-1;}
+  .tst-grid{grid-template-columns:1fr;}
+  .modules-grid{grid-template-columns:1fr;}
+  .about-photo{min-height:300px;}
+}
+/* Phones */
+@media (max-width:680px){
+  nav{padding:10px 16px;}
+  .nav-links{display:none;}
+  .nav-logo{height:34px;}
+  .nav-cta{font-size:.78rem;padding:8px 13px;}
+  .pad{padding:58px 0;}
+  .hero{padding:54px 0 56px;}
+  .problem-grid,.bonus-grid{grid-template-columns:1fr;}
+  .logos{gap:22px 30px;}
+  .logos img{height:46px;}
+  .hero-cta .row,.final-card .row{flex-direction:column;align-items:stretch;}
+  .hero-cta .row .cta,.final-card .row .cta{width:100%;}
+  .final-card{padding:40px 22px;}
+  .sol-card,.about-card,.mech,.bonus{padding:24px 20px;}
+  .faq-q{font-size:.98rem;padding:18px 18px;}
+  .faq-a-in{padding:0 18px 20px;}
+}
+/* Very small phones */
+@media (max-width:380px){
+  .cta .big{font-size:1.05rem;}
+  .tier-price{font-size:2.3rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-fx" aria-hidden="true"></div>
+
+<div class="site">
+
+<!-- ============ NAV ============ -->
+<nav>
+  <a href="#top"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM — Rudimental Drumming Mastery" class="nav-logo"></a>
+  <div class="nav-links">
+    <a href="#solution">The System</a>
+    <a href="#modules">What's Inside</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="nav-cta">Get the Method: $147</a>
+</nav>
+
+<!-- ============ HERO ============ -->
+<header class="hero wrap" id="top">
+  <span class="hero-eyebrow">The <span style="opacity:.95">RDM Method</span> · Self-Paced Course</span>
+  <h1>Break past the <span class="co">intermediate plateau.</span> Play at a <span class="cb">world-class level.</span></h1>
+  <p class="hero-sub">Built by the coach whose students have earned spots in <b>SCV, Crossmen, Blue Knights &amp; Guardians</b>. The RDM Method is the self-paced system that gets your hands clean, teaches you to play anything, and finally shows you exactly what to practice. Just 15 minutes a day.</p>
+  <div class="hero-cta">
+    <div class="row">
+      <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="cta orange"><span class="big">Get Instant Access</span><span class="small">The RDM Method: $147 one-time</span></a>
+      <a href="#pricing" class="cta ghost"><span class="big">See What's Included</span></a>
+    </div>
+    <span class="cta-note"><b>Lifetime access</b> · No subscription · Includes the RDM Playalongs tool free</span>
+    <!-- hero stats removed -->
+  </div>
+</header>
+
+<!-- ============ SOCIAL PROOF BAR ============ -->
+<section class="proof">
+  <div class="wrap">
+    <p class="proof-label">Students who earned their spot using the RDM system</p>
+    <div class="logos">
+      <span class="logo-badge" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
+      <span class="logo-badge" style="background:#410b0d"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
+      <span class="logo-badge" style="background:#0f1830"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
+      <span class="logo-badge" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
+      <span class="logo-badge" style="background:#20242c"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
+      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
+      <span class="logo-badge" style="background:#0b2e41"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
+      <span class="logo-badge" style="background:#16161c"><img src="assets/logos/logo-vip.png" alt="Vigilantes (VIP)"></span>
+    </div>
+    <p class="proof-sub">Also coached, mentored &amp; teched by Anthony</p>
+    <div class="logos">
+      <span class="logo-badge" style="background:#372810"><img src="assets/logos/logo-carolinacrown.png" alt="Carolina Crown"></span>
+      <span class="logo-badge" style="background:#18613f"><img src="assets/logos/logo-cavaliers.png" alt="Cavaliers"></span>
+      <span class="logo-badge" style="background:#3d0f0f"><img src="assets/logos/logo-colts.png" alt="Colts"></span>
+      <span class="logo-badge" style="background:#2d376b"><img src="assets/logos/logo-troopers.png" alt="Troopers"></span>
+      <span class="logo-badge" style="background:#0b2a41"><img src="assets/logos/logo-pacificcrest.png" alt="Pacific Crest"></span>
+      <span class="logo-badge" style="background:#000000"><img src="assets/logos/logo-rhythmicforce.png" alt="Rhythmic Force"></span>
+      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-zephyrus.png" alt="Zephyrus"></span>
+      <span class="logo-badge" style="background:#3d1a0f"><img src="assets/logos/logo-utaustin.png" alt="UT Austin Longhorn Band"></span>
+      <span class="logo-badge" style="background:#0b2941"><img src="assets/logos/logo-uta.png" alt="UTA Maverick Drumline"></span>
+      <span class="logo-badge" style="background:#271239"><img src="assets/logos/logo-monarch.webp" alt="Monarch"></span>
+    </div>
+    <p class="proof-foot"><b>8 competitive corps</b> made using the RDM system, plus students coached &amp; teched across the activity.</p>
+  </div>
+</section>
+
+<!-- ============ THE PROBLEM ============ -->
+<section class="pad">
+  <div class="wrap center">
+    <span class="eyebrow reveal">Sound familiar?</span>
+    <h2 class="h2 reveal">You're putting in the hours.<br>So why does it <span class="co">feel like nothing's changing?</span></h2>
+    <p class="lead reveal" style="margin-top:18px;">You sit down to practice and just… noodle. No plan, no direction, no way to know if you're actually getting cleaner or just repeating the same mistakes faster. Months go by, the calluses build, but the playing plateaus. And every audition season you wonder if this is as good as it gets. The problem was never your work ethic. It's that nobody ever handed you a <b>system</b>.</p>
+    <div class="problem-grid">
+      <div class="pcard card reveal"><span class="ic">🎯</span><h3>No plan to follow</h3><p>You don't know what to work on, in what order, or how to tell if it's actually working.</p></div>
+      <div class="pcard card reveal"><span class="ic">🌀</span><h3>The vague-feedback trap</h3><p>"Relax." "Turn your wrist more." "Don't squeeze." You know <em>what</em> to do, but nobody ever shows you <em>how</em>.</p></div>
+      <div class="pcard card reveal"><span class="ic">👂</span><h3>You can't hear it yet</h3><p>You can't tell clean from dirty in your own playing, so the ticks pile up exactly where you can't catch them.</p></div>
+      <div class="pcard card reveal"><span class="ic">🔁</span><h3>Stuck on a plateau</h3><p>Tons of reps, zero measurable growth, and no idea what's actually holding you back.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE SOLUTION ============ -->
+<section class="pad" id="solution">
+  <div class="wrap center">
+    <span class="eyebrow reveal">The fix</span>
+    <h2 class="h2 reveal">A clear path from <span class="co">guessing</span> to <span class="cb">audition-ready.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">The <span class="cp">RDM Method</span> takes the exact roadmap Anthony uses with private students and turns it into a self-paced course: one structured progression that builds your mechanics in the right order.</p>
+  </div>
+  <div class="wrap">
+    <div class="sol-grid">
+      <div class="sol-card card reveal">
+        <div class="sol-steps">
+          <div class="step"><div class="n">1</div><div><h3>Build the foundation</h3><p>Lock in positioning, grip, and the core strokes everything else is built on.</p></div></div>
+          <div class="step"><div class="n">2</div><div><h3>Develop real control</h3><p>Master doubles, accents, and hybrids until clean playing becomes automatic.</p></div></div>
+          <div class="step"><div class="n">3</div><div><h3>Read &amp; perform anything</h3><p>Use gridding and the sight-reading system to walk into any audition prepared.</p></div></div>
+        </div>
+      </div>
+      <div class="mech reveal">
+        <h3>Built on 5 core mechanics</h3>
+        <p class="small">Every snare passage comes down to these. Master them and you can play anything.</p>
+        <div class="pillars">
+          <div class="pill"><span class="pn">1</span> Rebound Strokes</div>
+          <div class="pill"><span class="pn">2</span> Down &amp; Up Strokes</div>
+          <div class="pill"><span class="pn">3</span> Double Strokes</div>
+          <div class="pill"><span class="pn">4</span> Natural Decays</div>
+          <div class="pill"><span class="pn">5</span> Hybrid Techniques</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHAT'S INSIDE ============ -->
+<section class="pad" id="modules">
+  <div class="wrap center">
+    <span class="eyebrow reveal">What's inside</span>
+    <h2 class="h2 reveal">8 Modules. <span class="cb">One Complete System.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">From mindset and visual technique to the 5 universal mechanics. Every module closes a specific gap in your playing.</p>
+  </div>
+  <div class="wrap">
+    <div class="modules-grid">
+      <div class="mod card reveal"><div class="num">01</div><div><h3>Onboarding</h3><p>How to use the system and set yourself up to get the most out of every practice session.</p></div></div>
+      <div class="mod card reveal"><div class="num">02</div><div><h3>Mindset</h3><p>Practice with intent and discipline: how to think and train like a competitive drummer.</p></div></div>
+      <div class="mod card reveal"><div class="num">03</div><div><h3>Visual Technique</h3><p>What clean playing looks like: heights, motion, and form that read to a judge.</p></div></div>
+      <div class="mod card reveal"><div class="num">04</div><div><h3>Playing Fundamentals</h3><p>The foundational mechanics every clean, consistent player is built on.</p></div></div>
+      <div class="mod card reveal"><div class="num">05</div><div><h3>The 5 Universal Mechanics</h3><p>The core movements behind every rudiment and pattern. Master these and you can play anything.</p></div></div>
+      <div class="mod card reveal"><div class="num">06</div><div><h3>Practice Methods</h3><p>How to practice so your reps turn into real, measurable progress, not just noodling.</p></div></div>
+      <div class="mod card reveal"><div class="num">07</div><div><h3>Rhythm Breakdowns</h3><p>Decode and clean complex rhythms: subdivisions, timing, and interpretation.</p></div></div>
+      <div class="mod card reveal"><div class="num">08</div><div><h3>Drum Vocabulary</h3><p>The language of the snare: grids, rudiments, hybrids, and how they connect.</p></div></div>
+    </div>
+
+    <div class="bonus reveal">
+      <h3>Plus everything you need to actually do the work <span class="tag">Included</span></h3>
+      <div class="bonus-grid">
+        <div><span class="ck">✓</span> Lifetime access to the RDM Playalongs tool (normally $9.99/mo)</div>
+        <div><span class="ck">✓</span> RDM community on Skool: post your questions, I answer them myself</div>
+        <div><span class="ck">✓</span> The Gridding &amp; Variations Cheat Sheet</div>
+        <div><span class="ck">✓</span> RDM Checklists: every rudiment &amp; skill, tracked</div>
+        <div><span class="ck">✓</span> Lifetime access: no subscription, no expiry</div>
+        <div><span class="ck">✓</span> Learn at your own pace, on your own schedule</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHO IT'S FOR ============ -->
+<section class="pad">
+  <div class="wrap center">
+    <span class="eyebrow reveal">Is this you?</span>
+    <h2 class="h2 reveal">Built for drummers who are <span class="co">serious about the line.</span></h2>
+    <div class="fit-grid reveal">
+      <div class="fit-col yes">
+        <h3>This is for you if…</h3>
+        <ul>
+          <li><span class="mk">✓</span> You know the basics (or you're past total beginner) and want to finally get clean and consistent</li>
+          <li><span class="mk">✓</span> You want to make a competitive drumline: high school, college, DCI or WGI</li>
+          <li><span class="mk">✓</span> You're tired of guessing and want a clear, step-by-step system</li>
+          <li><span class="mk">✓</span> You'll actually put in 15 focused minutes a day</li>
+        </ul>
+      </div>
+      <div class="fit-col no">
+        <h3>This isn't for you if…</h3>
+        <ul>
+          <li><span class="mk">✕</span> You've never held a pair of sticks. Start with the fundamentals first</li>
+          <li><span class="mk">✕</span> You want results handed to you without doing the reps</li>
+          <li><span class="mk">✕</span> You're looking for a quick gimmick instead of real mechanics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="pad">
+  <div class="wrap center">
+    <span class="eyebrow reveal">Where students land</span>
+    <h2 class="h2 reveal">Real drummers. <span class="cb">Real spots.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">Students who trained with Anthony's tools, course, and coaching have earned spots in some of the most competitive lines in the activity.</p>
+    <div class="results-wrap reveal">
+      <div class="results-block">
+        <p class="results-sub">Earned a spot <b>using the RDM system</b></p>
+        <div class="chips">
+          <div class="chip lead">SCV</div>
+          <div class="chip">Crossmen</div>
+          <div class="chip">Genesis ×3</div>
+          <div class="chip">Cap City</div>
+          <div class="chip">Blue Knights ×2</div>
+          <div class="chip">Guardians ×3</div>
+          <div class="chip">Memphis Blues</div>
+          <div class="chip">Vigilantes</div>
+          <div class="chip">🏆 Lone Star Drumline Champ '24</div>
+        </div>
+      </div>
+      <div class="results-block">
+        <p class="results-sub">Also <b>coached &amp; mentored</b> by Anthony</p>
+        <div class="chips">
+          <div class="chip">Carolina Crown</div>
+          <div class="chip">Cavaliers</div>
+          <div class="chip">Colts</div>
+          <div class="chip">Troopers</div>
+          <div class="chip">Pacific Crest</div>
+          <div class="chip">Rhythmic Force</div>
+          <div class="chip">Zephyrus</div>
+          <div class="chip">UT Austin Longhorn Band</div>
+          <div class="chip">UTA Maverick Drumline</div>
+          <div class="chip">Monarch</div>
+          <div class="chip">Broken City</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MID CTA ============ -->
+<section class="pad" style="padding-top:0;">
+  <div class="wrap">
+    <div class="midcta reveal">
+      <h2>The system is proven. The reps are up to you.</h2>
+      <p>Get the full RDM Method and start training with structure today. 15 minutes a day is all it takes to start.</p>
+      <a href="#pricing" class="cta orange"><span class="big">Get the RDM Method: $147</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE OFFER + THREE-TIER COMPARISON ============ -->
+<section class="pad" id="pricing">
+  <div class="wrap center">
+    <span class="eyebrow reveal">The offer</span>
+    <h2 class="h2 reveal">Everything you need to <span class="co">make the line.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">One payment. Lifetime access. No subscription.</p>
+
+    <div class="urgency reveal">⏳ Audition season doesn't wait. Every week you train with structure is a week your hands get cleaner before the line picks.</div>
+
+    <div class="offer reveal">
+      <span class="offer-flag">★ The RDM Method</span>
+      <h3>The complete self-paced system</h3>
+      <p class="sub">Everything below, yours for life:</p>
+      <ul class="stack">
+        <li><span><span class="ck">✓</span> RDM Method: full 8-module course</span><span class="v">$497</span></li>
+        <li><span><span class="ck">✓</span> <b>Lifetime</b> RDM Playalongs access <span style="font-weight:400;color:#777">(normally $9.99/mo)</span></span><span class="v">$120/yr</span></li>
+        <li><span><span class="ck">✓</span> Gridding &amp; Variations Cheat Sheet</span><span class="v">$47</span></li>
+        <li><span><span class="ck">✓</span> RDM Checklists: every rudiment &amp; skill</span><span class="v">$37</span></li>
+        <li><span><span class="ck">✓</span> RDM community: post questions, I answer them myself</span><span class="v free">Included</span></li>
+      </ul>
+      <div class="stack-total"><span>Total value</span><span><s>$701</s></span></div>
+      <div class="offer-price"><span class="now">$147</span><span class="terms">One-time payment · instant, lifetime access</span></div>
+      <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="cta orange"><span class="big">Get Instant Access: $147</span></a>
+      <div class="promise">
+        <b>🥁 The $9.99/mo Playalongs tool, yours free, for life</b>
+        <p>One payment gets you the full course <em>and</em> lifetime access to the RDM Playalongs tool everyone else pays $9.99/month for: no subscription, no expiry. Learn at your own pace and revisit anything forever. (Want me personally coaching you until you make your line? That's the Academy.)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="compare-lead reveal">Or compare all three ways to train with RDM:</p>
+    <div class="tiers">
+
+      <!-- PLAYALONGS -->
+      <div class="tier card reveal">
+        <div class="tier-name cb">RDM Playalongs</div>
+        <p class="tier-tagline">The web-based practice tool, on its own.</p>
+        <div class="tier-price">$9.99<span class="per">/mo</span></div>
+        <p class="tier-sub">Start with a $1, 7-day trial</p>
+        <ul class="tier-feats">
+          <li><span class="ck">✓</span> 500+ structured play-along exercises</li>
+          <li><span class="ck">✓</span> Sight-Reading Lab with audio feedback</li>
+          <li><span class="ck">✓</span> Advanced poly-metronome (5-lets, 7-lets, 4:3s)</li>
+          <li><span class="ck">✓</span> Practice anywhere, in your browser</li>
+        </ul>
+        <a href="https://playalongs.rudimentaldrummingmastery.com/sign-up" class="cta"><span class="big">Start 7-Day Trial: $1</span><span class="small">then $9.99/mo</span></a>
+        <p class="tier-note">No commitment. Cancel anytime</p>
+        <p class="tier-quote">"My timing improved tenfold since using the Playalongs."<br>RDM Playalongs user</p>
+      </div>
+
+      <!-- METHOD (featured) -->
+      <div class="tier card featured reveal">
+        <span class="tier-flag">★ Most Popular</span>
+        <div class="tier-name co">RDM Method</div>
+        <p class="tier-tagline">The complete self-paced system. The best place to start.</p>
+        <div class="tier-price">$147</div>
+        <p class="tier-sub">One-time payment · lifetime access</p>
+        <ul class="tier-feats">
+          <li><span class="ck">✓</span> All 8 course modules (Onboarding → Sight-Reading)</li>
+          <li><span class="ck">✓</span> <b>Lifetime</b> RDM Playalongs access (normally $9.99/mo)</li>
+          <li><span class="ck">✓</span> RDM community: post questions, I answer them myself</li>
+          <li><span class="ck">✓</span> Gridding &amp; Variations Cheat Sheet</li>
+          <li><span class="ck">✓</span> RDM Checklists for every rudiment &amp; skill</li>
+          <li><span class="ck">✓</span> Lifetime access: no expiry</li>
+        </ul>
+        <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="cta orange"><span class="big">Get Instant Access: $147</span></a>
+        <p class="tier-note">$701 value · lifetime access, no subscription</p>
+        <p class="tier-quote">"Probably one of the best investments I've ever made."<br>RDM student</p>
+      </div>
+
+      <!-- ACADEMY -->
+      <div class="tier card reveal">
+        <div class="tier-name cp">RDM Academy</div>
+        <p class="tier-tagline">Private coaching with Anthony. Limited spots.</p>
+        <div class="tier-price apply">By Application</div>
+        <p class="tier-sub">Apply to see if it's a fit</p>
+        <ul class="tier-feats">
+          <li class="head">Everything in the Method, plus:</li>
+          <li><span class="ck">✓</span> Weekly video feedback via Telegram</li>
+          <li><span class="ck">✓</span> Private 1-on-1 lessons over Google Meet</li>
+          <li><span class="ck">✓</span> Monthly group coaching calls</li>
+          <li><span class="ck">✓</span> Direct DM access to Anthony</li>
+        </ul>
+        <a href="academy-vsl.html" class="cta purple"><span class="big">Apply for the Academy</span></a>
+        <p class="tier-note urgent">For drummers chasing DCI, WGI, or a goal line. Spots are limited.</p>
+        <p class="tier-quote">"Working with Anthony, I made BKO snare. He made that possible."<br>RDM Academy student</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ANTHONY ============ -->
+<section class="pad">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo reveal">
+        <img src="pic of me.jpg" alt="Anthony Steller">
+      </div>
+      <div class="about-card card reveal">
+        <span class="eyebrow">Your coach</span>
+        <h2>Built by a working drummer, <span class="co">for serious ones.</span></h2>
+        <p>I'm Anthony Steller, a professional gigging drummer, snare instructor, and the founder of RDM. I built this system out of years of private coaching, watching the same thing happen to every dedicated drummer who came to me: huge effort, no structured direction.</p>
+        <p>So I turned the exact roadmap I use with my private students into a step-by-step course. The students who've trained with it have gone on to earn spots in SCV, Crossmen, Blue Knights, Guardians, and more.</p>
+        <p>The system works. The reps are up to you.</p>
+        <div class="about-sign">Anthony Steller<span>Founder &amp; Head Coach, RDM</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TESTIMONIALS (REAL — approved quotes from brand/testimonials.md) ============
+     Do NOT replace with placeholders. These are real, approved student quotes.
+     If you host the testimonial video, embed it here (converts better than text).
+============================================================================ -->
+<section class="pad">
+  <div class="wrap center">
+    <span class="eyebrow reveal">In their words</span>
+    <h2 class="h2 reveal">What students <span class="co">say.</span></h2>
+  </div>
+  <div class="wrap">
+    <div class="tst-grid">
+      <div class="tst card reveal"><p>"Working with Anthony, I was able to join BKO. I made snare. Honestly one of my happiest moments. I never saw myself marching with an open or world group, but Anthony made that possible."</p><div class="who"><span class="ava" style="background:#96318d"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></span><div><strong>RDM Academy Student</strong><br><small>Made BKO snare</small></div></div></div>
+      <div class="tst card reveal"><p>"I made Vanguard, which was the big one. I grew as a person through the learning, and opened my ears like crazy."</p><div class="who"><span class="ava" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span><div><strong>RDM Academy Student</strong><br><small>Made SCV</small></div></div></div>
+      <div class="tst card reveal"><p>"Finally getting a callback to Guardians is big for me. It shows I'm actually growing. I don't think I could've gotten there without Anthony."</p><div class="who"><span class="ava" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span><div><strong>RDM Academy Student</strong><br><small>Guardians callback</small></div></div></div>
+      <div class="tst card reveal"><p>"Before working with Anthony I had no idea what I was doing. Now everything all around is so much better. It even carried into being more responsible and focused in the rest of my life."</p><div class="who"><span class="ava" style="background:#96318d"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></span><div><strong>RDM Academy Student</strong><br><small>Coaching program</small></div></div></div>
+      <div class="tst card reveal"><p>"The material is insane. It feels like you'll never get through it all, but once you start it compounds exponentially, and all of a sudden you can play through so much more."</p><div class="who"><span class="ava" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span><div><strong>RDM Academy Student</strong><br><small>Coaching program</small></div></div></div>
+      <div class="tst card reveal"><p>"For the amount of money, you learn so much more than paying $30–45 a lesson. You get 24-hour access and critique on every single video. What you put in, you get out."</p><div class="who"><span class="ava" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span><div><strong>RDM Academy Student</strong><br><small>Coaching program</small></div></div></div>
+    </div>
+    <p class="editor-note reveal">Quotes from the RDM coaching-program testimonial video. Got it hosted (YouTube/Vimeo)? Send the link and I'll embed the actual video here. It converts even better than quotes.</p>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="pad" id="faq">
+  <div class="wrap faq">
+    <div class="center">
+      <span class="eyebrow reveal">FAQ</span>
+      <h2 class="h2 reveal">Questions, <span class="cb">answered.</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item card reveal">
+        <button class="faq-q">What level do I need to be to start? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">Motivated beginners through intermediate. If you know your way around a snare and you're serious about getting clean and consistent, the Method meets you where you are and builds up from the fundamentals. (Chasing a competitive DCI/WGI line with private coaching? That's the RDM Academy.)</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">How is this different from private lessons? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">Private lessons run $30–45 an hour, once a week, on your teacher's schedule. And that bill never stops. The RDM Method is a one-time $147 for the entire structured system (the same roadmap Anthony uses with private students) so you can train every day, at your own pace, and revisit anything forever. (Want live feedback too? That's the RDM Academy.)</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">What's actually inside the course? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">8 modules: Onboarding, Mindset, Visual Technique, Playing Fundamentals, the 5 Universal Mechanics, Practice Methods, Rhythm Breakdowns, and Drum Vocabulary. You also get lifetime access to the RDM Playalongs practice tool, the free RDM Skool community, the Gridding &amp; Variations Cheat Sheet, and the RDM Checklists covering every rudiment and skill.</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">How is the Academy different from the Method? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">With the <b>Method</b>, you work through the system yourself, and if you get stuck, you post in the RDM community and I answer it. Think "ask the room." The <b>Academy</b> is where I work with you <em>privately, 1-on-1</em>: daily video feedback, private lessons over Google Meet, group coaching calls, mock auditions, and direct access to me until you make your goal line. <b>Method = ask the room. Academy = I'm in your corner every day.</b> It's application-only with limited spots.</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">Do I get lifetime access? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">Yes. The RDM Method is a one-time payment that gets you lifetime access to the course <em>and</em> the RDM Playalongs tool: no subscription, no renewals, no expiry date. Buy once, keep it forever.</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">How fast will I see results? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">If you put in 15 focused minutes a day, most students feel their hands getting cleaner and more consistent within the first couple of weeks. It's self-paced, so the more reps you put in, the faster it compounds, but you don't need to add hours to your day to see real change.</div></div>
+      </div>
+      <div class="faq-item card reveal">
+        <button class="faq-q">What if I do the work and it doesn't click? <span class="faq-icon">+</span></button>
+        <div class="faq-a"><div class="faq-a-in">The Method is a self-paced course, so there's no cash refund. It's instant, lifetime digital access and it's yours forever. But you're not on your own: you get the free RDM Skool community, and if you want me personally working with you until you make your goal line, that's exactly what the RDM Academy is for.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
+<section class="final wrap">
+  <div class="final-card reveal">
+    <h2>Your spot on the line starts with <span class="co">one decision.</span></h2>
+    <p>You've been guessing long enough. Get the full system today, train 15 minutes a day, and walk into your next audition ready, or apply for the Academy if you're chasing a DCI or WGI line.</p>
+    <div class="row">
+      <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="cta orange"><span class="big">Get the RDM Method: $147</span></a>
+      <a href="academy-vsl.html" class="cta solid-tan"><span class="big">Apply for the Academy</span></a>
+    </div>
+    <span class="cta-note" style="color:rgba(255,240,211,.65)">One-time payment · Lifetime access · Yours for life, no subscription</span>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM" class="footer-logo">
+  <p class="footer-text">© 2026 RDM: Rudimental Drumming Mastery · Anthony Steller. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06">Get the Method</a>
+    <a href="https://playalongs.rudimentaldrummingmastery.com/sign-up">RDM Playalongs</a>
+    <a href="academy-vsl.html">RDM Academy</a>
+  </div>
+</footer>
+
+</div><!-- /.site -->
+
+<script>
+/* ---- Scroll reveal ---- */
+(function(){
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) { els.forEach(function(e){e.classList.add('in');}); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){
+    var sibs = Array.prototype.slice.call(e.parentNode.children).filter(function(c){return c.classList.contains('reveal');});
+    var i = sibs.indexOf(e);
+    if (i > 0) e.style.transitionDelay = Math.min(i*0.07, 0.42) + 's';
+    io.observe(e);
+  });
+})();
+
+/* ---- FAQ accordion ---- */
+document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var item = btn.closest('.faq-item');
+    var ans = item.querySelector('.faq-a');
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(o){
+      o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null;
+    });
+    if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+  });
+});
+</script>
+</body>
+</html>
