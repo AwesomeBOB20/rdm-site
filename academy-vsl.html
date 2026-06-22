@@ -185,7 +185,15 @@ footer{border-top:var(--b);padding:34px 22px;text-align:center;background:rgba(0
 @media (max-width:680px){
   nav{padding:10px 16px;} .nav-logo{height:34px;} .nav-cta{font-size:.78rem;padding:8px 13px;}
   .pad{padding:54px 0;} .hero{padding:46px 0 46px;}
-  .loop{grid-template-columns:1fr;} .logos img{height:44px;}
+  .loop{grid-template-columns:1fr;}
+}
+/* Proof logo bar: keep rows balanced below desktop (no lonely orphan) */
+@media (max-width:1099px){
+  .proof .logos{max-width:490px;margin-left:auto;margin-right:auto;gap:16px;}
+}
+@media (max-width:560px){
+  .proof .logos{max-width:320px;gap:12px;}
+  .proof .logo-badge{width:66px;height:66px;padding:11px;}
   .final-card{padding:38px 22px;}
 }
 </style>

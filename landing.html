@@ -342,6 +342,14 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
   .cta .big{font-size:1.05rem;}
   .tier-price{font-size:2.3rem;}
 }
+/* Proof logo bar: keep rows balanced below desktop (no lonely orphan) */
+@media (max-width:1099px){
+  .proof .logos{max-width:490px;margin-left:auto;margin-right:auto;gap:16px;}
+}
+@media (max-width:560px){
+  .proof .logos{max-width:320px;gap:12px;}
+  .proof .logo-badge{width:66px;height:66px;padding:11px;}
+}
 </style>
 </head>
 <body>
