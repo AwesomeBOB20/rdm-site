@@ -159,6 +159,19 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
         </div>
       </section>
 
+      <!-- ===== DOWNSELL (not a fit for the Academy right now) ===== -->
+      <section class="screen" id="screen-downsell">
+        <div class="result-card">
+          <span class="result-flag">Real talk</span>
+          <h2>The Academy might not be your move <span style="color:var(--purple-deep)">right now.</span></h2>
+          <p>Thanks for being straight with me, <span id="ds-name">drummer</span>. <span id="ds-reason"></span></p>
+          <p>Here's the good news: you do not need 1-on-1 coaching to start getting better. The exact system I teach inside the Academy is in the <b>RDM Method</b>, and you can start today for a fraction of the cost.</p>
+          <a href="landing.html" class="btn full">Start with the RDM Method ($147) &rarr;</a>
+          <p style="text-align:center;margin:14px 0 0;font-size:.96rem;color:#444;">Just want to train your hands daily? Try <a href="https://playalongs.rudimentaldrummingmastery.com/sign-up" style="color:var(--purple-deep);font-weight:700;">RDM Playalongs ($1 trial)</a>.</p>
+          <p style="margin-top:16px;font-size:.9rem;color:#555;">When you're ready for me to work with you 1-on-1, the Academy will be here.</p>
+        </div>
+      </section>
+
     </div>
   </div>
 </div>
@@ -381,9 +394,34 @@ function prevStep(){
 
 function finishApp(){
   document.getElementById('progress').classList.add('hide');
-  document.getElementById('book-name').textContent = (data.firstName || 'drummer');
-  saveApplication();
-  show('screen-book');
+  saveApplication(); // always save the lead, qualified or not
+  if(isQualified()){
+    document.getElementById('book-name').textContent = (data.firstName || 'drummer');
+    show('screen-book');
+  } else {
+    showDownsell();
+  }
+}
+
+// The Academy ($2k, intense 12 weeks) isn't a fit right now if the money or the
+// time commitment clearly isn't there. Everyone else books a call.
+// (Edit these two lines to loosen/tighten who gets routed to the downsell.)
+function isQualified(){
+  if(data.finances === "Not financially ready right now") return false;
+  if(data.hours === "Less than 3 hours") return false;
+  return true;
+}
+
+function showDownsell(){
+  document.getElementById('ds-name').textContent = (data.firstName || 'drummer');
+  let reason;
+  if(data.finances === "Not financially ready right now"){
+    reason = "The Academy is a $2,000 investment, and that's a real commitment for any family. Zero shame in that.";
+  } else {
+    reason = "The Academy is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
+  }
+  document.getElementById('ds-reason').textContent = reason;
+  show('screen-downsell');
 }
 
 // Format raw input into a US phone: (123) 456-7890, capped at 10 digits.
