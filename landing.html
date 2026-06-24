@@ -131,7 +131,8 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
 /* ---------- PROBLEM ---------- */
 .problem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:46px;}
 .pcard{padding:24px 22px;}
-.pcard .ic{font-size:1.9rem;display:block;margin-bottom:12px;}
+.pcard .ic{display:block;margin-bottom:12px;color:var(--purple);line-height:1;}
+.pcard .ic svg{width:36px;height:36px;display:inline-block;vertical-align:middle;}
 .pcard h3{font-size:1.08rem;font-weight:700;margin-bottom:8px;color:var(--purple);}
 .pcard p{color:#222;font-size:.95rem;}
 
@@ -424,10 +425,10 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
     <h2 class="h2 reveal">You're putting in the hours.<br>So why does it <span class="co">feel like nothing's changing?</span></h2>
     <p class="lead reveal" style="margin-top:18px;">You sit down to practice and just… noodle. No plan, no direction, no way to know if you're actually getting cleaner or just repeating the same mistakes faster. Months go by, the calluses build, but the playing plateaus. And every audition season you wonder if this is as good as it gets. The problem was never your work ethic. It's that nobody ever handed you a <b>system</b>.</p>
     <div class="problem-grid">
-      <div class="pcard card reveal"><span class="ic">🎯</span><h3>No plan to follow</h3><p>You don't know what to work on, in what order, or how to tell if it's actually working.</p></div>
-      <div class="pcard card reveal"><span class="ic">🌀</span><h3>The vague-feedback trap</h3><p>"Relax." "Turn your wrist more." "Don't squeeze." You know <em>what</em> to do, but nobody ever shows you <em>how</em>.</p></div>
-      <div class="pcard card reveal"><span class="ic">👂</span><h3>You can't hear it yet</h3><p>You can't tell clean from dirty in your own playing, so the ticks pile up exactly where you can't catch them.</p></div>
-      <div class="pcard card reveal"><span class="ic">🔁</span><h3>Stuck on a plateau</h3><p>Tons of reps, zero measurable growth, and no idea what's actually holding you back.</p></div>
+      <div class="pcard card reveal"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg></span><h3>No plan to follow</h3><p>You don't know what to work on, in what order, or how to tell if it's actually working.</p></div>
+      <div class="pcard card reveal"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.6 7.3L3.5 20.5l1.7-4.9A8.4 8.4 0 1 1 21 11.5z"/><path d="M9.7 9.2a2.3 2.3 0 1 1 3.4 2.2c-.7.4-1.1.9-1.1 1.7"/><circle cx="12" cy="16.2" r=".7" fill="currentColor" stroke="none"/></svg></span><h3>The vague-feedback trap</h3><p>"Relax." "Turn your wrist more." "Don't squeeze." You know <em>what</em> to do, but nobody ever shows you <em>how</em>.</p></div>
+      <div class="pcard card reveal"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h3l5-4v14l-5-4H4z"/><path d="M16 9.5a3.5 3.5 0 0 1 0 5"/><path d="M18.5 7a7 7 0 0 1 0 10"/></svg></span><h3>You can't hear it yet</h3><p>You can't tell clean from dirty in your own playing, so the ticks pile up exactly where you can't catch them.</p></div>
+      <div class="pcard card reveal"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1.5l4 4-4 4"/><path d="M3 11.5v-1a4 4 0 0 1 4-4h14"/><path d="M7 22.5l-4-4 4-4"/><path d="M21 12.5v1a4 4 0 0 1-4 4H3"/></svg></span><h3>Stuck on a plateau</h3><p>Tons of reps, zero measurable growth, and no idea what's actually holding you back.</p></div>
     </div>
   </div>
 </section>
@@ -533,7 +534,7 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
       <div class="results-block">
         <p class="results-sub">Earned a spot <b>using the RDM system</b></p>
         <div class="chips">
-          <div class="chip lead">SCV</div>
+          <div class="chip">SCV</div>
           <div class="chip">Crossmen</div>
           <div class="chip">Genesis ×3</div>
           <div class="chip">Cap City</div>
@@ -541,7 +542,7 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
           <div class="chip">Guardians ×3</div>
           <div class="chip">Memphis Blues</div>
           <div class="chip">Vigilantes</div>
-          <div class="chip">🏆 Lone Star Drumline Champ '24</div>
+          <div class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-2px;margin-right:6px"><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4.5v1.5A3 3 0 0 0 7 9.4"/><path d="M17 5h2.5v1.5A3 3 0 0 1 17 9.4"/><path d="M12 14v3"/><path d="M9 21h6"/><path d="M9.5 21c0-1.6 1-3 2.5-3s2.5 1.4 2.5 3"/></svg>Lone Star Drumline Champ '24</div>
         </div>
       </div>
       <div class="results-block">
@@ -599,7 +600,7 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
       <div class="offer-price"><span class="now">$147</span><span class="terms">One-time payment · instant, lifetime access</span></div>
       <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06" class="cta orange"><span class="big">Get Instant Access: $147</span></a>
       <div class="promise">
-        <b>🥁 The $9.99/mo Playalongs tool, yours free, for life</b>
+        <b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-2px;margin-right:6px"><ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v6c0 1.66 3.58 3 8 3s8-1.34 8-3V8"/><path d="M13.5 9.5l5.5 4.5"/><path d="M16 8l4-4"/></svg>The $9.99/mo Playalongs tool, yours free, for life</b>
         <p>One payment gets you the full course <em>and</em> lifetime access to the RDM Playalongs tool everyone else pays $9.99/month for: no subscription, no expiry. Learn at your own pace and revisit anything forever. (Want me personally coaching you until you make your line? That's the Academy.)</p>
       </div>
     </div>
@@ -621,7 +622,7 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
           <li><span class="ck">✓</span> Advanced poly-metronome (5-lets, 7-lets, 4:3s)</li>
           <li><span class="ck">✓</span> Practice anywhere, in your browser</li>
         </ul>
-        <a href="https://playalongs.rudimentaldrummingmastery.com/homepage" class="cta"><span class="big">Start 7-Day Trial: $1</span><span class="small">then $9.99/mo</span></a>
+        <a href="https://playalongs.rudimentaldrummingmastery.com/start" class="cta"><span class="big">Start 7-Day Trial: $1</span><span class="small">then $9.99/mo</span></a>
         <p class="tier-note">No commitment. Cancel anytime</p>
         <p class="tier-quote">"My timing improved tenfold since using the Playalongs."<br>RDM Playalongs user</p>
       </div>
@@ -768,7 +769,7 @@ footer{border-top:var(--b);padding:38px 22px;text-align:center;background:rgba(0
   <p class="footer-text">© 2026 RDM: Rudimental Drumming Mastery · Anthony Steller. All rights reserved.</p>
   <div class="footer-links">
     <a href="https://buy.stripe.com/6oUfZgdsv0Nga0c0w81Jm06">Get the Method</a>
-    <a href="https://playalongs.rudimentaldrummingmastery.com/homepage">RDM Playalongs</a>
+    <a href="https://playalongs.rudimentaldrummingmastery.com/start">RDM Playalongs</a>
     <a href="academy-vsl.html">RDM Academy</a>
   </div>
 </footer>

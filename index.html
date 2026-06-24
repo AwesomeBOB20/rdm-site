@@ -111,6 +111,41 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   .result-card,.shell{padding-left:16px;padding-right:16px;}
   .result-card{padding:26px 22px;}
 }
+
+/* ===== product picker panels (matches RDM Method landing tiers) ===== */
+.prodbreak{position:relative;left:50%;transform:translateX(-50%);width:92vw;max-width:1180px;text-align:center;}
+.prodbreak .picker-sub{color:rgba(255,255,255,.82);font-size:1rem;margin:0 auto 30px;max-width:560px;}
+.tiers-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch;text-align:left;margin-top:34px;}
+.tier{display:flex;flex-direction:column;position:relative;padding:30px 24px;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);}
+.tier.featured{transform:translateY(-8px);box-shadow:8px 8px 0 var(--orange);}
+.tier-flag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--orange);color:#fff;border:2px solid #000;border-radius:999px;font-size:.67rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 13px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.tier-flag.bestval{background:var(--orange-deep);}
+.tier.t-blue{border-color:var(--blue);box-shadow:6px 6px 0 var(--blue-deep);}
+.tier.t-orange{border-color:var(--orange);box-shadow:6px 6px 0 var(--orange-deep);}
+.tier.t-purple{border-color:var(--purple);box-shadow:6px 6px 0 var(--purple-deep);}
+.t-orange .tier-feats li .ck{color:var(--orange-deep);}
+.t-purple .tier-feats li .ck{color:var(--purple);}
+.tier-name{font-size:1.22rem;font-weight:700;margin-bottom:4px;}
+.tn-pa{color:var(--blue-deep);} .tn-method{color:var(--orange-deep);} .tn-bundle{color:var(--orange-deep);} .tn-academy{color:var(--purple);}
+.tier-tagline{color:#444;font-size:.88rem;min-height:52px;}
+.tier-price{font-size:2.4rem;font-weight:700;line-height:1;margin:14px 0 2px;color:#000;}
+.tier-price .per{font-size:.9rem;font-weight:500;color:#555;}
+.tier-price.apply{font-size:1.5rem;color:var(--purple);}
+.tier-sub{font-size:.82rem;color:#555;min-height:20px;margin-bottom:18px;}
+.tier-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px;flex:1;}
+.tier-feats li{display:flex;gap:9px;align-items:flex-start;font-size:.9rem;color:#222;}
+.tier-feats li .ck{color:var(--blue-deep);font-weight:700;flex:0 0 auto;}
+.tier-feats li.head{color:#000;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;}
+.tier .cta{width:100%;}
+.cta{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);padding:13px 18px;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
+.cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.cta.orange{background:var(--orange);} .cta.purple{background:var(--purple);} .cta.blue{background:var(--blue-deep);}
+.cta .big{display:block;font-size:1.02rem;font-weight:700;line-height:1.15;}
+.cta .small{display:block;font-size:.82rem;font-weight:400;color:rgba(255,255,255,.92);margin-top:4px;}
+.tier-note{font-size:.8rem;color:#555;margin-top:11px;text-align:center;}
+.tier-note.urgent{color:#b5430f;font-weight:600;}
+@media (max-width:980px){.tiers-4{grid-template-columns:repeat(2,1fr);gap:16px;}.tier.featured{transform:none;}.prodbreak{width:94vw;}}
+@media (max-width:560px){.tiers-4{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto;}.tier-tagline{min-height:0;}}
 </style>
 </head>
 <body>
@@ -139,15 +174,82 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 
       <!-- ===== "I KNOW WHAT I WANT" QUICK PICKER ===== -->
       <section class="screen" id="screen-q0picker">
+        <div class="prodbreak">
         <span class="eyebrow">Pick your product</span>
         <h1 class="q-title">Jump straight to it.</h1>
-        <div class="opts">
-          <a class="opt" href="https://playalongs.rudimentaldrummingmastery.com/homepage"><span class="dot"></span> RDM Playalongs: the practice tool ($1 trial)</a>
-          <a class="opt" href="landing.html"><span class="dot"></span> RDM Method: the full course ($147)</a>
-          <a class="opt" href="https://buy.stripe.com/9B69AS88beE68W8ceQ1Jm07"><span class="dot"></span> RDM Method + 3 Lessons ($247)</a>
-          <a class="opt" href="academy-vsl.html"><span class="dot"></span> RDM Academy: private coaching (apply)</a>
+        <p class="picker-sub">Four ways to train with RDM. Pick the one that fits where you're at.</p>
+        <div class="tiers-4">
+
+          <!-- PLAYALONGS -->
+          <div class="tier t-blue">
+            <div class="tier-name tn-pa">RDM Playalongs</div>
+            <p class="tier-tagline">The web practice tool. Get clean, fast, on your own time.</p>
+            <div class="tier-price">$9.99<span class="per">/mo</span></div>
+            <p class="tier-sub">Start with a $1, 7-day trial</p>
+            <ul class="tier-feats">
+              <li><span class="ck">&#10003;</span> 500+ looping play-along exercises</li>
+              <li><span class="ck">&#10003;</span> Sight-Reading Lab</li>
+              <li><span class="ck">&#10003;</span> Advanced marching metronome</li>
+              <li><span class="ck">&#10003;</span> Practice anywhere, in your browser</li>
+            </ul>
+            <a href="https://playalongs.rudimentaldrummingmastery.com/start" class="cta blue"><span class="big">Start 7-Day Trial: $1</span><span class="small">then $9.99/mo</span></a>
+            <p class="tier-note">No commitment. Cancel anytime.</p>
+          </div>
+
+          <!-- METHOD (featured) -->
+          <div class="tier featured t-orange">
+            <span class="tier-flag">&#9733; Most Popular</span>
+            <div class="tier-name tn-method">RDM Method</div>
+            <p class="tier-tagline">The complete self-paced course. The best place to start.</p>
+            <div class="tier-price">$147</div>
+            <p class="tier-sub">One-time &middot; lifetime access</p>
+            <ul class="tier-feats">
+              <li><span class="ck">&#10003;</span> All 8 course modules</li>
+              <li><span class="ck">&#10003;</span> <b>Lifetime</b> Playalongs access ($9.99/mo value)</li>
+              <li><span class="ck">&#10003;</span> Community: post questions, I answer them</li>
+              <li><span class="ck">&#10003;</span> Cheat sheet &amp; checklists</li>
+            </ul>
+            <a href="landing.html" class="cta orange"><span class="big">Get the Method: $147</span></a>
+            <p class="tier-note">$701 value &middot; no subscription</p>
+          </div>
+
+          <!-- METHOD + 3 LESSONS -->
+          <div class="tier t-orange">
+            <span class="tier-flag bestval">Best Value</span>
+            <div class="tier-name tn-bundle">Method + 3 Lessons</div>
+            <p class="tier-tagline">The full course, plus my eyes on your hands.</p>
+            <div class="tier-price">$247</div>
+            <p class="tier-sub">One-time &middot; lifetime course access</p>
+            <ul class="tier-feats">
+              <li class="head">Everything in the Method, plus:</li>
+              <li><span class="ck">&#10003;</span> 3 private 1-on-1 lessons with Anthony</li>
+              <li><span class="ck">&#10003;</span> Personal feedback on your reps</li>
+              <li><span class="ck">&#10003;</span> A plan built around your goals</li>
+            </ul>
+            <a href="https://buy.stripe.com/9B69AS88beE68W8ceQ1Jm07" class="cta orange"><span class="big">Get Method + Lessons: $247</span></a>
+            <p class="tier-note">Course + 3 lessons</p>
+          </div>
+
+          <!-- ACADEMY -->
+          <div class="tier t-purple">
+            <div class="tier-name tn-academy">RDM Academy</div>
+            <p class="tier-tagline">Private coaching with Anthony. Limited spots.</p>
+            <div class="tier-price apply">By Application</div>
+            <p class="tier-sub">Apply to see if it's a fit</p>
+            <ul class="tier-feats">
+              <li class="head">Everything above, plus:</li>
+              <li><span class="ck">&#10003;</span> Weekly video feedback</li>
+              <li><span class="ck">&#10003;</span> Ongoing 1-on-1 coaching</li>
+              <li><span class="ck">&#10003;</span> Group coaching calls</li>
+              <li><span class="ck">&#10003;</span> Direct DM access to Anthony</li>
+            </ul>
+            <a href="academy-vsl.html" class="cta purple"><span class="big">Apply for the Academy</span></a>
+            <p class="tier-note urgent">For drummers chasing a goal line.</p>
+          </div>
+
         </div>
-        <div class="row"><button class="back" onclick="show('screen-intro')">&larr; Back</button></div>
+        <div class="row" style="justify-content:center;margin-top:28px;"><button class="back" onclick="show('screen-intro')">&larr; Back</button></div>
+        </div>
       </section>
 
       <!-- ===== QUESTIONS render here ===== -->
@@ -261,7 +363,7 @@ const RESULTS = {
     why:"You don't have a tool that forces good reps and trains your ear to hear clean vs. dirty. That's exactly the gap.",
     next:"Use the RDM Playalongs tool every day. It'll make you cleaner, more accurate, and sharpen your ears, no matter what.",
     cta:"Start the $1 Trial",
-    url:"https://playalongs.rudimentaldrummingmastery.com/homepage"
+    url:"https://playalongs.rudimentaldrummingmastery.com/start"
   },
   M: {
     flag:"Your path: the system",
