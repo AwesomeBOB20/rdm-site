@@ -138,7 +138,9 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .faq-item{overflow:hidden;padding:0;}
 .faq-q{width:100%;text-align:left;background:none;border:none;color:#000;cursor:pointer;padding:20px 24px;
   font-size:1.04rem;font-weight:700;font-family:inherit;display:flex;justify-content:space-between;align-items:center;gap:16px;}
-.faq-icon{flex:0 0 auto;font-size:1.6rem;font-weight:400;color:var(--purple);transition:transform .25s;line-height:1;}
+.faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue-deep);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
+  box-shadow:2px 2px 0 rgba(0,0,0,.25);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
 .faq-a-in{padding:0 24px 22px;color:#333;font-size:.97rem;}
@@ -150,6 +152,21 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .final-card p{color:rgba(255,240,211,.85);max-width:560px;margin:0 auto 28px;}
 .spots{display:inline-flex;gap:9px;align-items:center;background:rgba(254,100,41,.16);border:2px solid var(--orange);
   border-radius:12px;padding:10px 18px;color:#fff;font-size:.9rem;font-weight:600;margin-bottom:26px;}
+
+/* Mobile sticky apply bar (mirrors the Method landing bar) */
+.mobile-buybar{display:none;text-decoration:none;transition:transform .25s ease;}
+.mobile-buybar.hide{transform:translateY(130%);}
+@media (max-width:680px){
+  .mobile-buybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;
+    align-items:center;justify-content:space-between;gap:12px;
+    padding:10px 14px;background:var(--purple);border-top:var(--b);box-shadow:0 -6px 18px rgba(0,0,0,.4);}
+  .mb-price{display:flex;flex-direction:column;line-height:1.15;}
+  .mb-price b{font-size:1rem;color:var(--tan);font-weight:700;}
+  .mb-price>span{font-size:.7rem;color:rgba(255,255,255,.65);}
+  .mb-btn{background:var(--orange);color:#fff;border:var(--b);border-radius:14px;
+    padding:11px 18px;font-weight:700;font-size:.95rem;white-space:nowrap;
+    text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:3px 3px 0 rgba(0,0,0,.3);}
+}
 
 /* FOOTER (matches the landing-page footer) */
 .site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
@@ -402,19 +419,19 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
     <div class="faq-list">
       <div class="faq-item card reveal">
         <button class="faq-q">How much does the Academy cost? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-in">We cover investment and payment options (pay-in-full, financing, or a plan) on the call, once we've confirmed it's actually a fit. The call is free and there's no obligation. I only make an offer if I genuinely think I can get you to your goal.</div></div>
+        <div class="faq-a"><div class="faq-a-in">We cover investment and payment options (<b>pay-in-full, financing, or a plan</b>) on the call, once we've confirmed it's actually a fit. <b>The call is free and there's no obligation.</b> I only make an offer if I genuinely think <b>I can get you to your goal</b>.</div></div>
       </div>
       <div class="faq-item card reveal">
         <button class="faq-q">Who is this for? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-in">Marching snare drummers (roughly 15–20) who are serious about making a DCI, WGI, college, or competitive high-school line, and who will communicate and show up. It's not for people who want results without doing the reps.</div></div>
+        <div class="faq-a"><div class="faq-a-in"><b>Marching snare drummers</b> (roughly 15–20) who are serious about making a <b>DCI, WGI, college, or competitive high-school line</b>, and who will communicate and show up. It's <b>not for people who want results without doing the reps</b>.</div></div>
       </div>
       <div class="faq-item card reveal">
         <button class="faq-q"><span>How is this different from <b style="color:var(--orange)">The RDM Method?</b></span> <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-in">The Method is the self-paced course you work through alone. The Academy is private coaching. It includes the course <em>plus</em> daily feedback on your hands, 1-on-1 lessons, group calls, mock auditions, and the two guarantees above. It's application-only with limited spots.</div></div>
+        <div class="faq-a"><div class="faq-a-in">The Method is the <b>self-paced course you work through alone</b>. The Academy is <b>private coaching</b>. It includes the course <em>plus</em> <b>daily feedback on your hands, 1-on-1 lessons, group calls, mock auditions</b>, and the two guarantees above. It's <b>application-only with limited spots</b>.</div></div>
       </div>
       <div class="faq-item card reveal">
         <button class="faq-q">What's the weekly commitment? <span class="faq-icon">+</span></button>
-        <div class="faq-a"><div class="faq-a-in">It's a 12-week structured program: sight-read a new page daily, write a grid daily, send videos at least 4 days a week, and a longer "best attempt" of your current etude on Sundays. The students who run the most feedback cycles improve the fastest.</div></div>
+        <div class="faq-a"><div class="faq-a-in">It's a <b>12-week structured program</b>: <b>sight-read a new page daily</b>, <b>write a grid daily</b>, <b>send videos at least 4 days a week</b>, and a longer "best attempt" of your current etude on Sundays. <b>The students who run the most feedback cycles improve the fastest.</b></div></div>
       </div>
     </div>
   </div>
@@ -462,6 +479,11 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   <div class="foot-pill">Copyright © 2026 Rudimental Drumming Mastery | <a href="https://playalongs.rudimentaldrummingmastery.com/privacy-policy">Privacy Policy</a></div>
 </footer>
 
+<a class="mobile-buybar" href="academy-application.html" aria-label="Apply for the RDM Academy and book your call">
+  <span class="mb-price"><b>The RDM Academy</b><span>Free 1-on-1 call · limited spots</span></span>
+  <span class="mb-btn">Apply Now</span>
+</a>
+
 </div><!-- /.site -->
 
 <script>
@@ -496,6 +518,19 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
     if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
   });
 });
+/* Mobile apply bar: hide once the final CTA or footer is on screen */
+(function(){
+  var bar = document.querySelector('.mobile-buybar');
+  if (!bar || !('IntersectionObserver' in window)) return;
+  var watch = document.querySelectorAll('.final, .site-footer');
+  if (!watch.length) return;
+  var visible = new Set();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ en.isIntersecting ? visible.add(en.target) : visible.delete(en.target); });
+    bar.classList.toggle('hide', visible.size > 0);
+  }, {threshold:0.05});
+  watch.forEach(function(w){ io.observe(w); });
+})();
 </script>
 
 <!-- Cal.com element-click embed -->
