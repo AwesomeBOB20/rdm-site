@@ -115,7 +115,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 /* ===== product picker panels (matches RDM Method landing tiers) ===== */
 .prodbreak{position:relative;left:50%;transform:translateX(-50%);width:92vw;max-width:1180px;text-align:center;}
 .prodbreak .picker-sub{color:rgba(255,255,255,.82);font-size:1rem;margin:0 auto 30px;max-width:560px;}
-.tiers-4{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch;text-align:left;margin-top:34px;}
+.tiers-4{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;text-align:left;margin-top:34px;}
 .tier{display:flex;flex-direction:column;position:relative;padding:30px 24px;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);}
 .tier.featured{transform:translateY(-8px);box-shadow:8px 8px 0 var(--orange);}
 .tier-flag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--orange);color:#fff;border:2px solid #000;border-radius:999px;font-size:.67rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 13px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
@@ -211,23 +211,6 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
             </ul>
             <a href="landing.html" class="cta orange"><span class="big">Get the Method: $147</span></a>
             <p class="tier-note">$701 value &middot; no subscription</p>
-          </div>
-
-          <!-- METHOD + 3 LESSONS -->
-          <div class="tier t-orange">
-            <span class="tier-flag bestval">Best Value</span>
-            <div class="tier-name tn-bundle">Method + 3 Lessons</div>
-            <p class="tier-tagline">The full course, plus my eyes on your hands.</p>
-            <div class="tier-price">$247</div>
-            <p class="tier-sub">One-time &middot; lifetime course access</p>
-            <ul class="tier-feats">
-              <li class="head">Everything in the Method, plus:</li>
-              <li><span class="ck">&#10003;</span> 3 private 1-on-1 lessons with Anthony</li>
-              <li><span class="ck">&#10003;</span> Personal feedback on your reps</li>
-              <li><span class="ck">&#10003;</span> A plan built around your goals</li>
-            </ul>
-            <a href="https://buy.stripe.com/9B69AS88beE68W8ceQ1Jm07" class="cta orange"><span class="big">Get Method + Lessons: $247</span></a>
-            <p class="tier-note">Course + 3 lessons</p>
           </div>
 
           <!-- ACADEMY -->
@@ -503,15 +486,16 @@ function saveLead(firstName, email){
 function winner(){
   // Academy only competes if Q1 = "Make a specific competitive line" (option index 2).
   const academyEligible = answers[0] === 2;
+  score.M += score.L; score.L = 0;
   // Overall strongest signal across all four products (tie-break A > L > M > P).
   let top = 'P', topVal = -1;
-  ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
+  ['A','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
   // If their strongest pull is full coaching: Academy if they're chasing a line,
   // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
-  if(top === 'A') return academyEligible ? 'A' : 'L';
+  if(top === 'A') return academyEligible ? 'A' : 'M';
   // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
   let best = 'P', bestVal = -1;
-  ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
+  ['M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
   return best;
 }
 

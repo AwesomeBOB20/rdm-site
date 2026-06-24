@@ -167,7 +167,7 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
 .bonus-grid .ck{color:var(--tan);font-weight:700;flex:0 0 auto;}
 
 /* ---------- TIERS ---------- */
-.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:50px;align-items:stretch;}
+.tiers{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:50px;align-items:stretch;max-width:760px;margin-left:auto;margin-right:auto;}
 .tier{display:flex;flex-direction:column;padding:30px 26px;position:relative;}
 .tier.featured{background:var(--tan);transform:translateY(-8px);box-shadow:8px 8px 0 var(--orange);}
 .tier-flag{position:absolute;top:-16px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;
@@ -316,7 +316,7 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
 /* ---------- RESPONSIVE ---------- */
 /* Tablet & small laptop */
 @media (max-width:980px){
-  .wrap{padding:0 20px;}
+  .wrap{padding-left:20px;padding-right:20px;}
   .pad{padding:72px 0;}
   .problem-grid{grid-template-columns:repeat(2,1fr);}
   .sol-grid,.about-grid{grid-template-columns:1fr;}
@@ -333,7 +333,7 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
   .nav-logo{height:34px;}
   .nav-cta{font-size:.78rem;padding:8px 13px;}
   .pad{padding:58px 0;}
-  .hero{padding:54px 0 56px;}
+  .hero{padding:54px 22px 56px;}
   .problem-grid,.bonus-grid{grid-template-columns:1fr;}
   .logos{gap:22px 30px;}
   .logos img{height:46px;}
@@ -613,25 +613,8 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
   </div>
 
   <div class="wrap">
-    <p class="compare-lead reveal">Or compare all three ways to train with RDM:</p>
+    <p class="compare-lead reveal">Get the Method solo, or add private 1-on-1 lessons:</p>
     <div class="tiers">
-
-      <!-- PLAYALONGS -->
-      <div class="tier card reveal">
-        <div class="tier-name cb">RDM Playalongs</div>
-        <p class="tier-tagline">The web-based practice tool, on its own.</p>
-        <div class="tier-price">$9.99<span class="per">/mo</span></div>
-        <p class="tier-sub">Start with a $1, 7-day trial</p>
-        <ul class="tier-feats">
-          <li><span class="ck">✓</span> 500+ structured play-along exercises</li>
-          <li><span class="ck">✓</span> Sight-Reading Lab with audio feedback</li>
-          <li><span class="ck">✓</span> Advanced poly-metronome (5-lets, 7-lets, 4:3s)</li>
-          <li><span class="ck">✓</span> Practice anywhere, in your browser</li>
-        </ul>
-        <a href="https://playalongs.rudimentaldrummingmastery.com/start" class="cta"><span class="big">Start 7-Day Trial: $1</span><span class="small">then $9.99/mo</span></a>
-        <p class="tier-note">No commitment. Cancel anytime</p>
-        <p class="tier-quote">"My timing improved tenfold since using the Playalongs."<br>RDM Playalongs user</p>
-      </div>
 
       <!-- METHOD (featured) -->
       <div class="tier card featured reveal">
@@ -653,22 +636,21 @@ nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr aut
         <p class="tier-quote">"Probably one of the best investments I've ever made."<br>RDM student</p>
       </div>
 
-      <!-- ACADEMY -->
+      <!-- METHOD + 3 LESSONS -->
       <div class="tier card reveal">
-        <div class="tier-name cp">RDM Academy</div>
-        <p class="tier-tagline">Private coaching with Anthony. Limited spots.</p>
-        <div class="tier-price apply">By Application</div>
-        <p class="tier-sub">Apply to see if it's a fit</p>
+        <div class="tier-name co">Method + 3 Lessons</div>
+        <p class="tier-tagline">The full course, plus my eyes on your hands directly.</p>
+        <div class="tier-price">$247</div>
+        <p class="tier-sub">One-time payment · lifetime course access</p>
         <ul class="tier-feats">
           <li class="head">Everything in the Method, plus:</li>
-          <li><span class="ck">✓</span> Weekly video feedback via Telegram</li>
-          <li><span class="ck">✓</span> Private 1-on-1 lessons over Google Meet</li>
-          <li><span class="ck">✓</span> Monthly group coaching calls</li>
-          <li><span class="ck">✓</span> Direct DM access to Anthony</li>
+          <li><span class="ck">✓</span> 3 private 1-on-1 lessons with Anthony</li>
+          <li><span class="ck">✓</span> Personal feedback on your reps and technique</li>
+          <li><span class="ck">✓</span> A practice plan built around your goals</li>
         </ul>
-        <a href="academy-vsl.html" class="cta purple"><span class="big">Apply for the Academy</span></a>
-        <p class="tier-note urgent">For drummers chasing DCI, WGI, or a goal line. Spots are limited.</p>
-        <p class="tier-quote">"Working with Anthony, I made BKO snare. He made that possible."<br>RDM Academy student</p>
+        <a href="https://buy.stripe.com/9B69AS88beE68W8ceQ1Jm07" class="cta purple"><span class="big">Get Method + Lessons: $247</span></a>
+        <p class="tier-note">Best for drummers who want hands-on help</p>
+        <p class="tier-quote">"Working with Anthony, I made BKO snare. He made that possible."<br>RDM student</p>
       </div>
 
     </div>
