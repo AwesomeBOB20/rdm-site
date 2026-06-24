@@ -179,7 +179,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <div class="prodbreak">
         <span class="eyebrow">Pick your product</span>
         <h1 class="q-title">Jump straight to it.</h1>
-        <p class="picker-sub">Four ways to train with RDM. Pick the one that fits where you're at.</p>
+        <p class="picker-sub">Three ways to train with RDM. Pick the one that fits where you're at.</p>
         <div class="tiers-4">
 
           <!-- PLAYALONGS -->
@@ -488,16 +488,15 @@ function saveLead(firstName, email){
 function winner(){
   // Academy only competes if Q1 = "Make a specific competitive line" (option index 2).
   const academyEligible = answers[0] === 2;
-  score.M += score.L; score.L = 0;
   // Overall strongest signal across all four products (tie-break A > L > M > P).
   let top = 'P', topVal = -1;
-  ['A','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
+  ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
   // If their strongest pull is full coaching: Academy if they're chasing a line,
   // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
-  if(top === 'A') return academyEligible ? 'A' : 'M';
+  if(top === 'A') return academyEligible ? 'A' : 'L';
   // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
   let best = 'P', bestVal = -1;
-  ['M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
+  ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
   return best;
 }
 
