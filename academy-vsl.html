@@ -62,7 +62,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
 
 /* HERO */
-.hero{text-align:center;padding:48px 0 44px;}
+.hero{text-align:center;padding:48px 22px 44px;}
 .hero-eyebrow{display:inline-block;background:var(--purple-deep);color:#fff;border:var(--b);font-size:.78rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;padding:7px 18px;border-radius:999px;margin-bottom:22px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 .hero h1{font-size:clamp(2.1rem,5.6vw,3.9rem);font-weight:700;line-height:1.06;letter-spacing:-.5px;max-width:900px;margin:0 auto 18px;text-shadow:0 3px 18px rgba(0,0,0,.5);}
@@ -144,18 +144,25 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .faq-a-in{padding:0 24px 22px;color:#333;font-size:.97rem;}
 
 /* FINAL */
-.final{text-align:center;padding:48px 0;}
+.final{text-align:center;padding:48px 22px;}
 .final-card{background:var(--purple);border:var(--b);border-radius:26px;box-shadow:var(--shadow);padding:52px 32px;}
 .final-card h2{font-size:clamp(1.9rem,4.6vw,2.9rem);font-weight:700;color:var(--tan);max-width:760px;margin:0 auto 14px;line-height:1.12;}
 .final-card p{color:rgba(255,240,211,.85);max-width:560px;margin:0 auto 28px;}
 .spots{display:inline-flex;gap:9px;align-items:center;background:rgba(254,100,41,.16);border:2px solid var(--orange);
   border-radius:12px;padding:10px 18px;color:#fff;font-size:.9rem;font-weight:600;margin-bottom:26px;}
 
-/* FOOTER */
-footer{border-top:var(--b);padding:34px 22px;text-align:center;background:rgba(0,0,0,.4);}
-.footer-logo{height:36px;opacity:.9;margin-bottom:12px;}
-.footer-text{color:rgba(255,255,255,.5);font-size:.84rem;}
-.footer-text a{color:rgba(255,255,255,.7);}
+/* FOOTER (matches the landing-page footer) */
+.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;
+  border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;
+  overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);}
+.foot-pill b{font-weight:700;}
+.foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
+.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
+  border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);
+  text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 
 /* TRIAD + ATOMIC METHODS + COST (VSL message-match) */
 .triad{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:42px;}
@@ -187,7 +194,7 @@ footer{border-top:var(--b);padding:34px 22px;text-align:center;background:rgba(0
 }
 @media (max-width:680px){
   nav{padding:10px 16px;} .nav-logo{height:34px;} .nav-cta{font-size:.78rem;padding:8px 13px;}
-  .pad{padding:34px 0;} .hero{padding:36px 0 36px;}
+  .pad{padding:34px 0;} .hero{padding:36px 22px 36px;}
   .loop{grid-template-columns:1fr;}
 }
 /* Proof logo bar: keep rows balanced below desktop (no lonely orphan) */
@@ -208,7 +215,7 @@ footer{border-top:var(--b);padding:34px 22px;text-align:center;background:rgba(0
 
 <!-- ============ NAV ============ -->
 <nav>
-  <a href="landing.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM — Rudimental Drumming Mastery" class="nav-logo"></a>
+  <a href="#top"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM — Rudimental Drumming Mastery" class="nav-logo"></a>
   <a href="academy-application.html" class="nav-cta">Apply Now</a>
 </nav>
 
@@ -445,9 +452,14 @@ footer{border-top:var(--b);padding:34px 22px;text-align:center;background:rgba(0
 </section>
 
 <!-- ============ FOOTER ============ -->
-<footer>
-  <img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM" class="footer-logo">
-  <p class="footer-text">© 2026 RDM: Rudimental Drumming Mastery · Anthony Steller · <a href="landing.html">Back to main page</a></p>
+<footer class="site-footer">
+  <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
+  <div class="foot-social">
+    <a href="https://www.instagram.com/anthony.steller200/" class="foot-btn foot-ig">Instagram</a>
+    <a href="https://www.youtube.com/@anthony.steller200" class="foot-btn foot-yt">YouTube</a>
+    <a href="https://www.facebook.com/anthony.steller.98/" class="foot-btn foot-fb">Facebook</a>
+  </div>
+  <div class="foot-pill">Copyright © 2026 Rudimental Drumming Mastery | <a href="https://playalongs.rudimentaldrummingmastery.com/privacy-policy">Privacy Policy</a></div>
 </footer>
 
 </div><!-- /.site -->
