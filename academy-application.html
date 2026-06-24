@@ -6,10 +6,13 @@
 <title>RDM Academy — Application</title>
 <meta name="description" content="Apply for the RDM Academy. A few questions so Anthony can see if you're a fit before your call.">
 <meta name="robots" content="noindex">
-<link rel="icon" href="Steller%20Drums%20-%20PNG%20file-07.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@29.1.1/dist/css/intlTelInput.css">
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.1.1/dist/js/intlTelInput.min.js"></script>
 <style>
 /* ============================================================
    RDM — ACADEMY APPLICATION (qualifying quiz)
@@ -96,6 +99,20 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 .phone-cc{display:flex;align-items:center;justify-content:center;background:#fff;border:var(--b);border-right:none;
   border-radius:var(--rad) 0 0 var(--rad);padding:0 14px;font-weight:700;color:#000;font-size:1.05rem;white-space:nowrap;}
 .phone-wrap .field{margin-bottom:0;border-radius:0 var(--rad) var(--rad) 0;}
+/* international phone input (intl-tel-input) */
+.iti{display:block;width:100%;margin-bottom:16px;}
+.iti .field{width:100%;margin-bottom:0;color:#000;}
+/* unify: flag + dial code + number all read as one seamless field (no internal dividers or bg) */
+.iti__selected-country,
+.iti__selected-flag,
+.iti__selected-country-primary{background:transparent !important;border:none !important;border-radius:0 !important;}
+.iti__selected-country:hover,
+.iti__selected-flag:hover{background:transparent !important;}
+.iti__selected-dial-code{color:#000;background:transparent !important;}
+/* dropdown: rounded corners + search box styling, matching the inputs */
+.iti__dropdown-content{border-radius:var(--rad);overflow:hidden;border:2px solid #000;box-shadow:var(--shadow);}
+.iti__search-input{border:none;border-bottom:1px solid rgba(0,0,0,.12);padding:12px 14px;font-family:inherit;font-size:1rem;color:#000;}
+.iti__country-list{color:#000;}
 .err{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .err.show{display:block;}
 
@@ -190,7 +207,7 @@ const STEPS = [
       {k:'lastName',  label:'Last name',  ph:'Last name',  type:'text', req:true},
       {k:'email',     label:'Email',      ph:'you@email.com', type:'email', req:true},
       {k:'phone',     label:'Phone (for call reminders)', ph:'(555) 555-5555', type:'tel', req:true},
-      {k:'instagram', label:'Instagram username', tag:'(optional)', ph:'@username', type:'text', req:false},
+      {k:'instagram', label:'Instagram username', ph:'@username', type:'text', req:true},
     ]
   },
   { type:'single', key:'age', title:"How old are you?", hint:"The audition clock matters (DCI ages out at 21, WGI at 22), so this helps me plan with you.",
@@ -283,15 +300,19 @@ function renderStep(){
       lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
       body.appendChild(lab);
       if(f.k === 'phone'){
-        const wrap = document.createElement('div'); wrap.className = 'phone-wrap';
-        const cc = document.createElement('span'); cc.className = 'phone-cc'; cc.textContent = '+1';
         const inp = document.createElement('input');
-        inp.className = 'field'; inp.type = 'tel'; inp.id = 'f-'+f.k;
-        inp.placeholder = '(555) 555-5555'; inp.autocomplete = 'tel-national'; inp.inputMode = 'numeric';
-        inp.value = data[f.k] ? data[f.k].replace(/^\+1\s*/,'') : '';
-        inp.addEventListener('input', function(){ this.value = formatUSPhone(this.value); });
-        wrap.appendChild(cc); wrap.appendChild(inp);
-        body.appendChild(wrap);
+        inp.className = 'field'; inp.type = 'tel'; inp.id = 'f-'+f.k; inp.autocomplete = 'tel';
+        body.appendChild(inp);
+        const iti = window.intlTelInput(inp, {
+          initialCountry: 'us',
+          countryOrder: ['us','ca','gb','au'],
+          separateDialCode: true,
+          countrySearch: true,
+          formatOnDisplay: true,
+          loadUtils: () => import('https://cdn.jsdelivr.net/npm/intl-tel-input@29.1.1/dist/js/utils.js')
+        });
+        if(data[f.k]){ iti.setNumber(data[f.k]); }
+        window._itiPhone = iti;
       } else {
         const inp = document.createElement('input');
         inp.className = 'field'; inp.type = f.type; inp.id = 'f-'+f.k;
@@ -352,9 +373,14 @@ function nextStep(){
     step.fields.forEach(f=>{
       const v = document.getElementById('f-'+f.k).value.trim();
       if(f.k === 'phone'){
-        const digits = v.replace(/\D/g,'');
-        if(f.req && digits.length !== 10){ problems.push('a valid 10-digit phone number'); data.phone = ''; }
-        else { data.phone = digits ? ('+1 ' + v) : ''; }
+        const iti = window._itiPhone;
+        if(f.req && v === ''){ problems.push('a valid phone number'); data.phone = ''; }
+        else if(v === ''){ data.phone = ''; }
+        else {
+          let num = (iti && iti.getNumber()) ? iti.getNumber() : '';
+          if(!num && iti && iti.getSelectedCountryData){ var cc = iti.getSelectedCountryData(); num = '+' + (cc.dialCode||'') + v.replace(/\D/g,''); }
+          data.phone = num || v;
+        }
       } else if(f.k === 'email'){
         if(f.req && !isEmail(v)){ problems.push('a valid email address'); }
         data.email = v;
@@ -404,11 +430,17 @@ function finishApp(){
 }
 
 // The Academy ($2k, intense 12 weeks) isn't a fit right now if the money or the
-// time commitment clearly isn't there. Everyone else books a call.
-// (Edit these two lines to loosen/tighten who gets routed to the downsell.)
+// time commitment clearly isn't there. 21+ drummers have aged out of the target
+// lines (DCI 21, WGI 22), so we only book them if they're clearly ready to invest.
+// Everyone else books a call. (Edit these rules to loosen/tighten the downsell.)
 function isQualified(){
   if(data.finances === "Not financially ready right now") return false;
   if(data.hours === "Less than 3 hours") return false;
+  if(data.age === "21+ (aged out or other)"){
+    var readyToPay = (data.finances === "We're ready to invest in the right thing" ||
+                      data.finances === "Open to a payment plan that works for us");
+    if(!readyToPay) return false;
+  }
   return true;
 }
 
@@ -417,8 +449,10 @@ function showDownsell(){
   let reason;
   if(data.finances === "Not financially ready right now"){
     reason = "The Academy is a $2,000 investment, and that's a real commitment for any family. Zero shame in that.";
-  } else {
+  } else if(data.hours === "Less than 3 hours"){
     reason = "The Academy is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
+  } else {
+    reason = "The Academy is built around making a competitive line before the audition clock runs out (DCI ages out at 21, WGI at 22). At your stage, the Method gives you the same system to keep getting better, without the cost or intensity of the full program.";
   }
   document.getElementById('ds-reason').textContent = reason;
   show('screen-downsell');
@@ -465,6 +499,11 @@ Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
 Cal.config = Cal.config || {};
 Cal.config.forwardQueryParams = true;
 Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#4D1948"},"dark":{"cal-brand":"#06aeb9"}},"hideEventTypeDetails":false,"layout":"month_view"});
+/* After a successful booking, send them to the pre-call guide. */
+Cal.ns["rdm-strategy"]("on",{
+  action:"bookingSuccessful",
+  callback:function(){ window.location.href = "precall-guide.html"; }
+});
 </script>
 </body>
 </html>
