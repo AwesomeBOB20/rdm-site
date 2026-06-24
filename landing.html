@@ -47,7 +47,7 @@ img{max-width:100%;height:auto;}
 
 /* fixed brand background image (purple/teal/orange), lightly darkened for legibility.
    Uses a fixed-position layer instead of background-attachment:fixed so it behaves on iOS. */
-.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+.bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.42),rgba(18,4,18,.60)),url('Background%203.png') center/cover no-repeat;
   background-color:var(--purple);}
 

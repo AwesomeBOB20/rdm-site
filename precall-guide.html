@@ -21,11 +21,11 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);color:#fff;line-height:1.6;
-  min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  min-height:100vh;min-height:100svh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 img{max-width:100%;height:auto;}
-.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+.bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.46),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
-.site{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;}
+.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
 .topbar{display:flex;align-items:center;justify-content:center;padding:16px;border-bottom:var(--b);background:var(--purple);}
 .topbar img{height:38px;}
 .shell{flex:1;padding:40px 18px 70px;}
