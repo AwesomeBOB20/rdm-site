@@ -385,6 +385,10 @@ function nextStep(){
       } else if(f.k === 'email'){
         if(f.req && !isEmail(v)){ problems.push('a valid email address'); }
         data.email = v;
+      } else if(f.k === 'instagram'){
+        const h = cleanIG(v);
+        if(f.req && !isIG(h)){ problems.push('a valid Instagram username'); }
+        data.instagram = h ? '@'+h : '';
       } else {
         data[f.k] = v;
         if(f.req && !v) problems.push(f.label.toLowerCase());
@@ -469,6 +473,8 @@ function formatUSPhone(v){
 }
 // Basic but solid email shape check.
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function cleanIG(v){ if(!v) return ''; return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/^@+/,'').replace(/\/+$/,'').trim(); }
+function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/.test(h); }
 
 /* =================== SAVE → GOOGLE SHEET =================== */
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";

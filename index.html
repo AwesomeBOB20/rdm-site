@@ -250,10 +250,11 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
       <section class="screen" id="screen-email">
         <span class="eyebrow">One last thing</span>
         <h2 class="q-title">Where should I send your <span class="co">result + a free practice plan?</span></h2>
-        <p class="sub">Drop your email and I'll show your path now and send you a starter plan to go with it.</p>
+        <p class="sub">Drop your email and I'll show your path now and send you a starter plan to go with it. Add your Instagram and I'll personally DM you a tip for your result.</p>
         <form id="email-form" novalidate onsubmit="return submitEmail(event)">
           <input class="field" id="fname-input" type="text" placeholder="First name" autocomplete="given-name">
           <input class="field" id="email-input" type="email" placeholder="you@email.com" autocomplete="email">
+          <input class="field" id="ig-input" type="text" placeholder="@yourusername (so I can DM you)" autocomplete="off" required>
           <div class="qerr" id="email-err"></div>
           <button class="btn full" type="submit">Show my result &rarr;</button>
         </form>
@@ -453,7 +454,9 @@ function submitEmail(e){
   const email = document.getElementById('email-input').value.trim();
   if(!firstName){ return showEmailErr('Please enter your first name.'); }
   if(!isEmail(email)){ return showEmailErr('Please enter a valid email address.'); }
-  saveLead(firstName, email);   // fire-and-forget; never blocks the result
+  const ig = document.getElementById('ig-input').value;
+  if(!isIG(cleanIG(ig))){ return showEmailErr('Please enter a valid Instagram username (letters, numbers, . and _ only).'); }
+  saveLead(firstName, email, ig);   // fire-and-forget; never blocks the result
   showResult();
   return false;
 }
@@ -465,13 +468,27 @@ function showEmailErr(msg){
   el.textContent = msg; el.classList.add('show');
 }
 
-function saveLead(firstName, email){
+// Instagram helpers. cleanIG strips a pasted URL / @ / spaces down to a bare handle.
+// isIG checks it against Instagram's real username rules (letters, numbers, dot,
+// underscore; 1-30 chars; no leading/trailing dot; no double dots). This validates
+// FORMAT only. A static site can't truly confirm the account exists (Instagram
+// blocks that), so the DM is the real existence check.
+function cleanIG(v){
+  if(!v) return '';
+  return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'')
+                 .replace(/^@+/,'').replace(/\/+$/,'').trim();
+}
+function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/.test(h); }
+function fmtIG(v){ var h = cleanIG(v); return h ? '@'+h : ''; }
+
+function saveLead(firstName, email, ig){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const productNames = {P:'Playalongs', M:'Method', L:'Method + Lessons', A:'Academy'};
   const payload = {
     formType: 'quiz',
     firstName: firstName || '',
     email: email,
+    instagram: fmtIG(ig),
     product: productNames[winner()] || winner(),
     answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : '')
   };
@@ -486,8 +503,14 @@ function saveLead(firstName, email){
 }
 
 function winner(){
-  // Academy only competes if Q1 = "Make a specific competitive line" (option index 2).
-  const academyEligible = answers[0] === 2;
+  // Academy is in play if they show real line/coaching intent on ANY of these,
+  // not just Q1. Any one opens the Academy door (the sales call still qualifies them):
+  //   Q1 goal      = "make a specific competitive line"
+  //   Q3 challenge = "I freeze at auditions and can't make the line"
+  //   Q4 timeline  = "I've got an audition coming up"
+  //   Q5 help      = "Intensive 1-on-1 coaching until I make it"
+  const academyEligible =
+    answers[0] === 2 || answers[2] === 3 || answers[3] === 0 || answers[4] === 3;
   // Overall strongest signal across all four products (tie-break A > L > M > P).
   let top = 'P', topVal = -1;
   ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
