@@ -21,7 +21,7 @@ function doPost(e) {
       ]);
       sh.appendRow([
         new Date(), data.firstName||'', data.lastName||'', data.email||'',
-        data.phone||'', data.instagram||'', data.age||'', data.level||'',
+        data.phone||'', igLink(data.instagram), data.age||'', data.level||'',
         data.goal||'', data.challenges||'', data.hours||'', data.watchedVideo||'',
         data.parents||'', data.finances||''
       ]);
@@ -34,7 +34,7 @@ function doPost(e) {
       qs.appendRow(
         [ new Date(), data.firstName||'', data.email||'', data.product||'' ]
           .concat(ans)
-          .concat([ data.instagram||'' ])
+          .concat([ igLink(data.instagram) ])
       );
     }
 
@@ -46,6 +46,15 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ result: 'error', message: String(err) }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+// Turn "@handle" into a clickable link in the sheet so one click opens the profile
+// (real account opens, fake shows "page not available"). The handle is already
+// format-checked on the form, so it's safe to drop straight into the formula.
+function igLink(ig) {
+  ig = ig || '';
+  if (!ig) return '';
+  return '=HYPERLINK("https://instagram.com/' + ig.replace(/^@/, '') + '","' + ig + '")';
 }
 
 function getOrCreateSheet(ss, name, headers) {
