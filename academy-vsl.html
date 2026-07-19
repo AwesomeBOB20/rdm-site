@@ -29,11 +29,11 @@
   --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{overscroll-behavior:none;scroll-behavior:smooth;}
+html{overscroll-behavior:none;scroll-behavior:smooth;scroll-padding-top:88px;}
 body{overscroll-behavior:none;font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--blue-deep);color:#fff;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 img{max-width:100%;height:auto;}
 .bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
-  background:linear-gradient(rgba(3,16,18,.44),rgba(3,16,18,.6)),url('Background-Blue.png') center/cover no-repeat;background-color:var(--blue-deep);}
+  background:linear-gradient(rgba(3,16,18,.5),rgba(3,16,18,.7)),url('Background-Blue.png') center/cover no-repeat;background-color:var(--blue-deep);}
 .site{position:relative;z-index:1;}
 .wrap{max-width:1000px;margin:0 auto;padding:0 22px;}
 .narrow{max-width:820px;}
@@ -57,6 +57,10 @@ img{max-width:100%;height:auto;}
 nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
   padding:12px 22px;background:var(--blue-deep);border-bottom:var(--b);}
 .nav-logo{height:40px;display:block;}
+.nav-links{display:flex;gap:12px;align-items:center;}
+.nav-links a{background:var(--purple);color:#fff;text-decoration:none;text-align:center;border:var(--b);border-radius:20px;
+  padding:9px 18px;font-size:.86rem;font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
 .nav-cta{background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;padding:10px 22px;
   font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
 .nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
@@ -210,7 +214,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   .inc-grid,.guar-grid,.tst-grid,.duo{grid-template-columns:1fr;}
 }
 @media (max-width:680px){
-  nav{padding:10px 16px;} .nav-logo{height:34px;} .nav-cta{font-size:.78rem;padding:8px 13px;}
+  nav{padding:10px 16px;} .nav-logo{height:34px;} .nav-cta{font-size:.78rem;padding:8px 13px;} .nav-links{display:none;}
   .pad{padding:34px 0;} .hero{padding:36px 22px 36px;}
   .loop{grid-template-columns:1fr;}
 }
@@ -249,7 +253,12 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 
 <!-- ============ NAV ============ -->
 <nav>
-  <a href="#top"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM — Rudimental Drumming Mastery" class="nav-logo"></a>
+  <a href="#top"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM Rudimental Drumming Mastery" class="nav-logo"></a>
+  <div class="nav-links">
+    <a href="#included">What You Get</a>
+    <a href="#guarantees">Guarantees</a>
+    <a href="#faq">FAQ</a>
+  </div>
   <a href="academy-application.html" class="nav-cta">Apply Now</a>
 </nav>
 
@@ -319,7 +328,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </section>
 
 <!-- ============ WHAT'S INCLUDED ============ -->
-<section class="pad" style="padding-top:0;">
+<section class="pad" style="padding-top:0;" id="included">
   <div class="wrap center">
     <span class="eyebrow reveal">What you get</span>
     <h2 class="h2 reveal">Everything aimed at <span class="co">one outcome.</span></h2>
@@ -363,7 +372,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </section>
 
 <!-- ============ GUARANTEES ============ -->
-<section class="pad" style="padding-top:0;">
+<section class="pad" style="padding-top:0;" id="guarantees">
   <div class="wrap center">
     <span class="eyebrow reveal">My commitment to you</span>
     <h2 class="h2 reveal">Two guarantees. <span class="cb">Both real.</span></h2>
@@ -403,7 +412,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </section>
 
 <!-- ============ FAQ ============ -->
-<section class="pad" style="padding-top:0;">
+<section class="pad" style="padding-top:0;" id="faq">
   <div class="wrap center">
     <span class="eyebrow reveal">Before you book</span>
     <h2 class="h2 reveal">Questions, <span class="cb">answered.</span></h2>
