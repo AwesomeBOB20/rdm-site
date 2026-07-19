@@ -153,17 +153,8 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
   <div class="shell">
     <div class="stage">
 
-      <!-- ===== INTRO (the filter) ===== -->
-      <section class="screen active" id="screen-intro">
-        <span class="eyebrow">RDM Academy · Application</span>
-        <h1>Before we talk, <span class="co">a few real questions.</span></h1>
-        <p class="sub">The Academy is hard. It's a 12-week proving, and I only take drummers who are willing to rise to it. This application helps me see if you're that drummer, so our call is about your goals, not paperwork. Takes about 2 minutes.</p>
-        <button class="btn full" onclick="startApp()">Start my application &rarr;</button>
-        <p class="intro-note">Already watched the training video and ready? <b>Good. Let's go.</b></p>
-      </section>
-
-      <!-- ===== DYNAMIC STEP ===== -->
-      <section class="screen" id="screen-step">
+      <!-- ===== DYNAMIC STEP (opens directly on question 1 — the intro/"Start application" screen was removed to reduce friction) ===== -->
+      <section class="screen active" id="screen-step">
         <h2 class="q-title" id="s-title"></h2>
         <p class="q-hint" id="s-hint"></p>
         <div class="err" id="s-err"></div>
@@ -505,6 +496,9 @@ function saveApplication(){
     });
   }catch(err){ /* never block the booking step */ }
 }
+
+/* Open straight into question 1 (no intro screen) — renders step 0 + shows the progress bar. */
+startApp();
 </script>
 
 <!-- Cal.com element-click embed -->
