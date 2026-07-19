@@ -74,7 +74,10 @@ section{position:relative;padding:44px 0;}   /* match landing.html .pad — the 
 .center{text-align:center;}
 .eyebrow{display:inline-block;background:rgba(0,0,0,.45);color:#fff;border:var(--b);font-size:.74rem;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:20px;}
-/* every eyebrow is the same .45 dark now (unified with landing.html + academy-vsl); .blue/.purple are no-ops so existing markup still works */
+/* section eyebrows are all .45 dark (unified with landing + academy-vsl); .blue/.purple are no-ops so existing markup still works */
+/* HERO eyebrow = the product's brand color, matching landing (orange) / academy (purple). Playalongs = blue #06aeb9. */
+.hero-eyebrow{display:inline-block;background:var(--blue);color:#fff;border:var(--b);font-size:.78rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:7px 18px;border-radius:999px;margin-bottom:26px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:700;line-height:1.05;letter-spacing:-.5px;text-shadow:0 3px 18px rgba(0,0,0,.5);margin-bottom:18px;text-wrap:balance;}
 h2{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;line-height:1.12;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.45);text-wrap:balance;}
 h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
@@ -243,7 +246,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 
   <!-- HERO -->
   <section class="hero center" id="top"><div class="wrap">
-    <span class="eyebrow blue">The RDM Playalongs</span>
+    <span class="hero-eyebrow">The RDM Playalongs</span>
     <h1>The Ultimate Practice Tool for <span class="co">Rudimental Drummers</span></h1>
     <p class="lead">Stop guessing if you're clean. Know it.</p>
     <p class="sub">Most tools just keep time. The RDM Playalongs exposes your dirt. Get 500+ looping exercises, a sight-reading lab, and an advanced marching metronome in one place. Build noticeable consistency in your timing in just 7 days.</p>
