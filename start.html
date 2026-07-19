@@ -70,11 +70,11 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
 
 /* layout */
 .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 20px;}
-section{position:relative;padding:64px 0;}
+section{position:relative;padding:44px 0;}   /* match landing.html .pad — the spacing above each eyebrow */
 .center{text-align:center;}
-.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
-  letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
-.eyebrow.blue{background:var(--blue-deep);} .eyebrow.purple{background:var(--purple);}
+.eyebrow{display:inline-block;background:rgba(0,0,0,.45);color:#fff;border:var(--b);font-size:.74rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:20px;}
+/* every eyebrow is the same .45 dark now (unified with landing.html + academy-vsl); .blue/.purple are no-ops so existing markup still works */
 h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:700;line-height:1.05;letter-spacing:-.5px;text-shadow:0 3px 18px rgba(0,0,0,.5);margin-bottom:18px;text-wrap:balance;}
 h2{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;line-height:1.12;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.45);text-wrap:balance;}
 h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
@@ -218,7 +218,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 @media (max-width:700px){ .cmp{grid-template-columns:1fr;gap:8px;} }
 @media (max-width:640px){
   .grid2,.quotes{grid-template-columns:1fr;}
-  section{padding:48px 0;}
+  section{padding:38px 0;}   /* match landing.html responsive .pad */
 }
 @media (max-width:560px){
   .proofband .logos{max-width:320px;gap:12px;}
