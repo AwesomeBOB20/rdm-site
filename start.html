@@ -97,26 +97,36 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .quote p{color:#231d29;font-size:1.05rem;font-weight:500;font-style:italic;}
 .quote .who{margin-top:12px;font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--purple-deep);font-style:normal;}
 
-/* comparison table */
-.cmp{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;}
-.cmp .row{display:grid;grid-template-columns:1fr 1fr;}
-.cmp .row + .row{border-top:2px solid rgba(0,0,0,.14);}
-.cmp .cell{padding:18px 20px;font-size:.98rem;}
-.cmp .cell + .cell{border-left:2px solid rgba(0,0,0,.14);}
-.cmp .head{background:var(--dark);color:#fff;font-weight:700;text-align:center;font-size:1.05rem;padding:16px;}
-.cmp .head.win{background:var(--blue-deep);}
-.cmp .bad b{color:var(--orange-deep);} .cmp .good b{color:var(--blue-deep);}
-.cmp .bad::before{content:"✕ ";color:#b23b18;font-weight:800;}
-.cmp .good::before{content:"✓ ";color:var(--blue-deep);font-weight:800;}
+/* comparison table (two-column, circle-badge icons — matches Playalongs original) */
+.cmp{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  padding:clamp(24px,3.4vw,44px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,54px);}
+.cmp-h{font-size:clamp(1.25rem,2.3vw,1.85rem);font-weight:700;color:#000;line-height:1.15;
+  padding-bottom:14px;margin-bottom:4px;border-bottom:2px solid rgba(0,0,0,.18);}
+.cmp-item{display:flex;gap:14px;align-items:flex-start;padding:18px 0;}
+.cmp-item + .cmp-item{border-top:2px solid rgba(0,0,0,.10);}
+.cmp-item p{color:#3a323f;font-size:.98rem;line-height:1.5;}
+.cmp-item p b{color:#000;font-weight:700;}
+.cmp-ic{flex:0 0 auto;width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:800;line-height:1;margin-top:1px;}
+.cmp-ic.x{background:transparent;border:2px solid #1a1320;color:#1a1320;}
+.cmp-ic.c{background:var(--blue-deep);border:2px solid #000;color:#fff;box-shadow:2px 2px 0 rgba(0,0,0,.22);}
+.cmp-top{grid-column:1/-1;text-align:center;margin-bottom:8px;}
+.cmp-title{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:700;color:#000;line-height:1.1;margin-bottom:12px;text-shadow:none;text-wrap:balance;}
+.cmp-sub{color:#4a4350;font-size:clamp(1rem,1.6vw,1.15rem);max-width:700px;margin:0 auto;line-height:1.5;}
+/* card-safe brand text colors (the page .cb/.cp/.co are light variants for dark bg) */
+.cmp .c-teal{color:var(--blue-deep);} .cmp .c-purple{color:var(--purple);} .cmp .c-orange{color:var(--orange-deep);}
 
-/* faq */
-.faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
-.faq details{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:4px 22px;}
-.faq summary{cursor:pointer;font-weight:700;font-size:1.08rem;padding:16px 0;list-style:none;color:#000;}
+/* faq — teal circle + badge (rotates to × when open), matches other FAQ sections */
+.faq{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:14px;}
+.faq details{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;}
+.faq summary{cursor:pointer;font-weight:700;font-size:1.05rem;padding:20px 24px;list-style:none;color:#000;
+  display:flex;justify-content:space-between;align-items:center;gap:16px;}
 .faq summary::-webkit-details-marker{display:none;}
-.faq summary::after{content:"+";float:right;color:var(--orange-deep);font-weight:800;}
-.faq details[open] summary::after{content:"–";}
-.faq details p{color:#332b38;padding:0 0 18px;font-size:1.02rem;}
+.faq summary::after{content:"+";flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue-deep);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
+  box-shadow:2px 2px 0 rgba(0,0,0,.25);transition:transform .25s;}
+.faq details[open] summary::after{transform:rotate(45deg);}
+.faq details p{color:#333;padding:0 24px 22px;font-size:.98rem;}
 
 /* alt / method link */
 .altline{text-align:center;margin-top:26px;}
@@ -132,9 +142,19 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .pricecard .price{font-size:1.6rem;font-weight:700;color:var(--purple-deep);margin:6px 0 4px;}
 .pricecard .small{color:#5b5563;font-size:.92rem;margin-bottom:18px;}
 
-/* footer */
-.foot{border-top:var(--b);background:var(--purple);text-align:center;padding:40px 20px;font-size:.92rem;color:rgba(255,255,255,.82);}
-.foot a{color:#fff;text-decoration:underline;} .foot .row2{margin-top:10px;color:rgba(255,255,255,.6);}
+/* footer (matches the Playalongs landing footer: white pills + colored social buttons) */
+.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;
+  border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;
+  overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);}
+.foot-pill b{font-weight:700;}
+.foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
+.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
+  border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);
+  text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 
 /* scroll reveal (matches landing.html) */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
@@ -145,10 +165,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   .proofband .logos{max-width:490px;margin-left:auto;margin-right:auto;gap:16px;}
 }
 @media (max-width:820px){ .grid3{grid-template-columns:1fr;} }
+@media (max-width:700px){ .cmp{grid-template-columns:1fr;gap:8px;} }
 @media (max-width:640px){
   .grid2,.quotes{grid-template-columns:1fr;}
   section{padding:48px 0;}
-  .cmp .head{font-size:.92rem;} .cmp .cell{padding:14px 14px;font-size:.9rem;}
 }
 @media (max-width:560px){
   .proofband .logos{max-width:320px;gap:12px;}
@@ -285,16 +305,27 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 
   <!-- COMPARISON -->
   <section class="center"><div class="wrap">
-    <span class="eyebrow purple">Choose your path to cleaner hands</span>
-    <h2>Standard metronome vs the RDM Playalongs</h2>
-    <p class="sub">Unlock every feature of the Playalongs, the Metronome, and the Sight-Reading Lab for just $1 today.</p>
     <div class="cmp reveal" style="text-align:left">
-      <div class="row"><div class="cell head">Standard Metronome</div><div class="cell head win">The RDM Playalongs</div></div>
-      <div class="row"><div class="cell bad"><b>Empty tool.</b> You waste practice time inventing drills or hunting for PDFs, which builds zero chops.</div><div class="cell good"><b>500+ pre-written exercises.</b> Skip the prep. Spend 100% of your energy on execution.</div></div>
-      <div class="row"><div class="cell bad"><b>Random reps.</b> You replay what's comfortable and ignore your weaknesses, so you plateau.</div><div class="cell good"><b>Curated playlists.</b> Targeted routines for skills like Timing or Rolls, for measurable progress every session.</div></div>
-      <div class="row"><div class="cell bad"><b>Basic clicks.</b> Standard apps ignore modern rhythm, leaving you unprepared for 5-lets, 7-lets, and 4:3s.</div><div class="cell good"><b>Advanced poly-metronome.</b> Hear exactly how complex tuplets fit the beat so you never get cut for bad interpretation.</div></div>
-      <div class="row"><div class="cell bad"><b>The silent gap.</b> Guessing the spacing between clicks reinforces rushing and dragging without you knowing.</div><div class="cell good"><b>Full audio reference.</b> A continuous, perfectly quantized track fills every gap and forces your hands to lock in.</div></div>
-      <div class="row"><div class="cell bad"><b>Memorization trap.</b> Repeating the same PDF means you memorize the pattern instead of reading it.</div><div class="cell good"><b>Unlimited generator.</b> Generate infinite new lines to prove you can read new music cleanly on the spot.</div></div>
+      <div class="cmp-top">
+        <h2 class="cmp-title">Choose Your Path to <span class="c-teal">Cleaner Hands</span></h2>
+        <p class="cmp-sub">Unlock every feature of <b class="c-purple">The RDM Playalongs</b>, <b class="c-orange">The RDM Metronome</b>, and <b class="c-teal">The RDM Sight-Reading Lab</b> for just $1 today.</p>
+      </div>
+      <div class="cmp-col">
+        <h3 class="cmp-h">Standard Metronome</h3>
+        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Empty Tool.</b> You waste practice time inventing drills or hunting for PDFs, leading to unstructured "noodling" that builds zero chops.</p></div>
+        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Random Reps.</b> Without a plan you replay what is comfortable and ignore your weaknesses, so you hit a skill plateau.</p></div>
+        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Basic Clicks.</b> Standard apps ignore modern rhythm, leaving you unprepared for the 5-lets, 7-lets, and 4:3s in audition packets.</p></div>
+        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>The "Silent Gap."</b> Guessing the spacing between clicks makes you reinforce rushing and dragging without knowing it.</p></div>
+        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Memorization Trap.</b> Repeating the same PDF means you memorize the pattern instead of reading it, so your reading skills atrophy.</p></div>
+      </div>
+      <div class="cmp-col">
+        <h3 class="cmp-h"><span class="c-teal">The</span> <span class="c-purple">RDM</span> <span class="c-orange">Playalongs</span></h3>
+        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>500+ Pre-Written Exercises.</b> Skip the prep. Get instant access to a massive library so you can spend 100% of your energy on execution.</p></div>
+        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Curated Playlists.</b> Follow targeted routines for skills like "Timing" or "Rolls" to make measurable progress every session.</p></div>
+        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Advanced Poly-Metronome.</b> Master modern vocabulary. Hear exactly how complex tuplets fit the beat so you never get cut for "bad interpretation."</p></div>
+        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Full Audio Reference.</b> A continuous, perfectly quantized track fills every gap, forcing your hands to lock in and match the spacing instantly.</p></div>
+        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Unlimited Generator.</b> Never run out of fresh material. Generate infinite new lines to prove you can read new music cleanly on the spot.</p></div>
+      </div>
     </div>
   </div></section>
 
@@ -336,9 +367,14 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <p class="altline"><a href="index.html">Rather own it for life? Get this tool free, forever, inside The RDM Method →</a></p>
   </div></section>
 
-  <footer class="foot">
-    <div><a href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a> · <a href="https://instagram.com/anthony.steller200" target="_blank" rel="noopener">Instagram</a> · <a href="#" >YouTube</a></div>
-    <div class="row2">Copyright © 2026 Rudimental Drumming Mastery · <a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html" style="color:rgba(255,255,255,.85)">Terms of Service</a></div>
+  <footer class="site-footer">
+    <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
+    <div class="foot-social">
+      <a href="https://www.instagram.com/anthony.steller200/" class="foot-btn foot-ig" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.youtube.com/@anthony.steller200" class="foot-btn foot-yt" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.facebook.com/anthony.steller.98/" class="foot-btn foot-fb" target="_blank" rel="noopener">Facebook</a>
+    </div>
+    <div class="foot-pill">Copyright © 2026 Rudimental Drumming Mastery | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></div>
   </footer>
 
 </div>
