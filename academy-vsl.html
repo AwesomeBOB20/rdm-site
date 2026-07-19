@@ -223,6 +223,23 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   .proof .logo-badge{width:66px;height:66px;padding:11px;}
   .final-card{padding:38px 22px;}
 }
+/* about the coach (unified with landing.html / start.html) */
+.about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:stretch;margin-top:10px;text-align:left;}
+.about-photo{position:relative;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;min-height:340px;}
+.about-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.35) contrast(1.04);}
+.about-photo::after{content:"";position:absolute;inset:0;background:var(--purple);mix-blend-mode:color;opacity:.72;pointer-events:none;}
+.about-card{padding:34px 32px;}
+.about-card .eyebrow{margin-bottom:14px;}
+.about-card h2{margin-bottom:16px;color:#000;font-size:clamp(1.6rem,3.4vw,2.3rem);font-weight:700;line-height:1.15;text-shadow:none;}
+.about-card p{color:#333;margin-bottom:13px;font-size:1.02rem;}
+.creds{list-style:none;margin:2px 0 16px;display:grid;gap:7px;padding:0;}
+.creds li{position:relative;padding-left:26px;color:#333;font-size:.96rem;line-height:1.34;}
+.creds li::before{content:"\2605";position:absolute;left:0;top:1px;color:var(--orange);font-size:.95rem;}
+.creds li b{color:#000;}
+.about-card p.creds-cap{color:#000;font-weight:700;background:rgba(254,100,41,.12);border-left:3px solid var(--orange);padding:11px 14px;border-radius:8px;margin-bottom:16px;}
+.about-sign{margin-top:10px;font-weight:700;color:var(--purple);font-size:1.05rem;}
+.about-sign span{display:block;font-weight:500;color:#5b5563;font-size:.9rem;}
+@media (max-width:760px){ .about-grid{grid-template-columns:1fr;} .about-photo{min-height:260px;} }
 </style>
 </head>
 <body>
@@ -256,7 +273,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   </div>
 
   <a href="academy-application.html" class="cta orange"><span class="big">Apply &amp; Book Your Call</span><span class="small">Free 1-on-1 call · see if the Academy is a fit</span></a>
-  <p class="hero-cta-note"><b>Limited spots</b> · For drummers serious about making their goal line this season</p>
+  <p class="hero-cta-note"><b>Fair warning: this is hard, and it's application-only.</b> The 12 weeks are a proving, not a shortcut. Limited spots, for drummers ready to rise to it.</p>
 </header>
 
 <!-- ============ PROOF BAR ============ -->
@@ -292,11 +309,21 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 </section>
 
 
-<!-- ============ WHAT'S INCLUDED ============ -->
+<!-- ============ THE STAKES (pain / agitation) ============ -->
 <section class="pad">
+  <div class="wrap center">
+    <span class="eyebrow reveal">The clock is real</span>
+    <h2 class="h2 reveal">You already know <span class="co">what's at stake.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">You've put in the hours. You still can't tell if your hands are actually clean. Audition season comes around and you're guessing, hoping, wondering if this is the year you finally make it or the year you get cut again. Watching drummers you started with make the line while you're stuck in the same spot is the worst feeling there is. And the clock is real: DCI ages out at 21, WGI at 22, and every season you sit and wait is one you never get back. It was never talent. Nobody has ever watched your hands closely enough, often enough, to tell you exactly what to fix.</p>
+  </div>
+</section>
+
+<!-- ============ WHAT'S INCLUDED ============ -->
+<section class="pad" style="padding-top:0;">
   <div class="wrap center">
     <span class="eyebrow reveal">What you get</span>
     <h2 class="h2 reveal">Everything aimed at <span class="co">one outcome.</span></h2>
+    <p class="lead reveal" style="margin-top:16px;">Six parts, one job: get your hands clean, consistent, and audition-ready enough to make your line.</p>
   </div>
   <div class="wrap">
     <div class="inc-grid">
@@ -306,6 +333,31 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
       <div class="inc card reveal"><span class="ck">✓</span><div><h3>The full RDM course</h3><p>Technique, fundamentals, the 5 mechanics, vocabulary, and breakdowns, as your reference library.</p></div></div>
       <div class="inc card reveal"><span class="ck">✓</span><div><h3>Mock auditions</h3><p>Pressure-test your packet before the real thing so audition day isn't the first time.</p></div></div>
       <div class="inc card reveal"><span class="ck">✓</span><div><h3>Lifetime RDM Playalongs + materials</h3><p>The practice tool, digital packets, books, checklists, and goal-setting sheets, yours for life.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT THE COACH ============ -->
+<section class="pad" style="padding-top:0;">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo reveal"><img src="pic of me.jpg" alt="Anthony Steller"></div>
+      <div class="about-card card reveal">
+        <span class="eyebrow">Who's in your corner</span>
+        <h2>You're not buying a course. <span class="co">You're hiring me.</span></h2>
+        <p>I'm Anthony Steller, a gigging drummer, snare instructor, and the founder of RDM. The Academy is me, personally, in your reps every week until you make your line.</p>
+        <ul class="creds">
+          <li><b>1st Chair</b>, TMEA All-State Percussionist (1st in the state)</li>
+          <li><b>1st Place</b>, Lone Star Drumline Solo Contest</li>
+          <li><b>1st Place</b>, Plano Drumline Solo Contest</li>
+          <li><b>2nd Place</b>, PASIC 2022 Snare Solo Contest</li>
+          <li>Made the <b>Troopers</b> drumline, plus top spots to make <b>SCV and Vigilantes</b></li>
+          <li>Gigging musician for <b>Dynamic Rhythm Entertainment</b>: FC Dallas, the San Antonio Spurs, Texas Live, and the Cutting Edge Haunted House drumlines</li>
+        </ul>
+        <p>I've made competitive drumlines myself, and I've put students on world-class ones. When I tell you I'll work with you until you get there, it's because I know exactly what "there" takes.</p>
+        <p class="creds-cap">My students have made World Class DCI and WGI drumlines working directly with me.</p>
+        <div class="about-sign">Anthony Steller<span>Founder &amp; Head Coach, RDM</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -384,7 +436,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
   <div class="final-card reveal">
     <div class="spots"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;flex:0 0 auto"><ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v6c0 1.66 3.58 3 8 3s8-1.34 8-3V8"/><path d="M13.5 9.5l5.5 4.5"/><path d="M16 8l4-4"/></svg>Limited spots. I only take on drummers I'm confident I can help</div>
     <h2>Stop guessing. Let's <span class="co">make your line.</span></h2>
-    <p>Book a free call and we'll figure out exactly what's holding your hands back and whether the Academy is the right fit to fix it.</p>
+    <p>Book a free call and we'll figure out exactly what's holding your hands back and whether the Academy is the right fit to fix it. Auditions don't wait, and every season you sit out is one you never get back.</p>
     <a href="academy-application.html" class="cta orange"><span class="big">Apply &amp; Book Your Call</span></a>
   </div>
 </section>
