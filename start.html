@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDM Playalongs: The Practice Tool That Gets Your Hands Clean</title>
+<meta name="description" content="500+ looping exercises, a sight-reading lab, and an advanced marching metronome in one web app. Stop guessing if you're clean. Start your $1 trial.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RDM PLAYALONGS — /start sales page (rebuilt off Webflow)
+   Same brand identity as the rest of rdm-site. Self-contained.
+   CTA target = TRIAL_URL (one line at the bottom to change at deploy).
+   ============================================================ */
+:root{
+  --purple:#96318d; --purple-deep:#792671;
+  --blue:#06aeb9; --blue-deep:#058890;
+  --orange:#fe6429; --orange-deep:#d35400;
+  --tan:#fff0d3; --ink:#000; --dark:#0c0810;
+  --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{overscroll-behavior:none;scroll-behavior:smooth;}
+body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);color:#fff;line-height:1.6;
+  min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{max-width:100%;height:auto;display:block;}
+.bg-fx{position:fixed;inset:0;bottom:auto;height:100vh;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.5),rgba(18,4,18,.7)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
+.site{position:relative;z-index:1;}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:center;padding:16px;border-bottom:var(--b);background:var(--purple);}
+.topbar img{height:38px;}
+
+/* layout */
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 20px;}
+section{position:relative;padding:64px 0;}
+.center{text-align:center;}
+.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.eyebrow.blue{background:var(--blue-deep);} .eyebrow.purple{background:var(--purple);}
+h1{font-size:clamp(2rem,5.4vw,3.4rem);font-weight:700;line-height:1.06;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:16px;text-wrap:balance;}
+h2{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;line-height:1.1;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.4);text-wrap:balance;}
+h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
+.lead{color:rgba(255,255,255,.9);font-size:clamp(1.05rem,1.8vw,1.35rem);font-weight:500;margin-bottom:10px;}
+.sub{color:rgba(255,255,255,.82);font-size:clamp(1rem,1.6vw,1.15rem);max-width:640px;margin:0 auto 26px;}
+.sub.left{margin-left:0;}
+.co{color:var(--orange);} .cb{color:#5ff0f7;} .cp{color:#e9b8e4;}
+
+/* buttons */
+.btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
+  padding:17px 34px;font-size:1.12rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.btn.big{padding:20px 42px;font-size:1.22rem;}
+.cta-note{margin-top:14px;font-size:.95rem;color:rgba(255,255,255,.75);}
+.ticks{list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:18px 0 0;padding:0;}
+.ticks li{font-weight:600;font-size:.95rem;color:#fff;}
+.ticks li::before{content:"✓ ";color:#5ff0f7;font-weight:800;}
+
+/* hero */
+.hero{padding:60px 0 54px;}
+.hero .btn{margin-top:10px;}
+
+/* logo strips — circled colored badges (matches landing.html) */
+.proofband{border-top:var(--b);border-bottom:var(--b);background:rgba(0,0,0,.30);}
+.proof-title{text-align:center;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:24px;}
+.logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(12px,1.6vw,20px);}
+.logo-badge{width:84px;height:84px;flex:0 0 auto;border-radius:50%;background:#fff;border:var(--b);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;padding:14px;transition:transform .2s;}
+.logo-badge:hover{transform:translateY(-3px) scale(1.04);}
+.logo-badge img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:none;}
+.proof-note{text-align:center;color:rgba(255,255,255,.72);font-size:.95rem;max-width:640px;margin:24px auto 0;}
+.proof-sub{text-align:center;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:32px 0 18px;}
+
+/* feature grid */
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:26px 24px;}
+.card h3{color:#000;}
+.card p{color:#332b38;font-size:1.02rem;}
+.card ul{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:9px;}
+.card ul li{position:relative;padding-left:26px;color:#231d29;font-weight:500;font-size:.98rem;}
+.card ul li::before{content:"✓";position:absolute;left:0;color:var(--blue-deep);font-weight:800;}
+.toolcard .toolsub{color:var(--orange-deep);font-weight:700;font-size:.95rem;margin-bottom:8px;}
+.bignote{background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  padding:22px 24px;font-size:1.08rem;font-weight:500;max-width:820px;margin:0 auto 32px;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.3);}
+
+/* testimonials */
+.quotes{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.quote{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:22px 22px;}
+.quote p{color:#231d29;font-size:1.05rem;font-weight:500;font-style:italic;}
+.quote .who{margin-top:12px;font-size:.82rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--purple-deep);font-style:normal;}
+
+/* comparison table */
+.cmp{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;}
+.cmp .row{display:grid;grid-template-columns:1fr 1fr;}
+.cmp .row + .row{border-top:2px solid rgba(0,0,0,.14);}
+.cmp .cell{padding:18px 20px;font-size:.98rem;}
+.cmp .cell + .cell{border-left:2px solid rgba(0,0,0,.14);}
+.cmp .head{background:var(--dark);color:#fff;font-weight:700;text-align:center;font-size:1.05rem;padding:16px;}
+.cmp .head.win{background:var(--blue-deep);}
+.cmp .bad b{color:var(--orange-deep);} .cmp .good b{color:var(--blue-deep);}
+.cmp .bad::before{content:"✕ ";color:#b23b18;font-weight:800;}
+.cmp .good::before{content:"✓ ";color:var(--blue-deep);font-weight:800;}
+
+/* faq */
+.faq{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:12px;}
+.faq details{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:4px 22px;}
+.faq summary{cursor:pointer;font-weight:700;font-size:1.08rem;padding:16px 0;list-style:none;color:#000;}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:"+";float:right;color:var(--orange-deep);font-weight:800;}
+.faq details[open] summary::after{content:"–";}
+.faq details p{color:#332b38;padding:0 0 18px;font-size:1.02rem;}
+
+/* alt / method link */
+.altline{text-align:center;margin-top:26px;}
+.altline a{color:#f0d3ec;font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+.altline a:hover{color:#fff;}
+
+/* video placeholder */
+.videobox{max-width:820px;margin:0 auto;aspect-ratio:16/9;background:rgba(0,0,0,.35);border:var(--b);border-radius:var(--rad);
+  box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;color:rgba(255,255,255,.7);font-weight:600;}
+
+/* pricing card */
+.pricecard{max-width:420px;margin:0 auto;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:30px 28px;text-align:center;}
+.pricecard .price{font-size:1.6rem;font-weight:700;color:var(--purple-deep);margin:6px 0 4px;}
+.pricecard .small{color:#5b5563;font-size:.92rem;margin-bottom:18px;}
+
+/* footer */
+.foot{border-top:var(--b);background:var(--purple);text-align:center;padding:40px 20px;font-size:.92rem;color:rgba(255,255,255,.82);}
+.foot a{color:#fff;text-decoration:underline;} .foot .row2{margin-top:10px;color:rgba(255,255,255,.6);}
+
+/* scroll reveal (matches landing.html) */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+@media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+
+@media (max-width:1099px){
+  .proofband .logos{max-width:490px;margin-left:auto;margin-right:auto;gap:16px;}
+}
+@media (max-width:820px){ .grid3{grid-template-columns:1fr;} }
+@media (max-width:640px){
+  .grid2,.quotes{grid-template-columns:1fr;}
+  section{padding:48px 0;}
+  .cmp .head{font-size:.92rem;} .cmp .cell{padding:14px 14px;font-size:.9rem;}
+}
+@media (max-width:560px){
+  .proofband .logos{max-width:320px;gap:12px;}
+  .proofband .logo-badge{width:66px;height:66px;padding:11px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-fx"></div>
+<div class="site">
+
+  <header class="topbar"><a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="Rudimental Drumming Mastery"></a></header>
+
+  <!-- HERO -->
+  <section class="hero center"><div class="wrap">
+    <span class="eyebrow blue">The RDM Playalongs</span>
+    <h1>The Ultimate Practice Tool for <span class="co">Rudimental Drummers</span></h1>
+    <p class="lead">Stop guessing if you're clean. Know it.</p>
+    <p class="sub">Most tools just keep time. The RDM Playalongs exposes your dirt. Get 500+ looping exercises, a sight-reading lab, and an advanced marching metronome in one place. Build noticeable consistency in your timing in just 7 days.</p>
+    <a class="btn big" href="#" data-trial>Start 7-Day Trial: Just $1</a>
+    <ul class="ticks"><li>$1 for 7 full days</li><li>Cancel anytime</li><li>No contract, no catch</li></ul>
+  </div></section>
+
+  <!-- SOCIAL PROOF BAND -->
+  <section class="proofband"><div class="wrap">
+    <p class="proof-title">Drummers using the RDM Playalongs have made these lines</p>
+    <div class="logos">
+      <span class="logo-badge" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
+      <span class="logo-badge" style="background:#410b0d"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
+      <span class="logo-badge" style="background:#0f1830"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
+      <span class="logo-badge" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
+      <span class="logo-badge" style="background:#20242c"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
+      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
+      <span class="logo-badge" style="background:#0b2e41"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
+      <span class="logo-badge" style="background:#16161c"><img src="assets/logos/logo-vip.png" alt="Vigilantes Percussion"></span>
+      <span class="logo-badge" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
+    </div>
+  </div></section>
+
+  <!-- VALUE PROP -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow">Train your hands</span>
+    <h2>Use it and you'll get cleaner. <span class="cb">No matter what.</span></h2>
+    <p class="sub">Most practice tools just keep time. The RDM Playalongs exposes exactly where your playing is dirty so you can clean it. Better ears. Better chops. Better time. More music under your control.</p>
+    <div class="grid2" style="text-align:left;margin-top:14px">
+      <div class="card reveal"><h3>Hear your own dirt</h3><p>Train your ears to catch clean versus dirty. That one skill is what separates the drummers who make the line from the ones who get cut.</p></div>
+      <div class="card reveal"><h3>Build real speed</h3><p>Bump Tempo and Tempo Randomization push your top end and lock in every tempo range, so fast passages and rhythm changes stop falling apart.</p></div>
+      <div class="card reveal"><h3>Never run out of reps</h3><p>500+ looping exercises plus endless generated rhythm sight-reading. You always know exactly what to practice next.</p></div>
+      <div class="card reveal"><h3>Every level, every drummer</h3><p>Beginner just picking up sticks or an advanced drummer chasing a world-class line. The tool meets you where you are and pulls you up.</p></div>
+    </div>
+  </div></section>
+
+  <!-- THREE TOOLS -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow purple">Three tools, one web app</span>
+    <h2>Everything you need to get clean. <span class="co">In one place.</span></h2>
+    <p class="sub">No more juggling a metronome app, random YouTube playalongs, and a stack of sheet music. The RDM Playalongs puts the three tools that actually build clean hands under one login.</p>
+    <div class="bignote reveal">A metronome only clicks on the beat. That leaves 90% of every measure as empty space where you're just guessing. The RDM Playalongs fills that silence, so you hear every dirty note the instant you play it.</div>
+    <div class="grid3" style="text-align:left">
+      <div class="card toolcard reveal">
+        <h3>The Playalongs Tool</h3>
+        <p class="toolsub">500+ exercises that loop until your hands lock in</p>
+        <p>Press play and the exercise audio loops continuously at the tempo you set. Sheet music and audio side by side, so you see it and hear it at the same time.</p>
+        <ul><li>Categories, filters, and search to find any exercise fast</li><li>Curated 30-minute playlists: warm-up, chop-building, conditioning</li><li>Tempo randomization bounces the tempo inside a range so you learn to adapt</li><li>Bump-tempo jumps faster every few reps to find your true top speed</li></ul>
+      </div>
+      <div class="card toolcard reveal">
+        <h3>The Sight-Reading Lab</h3>
+        <p class="toolsub">Endless new sheet music, generated on demand</p>
+        <p>Hit generate and the lab builds a fresh page of rhythms every time. Dial in exactly how hard you want it, then read something you have never seen before.</p>
+        <ul><li>Adjustable tempo, rest density, and time signatures</li><li>Stickings and counts shown under every rhythm</li><li>An expansive rhythm bank with every rhythm you'll ever need</li><li>The fastest way to change rhythmic speeds on the fly</li></ul>
+      </div>
+      <div class="card toolcard reveal">
+        <h3>The RDM Metronome</h3>
+        <p class="toolsub">Built for rudimental drumming, not just keeping time</p>
+        <p>Tempo, sound, and time signature, plus the advanced subdivisions a normal metronome cannot touch. The tool you actually need in the practice room.</p>
+        <ul><li>Advanced marching subdivisions: 4-lets, 9-lets, 7-lets, ratio rhythms</li><li>Accent or remove any beat, and any partial inside the beat</li><li>Generate custom rhythms to lock in the exact pattern you're working</li><li>Everything you wish your metronome did, in one place</li></ul>
+      </div>
+    </div>
+  </div></section>
+
+  <!-- EXTENDED PROOF -->
+  <section class="proofband"><div class="wrap center">
+    <span class="eyebrow">Built by a coach who has done it</span>
+    <p class="proof-title">Drummers who train with the RDM Playalongs have made these lines</p>
+    <div class="logos">
+      <span class="logo-badge" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
+      <span class="logo-badge" style="background:#410b0d"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
+      <span class="logo-badge" style="background:#0f1830"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
+      <span class="logo-badge" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
+      <span class="logo-badge" style="background:#20242c"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
+      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
+      <span class="logo-badge" style="background:#0b2e41"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
+      <span class="logo-badge" style="background:#16161c"><img src="assets/logos/logo-vip.png" alt="Vigilantes Percussion"></span>
+      <span class="logo-badge" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
+    </div>
+    <p class="proof-sub">Also coached, mentored &amp; teched by Anthony</p>
+    <div class="logos">
+      <span class="logo-badge" style="background:#372810"><img src="assets/logos/logo-carolinacrown.png" alt="Carolina Crown"></span>
+      <span class="logo-badge" style="background:#18613f"><img src="assets/logos/logo-cavaliers.png" alt="Cavaliers"></span>
+      <span class="logo-badge" style="background:#3d0f0f"><img src="assets/logos/logo-colts.png" alt="Colts"></span>
+      <span class="logo-badge" style="background:#2d376b"><img src="assets/logos/logo-troopers.png" alt="Troopers"></span>
+      <span class="logo-badge" style="background:#0b2a41"><img src="assets/logos/logo-pacificcrest.png" alt="Pacific Crest"></span>
+      <span class="logo-badge" style="background:#000000"><img src="assets/logos/logo-rhythmicforce.png" alt="Rhythmic Force"></span>
+      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-zephyrus.png" alt="Zephyrus"></span>
+      <span class="logo-badge" style="background:#3d1a0f"><img src="assets/logos/logo-utaustin.png" alt="UT Austin Longhorn Band Drumline"></span>
+      <span class="logo-badge" style="background:#0b2941"><img src="assets/logos/logo-uta.png" alt="UTA Maverick Drumline"></span>
+      <span class="logo-badge" style="background:#271239"><img src="assets/logos/logo-monarch.webp" alt="Monarch"></span>
+    </div>
+    <p class="proof-note">Real placements from drummers training in the RDM system. The RDM Playalongs is the daily-reps engine behind that work.</p>
+  </div></section>
+
+  <!-- TESTIMONIALS -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow blue">Real drummers, real words</span>
+    <h2>Don't take my word for it.</h2>
+    <p class="sub">Hear what the RDM Playalongs did for their drumming.</p>
+    <div class="quotes" style="text-align:left">
+      <div class="quote reveal"><p>"My timing has improved probably tenfold since I've been using the Playalongs."</p><span class="who">RDM Playalongs user</span></div>
+      <div class="quote reveal"><p>"It trained my ears out of so many bad habits I had."</p><span class="who">RDM Playalongs user</span></div>
+      <div class="quote reveal"><p>"The tempo randomizer makes you adapt much quicker. It lets me jump between tempos so I actually know it, instead of just playing it at one tempo."</p><span class="who">RDM Playalongs user</span></div>
+      <div class="quote reveal"><p>"At the Guardians camp, I felt internal tempo more than I ever had before."</p><span class="who">RDM student · Guardians camp</span></div>
+      <div class="quote reveal"><p>"Before the Playalongs I didn't know what to practice. It really helped me find what to work on."</p><span class="who">RDM Playalongs user</span></div>
+      <div class="quote reveal"><p>"It's a permanent fix to the problem of 'am I going to sound good?'"</p><span class="who">RDM Playalongs user</span></div>
+    </div>
+  </div></section>
+
+  <!-- VIDEO -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow">See it in action</span>
+    <h2>Here is exactly how it works.</h2>
+    <p class="sub">A quick walkthrough of the Playalongs tool, the metronome, and the sight-reading lab, so you know what you are getting before you start.</p>
+    <div class="videobox reveal">Walkthrough video coming soon</div>
+  </div></section>
+
+  <!-- COMPARISON -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow purple">Choose your path to cleaner hands</span>
+    <h2>Standard metronome vs the RDM Playalongs</h2>
+    <p class="sub">Unlock every feature of the Playalongs, the Metronome, and the Sight-Reading Lab for just $1 today.</p>
+    <div class="cmp reveal" style="text-align:left">
+      <div class="row"><div class="cell head">Standard Metronome</div><div class="cell head win">The RDM Playalongs</div></div>
+      <div class="row"><div class="cell bad"><b>Empty tool.</b> You waste practice time inventing drills or hunting for PDFs, which builds zero chops.</div><div class="cell good"><b>500+ pre-written exercises.</b> Skip the prep. Spend 100% of your energy on execution.</div></div>
+      <div class="row"><div class="cell bad"><b>Random reps.</b> You replay what's comfortable and ignore your weaknesses, so you plateau.</div><div class="cell good"><b>Curated playlists.</b> Targeted routines for skills like Timing or Rolls, for measurable progress every session.</div></div>
+      <div class="row"><div class="cell bad"><b>Basic clicks.</b> Standard apps ignore modern rhythm, leaving you unprepared for 5-lets, 7-lets, and 4:3s.</div><div class="cell good"><b>Advanced poly-metronome.</b> Hear exactly how complex tuplets fit the beat so you never get cut for bad interpretation.</div></div>
+      <div class="row"><div class="cell bad"><b>The silent gap.</b> Guessing the spacing between clicks reinforces rushing and dragging without you knowing.</div><div class="cell good"><b>Full audio reference.</b> A continuous, perfectly quantized track fills every gap and forces your hands to lock in.</div></div>
+      <div class="row"><div class="cell bad"><b>Memorization trap.</b> Repeating the same PDF means you memorize the pattern instead of reading it.</div><div class="cell good"><b>Unlimited generator.</b> Generate infinite new lines to prove you can read new music cleanly on the spot.</div></div>
+    </div>
+  </div></section>
+
+  <!-- CTA -->
+  <section class="center"><div class="wrap">
+    <h2>Try it for a dollar.</h2>
+    <p class="sub">Seven days of full access for $1. Run every tool through your hands. If you're not cleaner, walk away and owe nothing more.</p>
+    <a class="btn big" href="#" data-trial>Start 7-Day Trial: Just $1</a>
+    <p class="cta-note">Then $9.99/mo. Cancel anytime.</p>
+    <ul class="ticks"><li>$1 for 7 full days</li><li>Cancel anytime</li><li>No contract, no catch</li></ul>
+    <p class="sub" style="margin-top:26px">Real talk: after the 7 days it's $9.99/mo. That's less than one private lesson, for the tool that makes every rep count and gets your hands cleaner every single day. A small price for results you can actually hear.</p>
+    <p class="altline"><a href="index.html">Rather own it for life than pay monthly? Get this tool free, forever, inside The RDM Method →</a></p>
+  </div></section>
+
+  <!-- FAQ -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow blue">Quick questions</span>
+    <h2>Before you start.</h2>
+    <div class="faq reveal" style="text-align:left;margin-top:26px">
+      <details open><summary>Is it really just $1?</summary><p>Yes. One dollar gets you seven days of full access to every tool. After that it's $9.99 a month, and you can cancel anytime.</p></details>
+      <details><summary>What level is this for?</summary><p>Every level. Total beginners building their first clean reps, all the way to advanced players chasing a world-class line.</p></details>
+      <details><summary>What do I need to use it?</summary><p>Just your sticks and a pad or drum, plus a phone, tablet, or computer. Everything else is built into the tool.</p></details>
+      <details><summary>How is this different from a free metronome app?</summary><p>A metronome only clicks. Playalongs loops real exercises with sheet music, randomizes and bumps your tempo, handles marching subdivisions, and generates endless sight-reading.</p></details>
+      <details><summary>Can I cancel?</summary><p>Anytime, in a couple of clicks. No contracts and no phone calls.</p></details>
+    </div>
+  </div></section>
+
+  <!-- FINAL CTA -->
+  <section class="center"><div class="wrap">
+    <span class="eyebrow">Start today</span>
+    <h2>Get cleaner. <span class="cb">No matter what.</span></h2>
+    <p class="sub">Every tool you need to build clean, fast, confident hands, all in one place. Try it for a dollar and feel the difference inside a week.</p>
+    <div class="pricecard reveal">
+      <h3>The RDM Playalongs</h3>
+      <div class="price">$1 for 7 days</div>
+      <div class="small">Then $9.99/mo. Cancel anytime. No contracts.</div>
+      <a class="btn full big" style="display:block" href="#" data-trial>Start $1 Trial</a>
+    </div>
+    <p class="altline"><a href="index.html">Rather own it for life? Get this tool free, forever, inside The RDM Method →</a></p>
+  </div></section>
+
+  <footer class="foot">
+    <div><a href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a> · <a href="https://instagram.com/anthony.steller200" target="_blank" rel="noopener">Instagram</a> · <a href="#" >YouTube</a></div>
+    <div class="row2">Copyright © 2026 Rudimental Drumming Mastery · <a href="privacy-policy.html">Privacy Policy</a> · <a href="terms.html" style="color:rgba(255,255,255,.85)">Terms of Service</a></div>
+  </footer>
+
+</div>
+<script>
+  /* The app's trial-signup URL. Change this ONE line at deploy time to point at the live app. */
+  var TRIAL_URL = "https://playalongs.rudimentaldrummingmastery.com/signup";
+  document.querySelectorAll('[data-trial]').forEach(function(a){ a.setAttribute('href', TRIAL_URL); });
+
+  /* Scroll reveal — staggers siblings; degrades to visible with no observer. */
+  (function(){
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(function(e){ e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (!en.isIntersecting) return;
+        var e = en.target;
+        var sibs = Array.prototype.slice.call(e.parentNode.children).filter(function(c){ return c.classList.contains('reveal'); });
+        var i = sibs.indexOf(e);
+        e.style.transitionDelay = (i > 0 ? Math.min(i * 70, 280) : 0) + 'ms';
+        e.classList.add('in');
+        io.unobserve(e);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function(e){ io.observe(e); });
+  })();
+</script>
+</body>
+</html>
