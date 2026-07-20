@@ -157,6 +157,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 </style>
+  <script src="analytics.js"></script>
 </head>
 <body>
 <div class="bg-fx" aria-hidden="true"></div>
@@ -202,7 +203,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
               <li><span class="ck">&#10003;</span> Advanced marching metronome</li>
               <li><span class="ck">&#10003;</span> Practice anywhere, in your browser</li>
             </ul>
-            <a href="https://playalongs.rudimentaldrummingmastery.com/start" class="cta blue"><span class="big">See the Practice Tool</span><span class="small">$1, 7-day trial · cancel anytime</span></a>
+            <a href="start.html" class="cta blue"><span class="big">See the Practice Tool</span><span class="small">$1, 7-day trial · cancel anytime</span></a>
             <p class="tier-note">No commitment. Cancel anytime.</p>
           </div>
 
@@ -357,7 +358,7 @@ const RESULTS = {
     why:"You don't have a tool that forces good reps and trains your ear to hear clean vs. dirty. That's exactly the gap.",
     next:"Use <b style='color:#058890'>The RDM Playalongs</b> tool every day. It'll make you cleaner, more accurate, and sharpen your ears, no matter what.",
     cta:"Start the $1 Trial",
-    url:"https://playalongs.rudimentaldrummingmastery.com/start"
+    url:"start.html"
   },
   M: {
     flag:"Your path: the system",
@@ -465,6 +466,7 @@ function submitEmail(e){
   const ig = document.getElementById('ig-input').value;
   if(!isIG(cleanIG(ig))){ return showEmailErr('Please enter a valid Instagram username (letters, numbers, . and _ only).'); }
   saveLead(firstName, email, ig);   // fire-and-forget; never blocks the result
+  if(window.rdmTrack){ var _pn={P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[winner()]||winner(); rdmTrack('Lead',{product:_pn}); rdmTrack('quiz_complete',{product:_pn}); }
   showResult();
   return false;
 }
@@ -543,6 +545,8 @@ function showResult(){
   const cta = document.getElementById('r-cta');
   cta.textContent = r.cta;
   cta.href = r.url;
+  var _w = winner(), _pn = {P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[_w]||_w;
+  cta.onclick = function(){ if(window.rdmTrack){ _w==='A' ? rdmTrack('academy_apply_click',{product:_pn}) : rdmTrack('InitiateCheckout',{product:_pn}); } };
   show('screen-result');
 }
 </script>

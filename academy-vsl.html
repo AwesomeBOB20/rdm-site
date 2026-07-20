@@ -245,6 +245,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-co
 .about-sign span{display:block;font-weight:500;color:#5b5563;font-size:.9rem;}
 @media (max-width:760px){ .about-grid{grid-template-columns:1fr;} .about-photo{min-height:260px;} }
 </style>
+  <script src="analytics.js"></script>
 </head>
 <body>
 
@@ -520,6 +521,12 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
 (function(C,A,L){let p=function(a,ar){a.q.push(ar);};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true;}if(ar[0]===L){const api=function(){p(api,arguments);};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,["initNamespace",namespace]);}else p(cal,ar);return;}p(cal,ar);};})(window,"https://app.cal.com/embed/embed.js","init");
 Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
 Cal.ns["rdm-strategy"]("ui",{"hideEventTypeDetails":false,"layout":"month_view"});
+</script>
+<script>
+/* analytics — fire academy_apply_click on every Apply CTA (application = the real Lead, tracked there) */
+document.querySelectorAll('a[href="academy-application.html"], .mobile-buybar').forEach(function(a){
+  a.addEventListener('click', function(){ if(window.rdmTrack) rdmTrack('academy_apply_click', {product:'Academy'}); });
+});
 </script>
 </body>
 </html>

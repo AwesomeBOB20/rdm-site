@@ -228,6 +228,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   .proofband .logo-badge{width:66px;height:66px;padding:11px;}
 }
 </style>
+  <script src="analytics.js"></script>
 </head>
 <body>
 <div class="bg-fx"></div>
@@ -479,7 +480,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 <script>
   /* The app's trial-signup URL. Change this ONE line at deploy time to point at the live app. */
   var TRIAL_URL = "https://playalongs.rudimentaldrummingmastery.com/signup";
-  document.querySelectorAll('[data-trial]').forEach(function(a){ a.setAttribute('href', TRIAL_URL); });
+  document.querySelectorAll('[data-trial]').forEach(function(a){
+    a.setAttribute('href', TRIAL_URL);
+    a.addEventListener('click', function(){ if(window.rdmTrack) rdmTrack('InitiateCheckout', {product:'Playalongs'}); });
+  });
 
   /* Scroll reveal — staggers siblings; degrades to visible with no observer. */
   (function(){

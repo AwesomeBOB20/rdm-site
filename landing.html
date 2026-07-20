@@ -405,6 +405,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
   .proof .logo-badge{width:66px;height:66px;padding:11px;}
 }
 </style>
+  <script src="analytics.js"></script>
 </head>
 <body>
 
@@ -844,6 +845,16 @@ document.querySelectorAll('.faq-q').forEach(function(btn){
   }, {threshold:0.05});
   watch.forEach(function(w){ io.observe(w); });
 })();
+</script>
+<script>
+/* analytics — fire InitiateCheckout on Stripe checkout clicks (Method $147 / Method+Lessons $247) */
+document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function(a){
+  a.addEventListener('click', function(){
+    if(!window.rdmTrack) return;
+    var bundle = /1Jm07/.test(a.href);
+    rdmTrack('InitiateCheckout', { product: bundle ? 'Method + Lessons' : 'Method', value: bundle ? 247 : 147, currency:'USD' });
+  });
+});
 </script>
 </body>
 </html>

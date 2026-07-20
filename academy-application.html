@@ -138,6 +138,7 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 .foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 </style>
+  <script src="analytics.js"></script>
 </head>
 <body>
 <div class="bg-fx" aria-hidden="true"></div>
@@ -479,6 +480,7 @@ function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
 
 function saveApplication(){
+  if(window.rdmTrack) rdmTrack('Lead', {product:'Academy'});
   if(SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const payload = {
     formType:'academy',
@@ -511,7 +513,7 @@ Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#4D1948"},
 /* After a successful booking, send them to the pre-call guide. */
 Cal.ns["rdm-strategy"]("on",{
   action:"bookingSuccessful",
-  callback:function(){ window.location.href = "precall-guide.html"; }
+  callback:function(){ if(window.rdmTrack) rdmTrack('Schedule',{product:'Academy'}); window.location.href = "precall-guide.html"; }
 });
 </script>
 <footer class="site-footer">
