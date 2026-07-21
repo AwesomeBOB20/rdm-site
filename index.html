@@ -39,6 +39,13 @@ img{max-width:100%;height:auto;}
 
 /* shell */
 .shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
+/* On a phone the shell both vertically centred the step AND stretched to fill the screen, which pinned
+   the footer to the bottom — the shortest question left a 329px void beneath it. Sit the questions under
+   the header and let the page end with the content. */
+@media (max-width:760px){
+  .shell{align-items:flex-start;padding:20px 16px 24px;flex:0 0 auto;}
+  .site{min-height:0;}
+}
 .stage{width:100%;max-width:680px;}
 
 /* progress */
