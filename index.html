@@ -31,21 +31,19 @@ body{overscroll-behavior:none;font-family:Ubuntu,Helvetica,Arial,sans-serif;back
 img{max-width:100%;height:auto;}
 .bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.46),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
-.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
+.site{position:relative;z-index:1;display:flex;flex-direction:column;}
 
 /* top bar */
 .topbar{display:flex;align-items:center;justify-content:center;min-height:76px;padding:16px;border-bottom:var(--b);background:var(--purple);}
 .topbar img{height:38px;display:block;}
 
 /* shell */
-.shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
-/* On a phone the shell both vertically centred the step AND stretched to fill the screen, which pinned
-   the footer to the bottom — the shortest question left a 329px void beneath it. Sit the questions under
-   the header and let the page end with the content. */
-@media (max-width:760px){
-  .shell{align-items:flex-start;padding:20px 16px 24px;flex:0 0 auto;}
-  .site{min-height:0;}
-}
+/* NOT flex:1, and .site has no forced screen height (below). Stretching the shell to fill the viewport
+   pinned the footer exactly one screen down, so a short step left a big void between the last button and
+   the footer — 280px on desktop, 329px on a phone. The page now simply ends where the content ends. */
+.shell{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center;padding:28px 18px 32px;}
+@media (max-width:760px){ .shell{padding:20px 16px 24px;} }
+
 .stage{width:100%;max-width:680px;}
 
 /* progress */

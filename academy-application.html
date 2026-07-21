@@ -33,21 +33,16 @@ body{overscroll-behavior:none;font-family:Ubuntu,Helvetica,Arial,sans-serif;back
 img{max-width:100%;height:auto;}
 .bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(3,16,18,.44),rgba(3,16,18,.6)),url('Background-Blue.png') center/cover no-repeat;background-color:var(--blue-deep);}
-.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
+.site{position:relative;z-index:1;display:flex;flex-direction:column;}
 
 .topbar{display:flex;align-items:center;justify-content:center;min-height:76px;padding:16px;border-bottom:var(--b);background:var(--blue-deep);}
 .topbar img{height:38px;display:block;}
 
-.shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
-/* On a phone, vertically centring a short step throws the leftover height above AND below it — the
-   shortest screen was leaving ~100px of dead space on top and ~130px underneath. Sit the questions
-   under the header instead and trim the bottom padding; there's no room to spare on mobile. */
-@media (max-width:760px){
-  .shell{align-items:flex-start;padding:20px 16px 24px;flex:0 0 auto;}
-  /* and don't stretch the page to the full screen height either: .shell{flex:1} was pinning the footer
-     to the bottom, so a short step left a ~215px void between the last button and the footer. */
-  .site{min-height:0;}
-}
+/* NOT flex:1, and .site has no forced screen height (below). Stretching the shell to fill the viewport
+   pinned the footer exactly one screen down, so a short step left a big void between the last button and
+   the footer — 280px on desktop, 329px on a phone. The page now simply ends where the content ends. */
+.shell{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center;padding:28px 18px 32px;}
+@media (max-width:760px){ .shell{padding:20px 16px 24px;} }
 .stage{width:100%;max-width:680px;}
 
 /* progress */
