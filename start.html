@@ -479,7 +479,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 </div>
 <script>
   /* The app's trial-signup URL. Change this ONE line at deploy time to point at the live app. */
-  var TRIAL_URL = "https://playalongs.rudimentaldrummingmastery.com/signup";
+  var TRIAL_URL = "https://app.rudimentaldrummingmastery.com/signup";
   document.querySelectorAll('[data-trial]').forEach(function(a){
     a.setAttribute('href', TRIAL_URL);
     a.addEventListener('click', function(){ if(window.rdmTrack) rdmTrack('InitiateCheckout', {product:'Playalongs'}); });
