@@ -39,6 +39,15 @@ img{max-width:100%;height:auto;}
 .topbar img{height:38px;display:block;}
 
 .shell{flex:1;display:flex;align-items:center;justify-content:center;padding:30px 18px 60px;}
+/* On a phone, vertically centring a short step throws the leftover height above AND below it — the
+   shortest screen was leaving ~100px of dead space on top and ~130px underneath. Sit the questions
+   under the header instead and trim the bottom padding; there's no room to spare on mobile. */
+@media (max-width:760px){
+  .shell{align-items:flex-start;padding:20px 16px 24px;flex:0 0 auto;}
+  /* and don't stretch the page to the full screen height either: .shell{flex:1} was pinning the footer
+     to the bottom, so a short step left a ~215px void between the last button and the footer. */
+  .site{min-height:0;}
+}
 .stage{width:100%;max-width:680px;}
 
 /* progress */
