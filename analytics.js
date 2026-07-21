@@ -15,7 +15,7 @@
    ============================================================ */
 (function () {
   var GA4_ID   = "G-R3GJ1VENHY";       // <-- paste GA4 Measurement ID here
-  var PIXEL_ID = "XXXXXXXXXXXXXXX";    // <-- paste Meta Pixel ID here
+  var PIXEL_ID = "2492882841232347";   // <-- paste Meta Pixel ID here
 
   // "On" only when a REAL id is set — the placeholders below are treated as off (so this ships as a no-op).
   var gaOn = /^G-[A-Z0-9]{6,}$/.test(GA4_ID) && GA4_ID !== "G-XXXXXXXXXX";
