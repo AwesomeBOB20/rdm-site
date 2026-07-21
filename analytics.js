@@ -14,7 +14,7 @@
        (optional data-track-params='{"value":147,"currency":"USD","product":"Method"}')
    ============================================================ */
 (function () {
-  var GA4_ID   = "G-XXXXXXXXXX";       // <-- paste GA4 Measurement ID here
+  var GA4_ID   = "G-R3GJ1VENHY";       // <-- paste GA4 Measurement ID here
   var PIXEL_ID = "XXXXXXXXXXXXXXX";    // <-- paste Meta Pixel ID here
 
   // "On" only when a REAL id is set — the placeholders below are treated as off (so this ships as a no-op).
