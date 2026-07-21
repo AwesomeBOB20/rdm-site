@@ -31,17 +31,16 @@ body{overscroll-behavior:none;font-family:Ubuntu,Helvetica,Arial,sans-serif;back
 img{max-width:100%;height:auto;}
 .bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.46),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
-.site{position:relative;z-index:1;display:flex;flex-direction:column;}
+.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
 
 /* top bar */
 .topbar{display:flex;align-items:center;justify-content:center;min-height:76px;padding:16px;border-bottom:var(--b);background:var(--purple);}
 .topbar img{height:38px;display:block;}
 
 /* shell */
-/* NOT flex:1, and .site has no forced screen height (below). Stretching the shell to fill the viewport
-   pinned the footer exactly one screen down, so a short step left a big void between the last button and
-   the footer — 280px on desktop, 329px on a phone. The page now simply ends where the content ends. */
-.shell{flex:0 0 auto;display:flex;align-items:flex-start;justify-content:center;padding:28px 18px 32px;}
+/* Fills the space under the header and centres the question in it. With no footer below there's nothing
+   left to push down, so this reads as centred rather than as a gap. */
+.shell{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 18px 32px;}
 @media (max-width:760px){ .shell{padding:20px 16px 24px;} }
 
 .stage{width:100%;max-width:680px;}
@@ -153,14 +152,6 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .tier-note.urgent{color:#b5430f;font-weight:600;}
 @media (max-width:980px){.tiers-4{grid-template-columns:repeat(2,1fr);gap:16px;}.tier.featured{transform:none;}.prodbreak{width:94vw;}}
 @media (max-width:560px){.tiers-4{grid-template-columns:1fr;gap:24px;max-width:420px;margin-left:auto;margin-right:auto;}.tier-tagline{min-height:0;}}
-/* unified site footer (matches start.html) */
-.site-footer{position:relative;z-index:1;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
-.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
-.foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
-.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
-.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
-.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 </style>
   <script src="analytics.js"></script>
 </head>
@@ -555,14 +546,5 @@ function showResult(){
   show('screen-result');
 }
 </script>
-<footer class="site-footer">
-  <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
-  <div class="foot-social">
-    <a href="https://www.instagram.com/anthony.steller200/" class="foot-btn foot-ig" target="_blank" rel="noopener">Instagram</a>
-    <a href="https://www.youtube.com/@anthony.steller200" class="foot-btn foot-yt" target="_blank" rel="noopener">YouTube</a>
-    <a href="https://www.facebook.com/anthony.steller.98/" class="foot-btn foot-fb" target="_blank" rel="noopener">Facebook</a>
-  </div>
-  <div class="foot-pill">Copyright &copy; 2026 Rudimental Drumming Mastery | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></div>
-</footer>
 </body>
 </html>
