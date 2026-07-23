@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Gridding Handbook Is On The Way</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#96318d; --blue:#06aeb9; --orange:#fe6429; --tan:#fff0d3;
+  --black:#000; --b:3px solid #000; --r:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{overscroll-behavior:none;
+  font-family:'Ubuntu',sans-serif; color:#fff; min-height:100vh;min-height:100svh;
+  background:var(--purple);
+  display:flex; align-items:center; justify-content:center; padding:32px 18px;
+}
+.bg{transform:translateZ(0);backface-visibility:hidden;position:fixed; inset:0;bottom:auto;height:100vh;height:100lvh; z-index:0; pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.45),rgba(18,4,18,.62)),url('Background%203.png') center/cover no-repeat;}
+.wrap{position:relative; z-index:1; width:100%; max-width:640px;}
+.logo{display:block; height:64px; margin:0 auto 22px;}
+.card{
+  background:var(--tan); color:#000; border:var(--b); border-radius:var(--r);
+  box-shadow:0 14px 40px rgba(0,0,0,.45); padding:38px 34px; text-align:center;
+}
+.badge{
+  display:inline-block; background:var(--blue); color:#fff; border:2px solid #000;
+  border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; padding:6px 16px; margin-bottom:18px; text-shadow:0 1px 1px rgba(0,0,0,.3);
+}
+h1{font-size:clamp(1.7rem,4.5vw,2.4rem); line-height:1.1; margin-bottom:12px;}
+h1 .o{color:var(--orange);}
+.sub{color:#444; font-size:1.02rem; max-width:480px; margin:0 auto 26px;}
+.steps{text-align:left; display:flex; flex-direction:column; gap:14px; margin:0 auto 28px; max-width:520px;}
+.step{display:flex; gap:14px; align-items:flex-start; background:#fff7e6; border:2px solid #000; border-radius:14px; padding:16px 18px;}
+.step .n{flex:0 0 auto; width:34px; height:34px; border-radius:50%; background:var(--purple); color:#fff;
+  display:flex; align-items:center; justify-content:center; font-weight:700; border:2px solid #000;}
+.step h3{font-size:1.05rem; margin-bottom:3px;}
+.step p{font-size:.94rem; color:#333; line-height:1.5;}
+.btn{
+  display:inline-block; background:var(--orange); color:#fff; text-decoration:none;
+  border:var(--b); border-radius:var(--r); padding:15px 34px; font-weight:700; font-size:1.05rem;
+  text-shadow:0 1px 1px rgba(0,0,0,.3); transition:transform .14s ease, filter .2s ease;
+}
+.btn:hover{transform:translateY(-2px); filter:brightness(1.05);}
+.note{margin-top:18px; font-size:.86rem; color:#555;}
+.foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
+a.link{color:var(--purple); font-weight:700;}
+.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
+.foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
+.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
+</style>
+  <script src="analytics.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="wrap">
+  <img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM" class="logo">
+  <div class="card">
+    <span class="badge">Payment Confirmed</span>
+    <h1>Your <span class="o">Gridding Handbook</span> is on the way 🥁</h1>
+    <p class="sub">The download link is being emailed to you right now. Here is what to do next.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <div><h3>Check your email</h3><p>Your download link arrives within a minute or two. Check spam if you don't see it. The link works for 30 days, so save the PDF to your device.</p></div>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <div><h3>Start slow</h3><p>Open any page, put on a metronome, and practice way slower than you think you should. The Rule of 20 is in the book. Use it.</p></div>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <div><h3>Join the RDM community</h3><p>Free, on Skool. Post the grids you're working on and get feedback from Anthony and other drummers chasing a line.</p></div>
+      </div>
+    </div>
+
+    <a href="https://www.skool.com/rudimental-drumming-mastery-8341" class="btn">Join the RDM Community →</a>
+    <p class="note">Didn't get the email after a few minutes? Write to <a class="link" href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a> and Anthony will send your link personally.</p>
+  </div>
+  <p class="foot">© 2026 RDM: Rudimental Drumming Mastery</p>
+</div>
+<footer class="site-footer">
+  <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
+  <div class="foot-social">
+    <a href="https://www.instagram.com/anthony.steller200/" class="foot-btn foot-ig" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.youtube.com/@anthony.steller200" class="foot-btn foot-yt" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.facebook.com/anthony.steller.98/" class="foot-btn foot-fb" target="_blank" rel="noopener">Facebook</a>
+  </div>
+  <div class="foot-pill">Copyright &copy; 2026 Rudimental Drumming Mastery | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></div>
+</footer>
+<script>/* analytics — book purchase conversion (Stripe redirect target) */
+if(window.rdmTrack) rdmTrack('Purchase', { product:'GriddingHandbook', value:27, currency:'USD' });</script>
+</body>
+</html>

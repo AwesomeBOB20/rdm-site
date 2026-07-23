@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Drummer's Gridding Handbook | Rudimental Drumming Mastery</title>
+<meta name="description" content="150 pages of grids: 6 grid types, 12 variations, and 100+ pages of exercises across Eights, Bucks, Double Beat, Huggadics, and Huckgadics. Instant download, $27.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#96318d; --blue:#06aeb9; --blue-deep:#058890; --orange:#fe6429; --tan:#fff0d3;
+  --black:#000; --b:3px solid #000; --r:20px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{overscroll-behavior:none;font-family:'Ubuntu',sans-serif;color:#fff;background:var(--purple);}
+.bg{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.5),rgba(18,4,18,.66)),url('Background%203.png') center/cover no-repeat;}
+main{position:relative;z-index:1;}
+.container{max-width:1040px;margin:0 auto;padding:0 20px;}
+
+/* top bar */
+.topbar{position:sticky;top:0;z-index:20;background:rgba(18,4,18,.86);backdrop-filter:blur(6px);border-bottom:var(--b);}
+.topbar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 20px;}
+.topbar img{height:44px;display:block;}
+.topbar .cta-sm{background:var(--orange);color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
+  border:var(--b);border-radius:999px;padding:10px 22px;text-shadow:0 1px 1px rgba(0,0,0,.3);white-space:nowrap;
+  transition:transform .14s ease,filter .2s ease;}
+.topbar .cta-sm:hover{transform:translateY(-2px);filter:brightness(1.05);}
+
+/* hero */
+.hero{padding:56px 0 30px;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;}
+.eyebrow{display:inline-block;background:var(--blue-deep);color:#fff;border:2px solid #000;border-radius:999px;
+  font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 16px;margin-bottom:16px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08;margin-bottom:14px;text-shadow:0 2px 8px rgba(0,0,0,.4);}
+h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
+.hero p.lede{font-size:1.08rem;line-height:1.65;color:rgba(255,255,255,.92);max-width:52ch;margin-bottom:22px;}
+.price-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.price{font-size:2rem;font-weight:700;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.4);}
+.price small{font-size:.95rem;font-weight:400;color:rgba(255,255,255,.75);display:block;}
+.btn{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;border:var(--b);border-radius:var(--r);
+  padding:16px 36px;font-weight:700;font-size:1.12rem;text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:0 8px 22px rgba(0,0,0,.35);
+  transition:transform .14s ease,filter .2s ease;}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
+.microtrust{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:10px;}
+.hero-art img{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 32px rgba(0,0,0,.45));}
+
+/* stat strip */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 46px;}
+.stat{background:rgba(18,4,18,.55);border:var(--b);border-radius:14px;padding:14px 10px;text-align:center;}
+.stat b{display:block;font-size:1.5rem;color:var(--blue);}
+.stat span{font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.75);font-weight:700;}
+
+/* tan sections */
+.card{background:var(--tan);color:#1a1a1a;border:var(--b);border-radius:var(--r);box-shadow:0 14px 40px rgba(0,0,0,.4);
+  padding:36px 34px;margin-bottom:34px;}
+.card h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:14px;}
+.card h2 .o{color:var(--orange);} .card h2 .p{color:var(--purple);} .card h2 .t{color:var(--blue-deep);}
+.card p{font-size:1rem;line-height:1.65;color:#333;margin-bottom:12px;}
+.perks{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0 6px;}
+.perks li{position:relative;padding-left:30px;font-weight:500;font-size:1rem;line-height:1.5;color:#222;}
+.perks li::before{content:"✓";position:absolute;left:2px;top:0;font-weight:700;color:var(--blue-deep);font-size:1.05rem;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
+.grid2 img{width:100%;height:auto;display:block;border:var(--b);border-radius:14px;background:#fff;}
+.tagline{font-weight:700;color:var(--purple);}
+
+/* exercise chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px;}
+.chip{background:#fff;border:2px solid #000;border-radius:999px;padding:7px 16px;font-weight:700;font-size:.92rem;color:#241f2b;}
+
+/* how it works steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px;}
+.step{background:#fff7e6;border:2px solid #000;border-radius:14px;padding:18px 16px;}
+.step .n{width:34px;height:34px;border-radius:50%;background:var(--purple);color:#fff;border:2px solid #000;
+  display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:10px;}
+.step h3{font-size:1.02rem;margin-bottom:5px;}
+.step p{font-size:.92rem;color:#333;line-height:1.5;margin:0;}
+
+/* faq */
+.faq details{background:#fff7e6;border:2px solid #000;border-radius:14px;padding:0;margin-bottom:10px;overflow:hidden;}
+.faq summary{cursor:pointer;font-weight:700;font-size:1rem;padding:15px 18px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:"+";font-size:1.3rem;font-weight:700;color:var(--purple);}
+.faq details[open] summary::after{content:"–";}
+.faq details p{padding:0 18px 15px;font-size:.95rem;}
+
+/* final cta */
+.final{text-align:center;padding:10px 0 60px;}
+.final .btn{font-size:1.2rem;padding:18px 44px;}
+.final .microtrust{margin-top:12px;}
+
+/* unified site footer */
+.site-footer{position:relative;z-index:1;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
+.foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
+.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
+.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;padding-top:34px;gap:20px;}
+  .hero-art{order:-1;max-width:420px;margin:0 auto;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .grid2{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr;}
+  .card{padding:26px 20px;}
+}
+</style>
+<script src="analytics.js"></script>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a>
+    <a class="cta-sm" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the book, $27</a>
+  </div>
+</div>
+
+<main>
+  <div class="container">
+
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Digital handbook · Instant delivery</span>
+        <h1>The Drummer's <span class="o">Gridding</span> <span class="t">Handbook</span></h1>
+        <p class="lede">
+          Gridding is how drumlines turn basic rhythms into chops. This handbook gives you the whole
+          system: every grid type, every variation, applied across the five exercises every marching
+          snare drummer already knows. Open any page and you have something new to master.
+        </p>
+        <div class="price-row">
+          <span class="price">$27 <small>one time, yours forever</small></span>
+          <a class="btn" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the book →</a>
+        </div>
+        <p class="microtrust">PDF download, sent to your email the moment you buy. Works on any device.</p>
+      </div>
+      <div class="hero-art">
+        <img src="assets/book-mockup.png" alt="The Drummer's Gridding Handbook" fetchpriority="high">
+      </div>
+    </section>
+
+    <div class="stats">
+      <div class="stat"><b>150</b><span>pages</span></div>
+      <div class="stat"><b>6</b><span>grid types</span></div>
+      <div class="stat"><b>12</b><span>variations</span></div>
+      <div class="stat"><b>100+</b><span>pages of grids</span></div>
+    </div>
+
+    <section class="card">
+      <h2>Stop repeating the same three <span class="o">warm-ups</span></h2>
+      <p>
+        You know the feeling. You sit down at the pad, run the exercises you always run, and nothing
+        gets harder. Gridding fixes that. It takes a rhythm you already know and varies it in ways
+        that force your hands, your reading, and your brain to keep up.
+      </p>
+      <p class="tagline">One basic exercise becomes hundreds of new ones. That is the whole trick, and this book teaches all of it.</p>
+      <ul class="perks">
+        <li>The 6 fundamental grid types: Exercise, AB, 4-2-1, Pyramid, 7/8, and Shopping Sprees</li>
+        <li>The 12 gridding variations, from Off The Left through Backwards and Reverse</li>
+        <li>Variation tables in every chapter, so you can build your own grids for years</li>
+        <li>Combination grids at the end of each chapter that stack variations into real challenges</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <div class="grid2">
+        <div>
+          <h2>Built on the five exercises <span class="p">every line runs</span></h2>
+          <p>
+            Each chapter takes one core drumline exercise and pushes it through all twelve variations,
+            written out in clean engraved notation with stickings.
+          </p>
+          <div class="chips">
+            <span class="chip">Eights</span>
+            <span class="chip">Bucks</span>
+            <span class="chip">Double Beat</span>
+            <span class="chip">Huggadics</span>
+            <span class="chip">Huckgadics</span>
+          </div>
+          <p style="margin-top:12px;">
+            Dynamics, fill-ins, independence, ornaments, rudiments, displacement, stickings, groupings,
+            rhythms, backwards, and reverse. If a drumline can throw it at you, it is in here.
+          </p>
+        </div>
+        <img src="assets/book-open.png" alt="Inside spread of the handbook" loading="lazy">
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Who this is <span class="t">for</span></h2>
+      <ul class="perks">
+        <li>Marching snare drummers working toward a high school, college, WGI, or DCI line</li>
+        <li>Concert percussionists who want sharper hands, reading, and rhythm interpretation</li>
+        <li>Instructors and arrangers who need a deep bank of exercises for their students</li>
+      </ul>
+      <p>
+        It is not a learn-to-drum book. You should already play basic rhythms and rudiments; the
+        handbook takes it from there.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>How it <span class="o">works</span></h2>
+      <div class="steps">
+        <div class="step"><div class="n">1</div><h3>Buy it</h3><p>Secure checkout through Stripe. $27, one time.</p></div>
+        <div class="step"><div class="n">2</div><h3>Check your email</h3><p>Your download link arrives automatically within a minute or two.</p></div>
+        <div class="step"><div class="n">3</div><h3>Get on the pad</h3><p>Save the PDF to any device, open a page, and start slow with a metronome.</p></div>
+      </div>
+    </section>
+
+    <section class="card faq">
+      <h2>Questions</h2>
+      <details>
+        <summary>What skill level do I need?</summary>
+        <p>You should already play basic rhythms and know your rudiments. From there the book scales with you: early variations are approachable, combination grids at the end of each chapter will humble anyone.</p>
+      </details>
+      <details>
+        <summary>What format is it?</summary>
+        <p>A 150-page PDF. Read it on your phone at the pad, a tablet on a stand, or print the pages you are working on.</p>
+      </details>
+      <details>
+        <summary>How do I get it after paying?</summary>
+        <p>The download link is emailed to you automatically right after checkout. If anything goes wrong, reply to that email and Anthony will personally send you a fresh link.</p>
+      </details>
+      <details>
+        <summary>Is there a refund?</summary>
+        <p>No. It is a digital book with instant lifetime access, so all sales are final.</p>
+      </details>
+      <details>
+        <summary>Who wrote it?</summary>
+        <p>Anthony Steller: TMEA 6A All-State percussionist, Lone Star and Plano Drumline snare solo gold medalist, drumline arranger, and the coach behind Rudimental Drumming Mastery.</p>
+      </details>
+    </section>
+
+    <section class="final">
+      <a class="btn" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the Gridding Handbook, $27 →</a>
+      <p class="microtrust">Instant email delivery · yours for life · no subscription</p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
+  <div class="foot-social">
+    <a href="https://www.instagram.com/anthony.steller200/" class="foot-btn foot-ig" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.youtube.com/@anthony.steller200" class="foot-btn foot-yt" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.facebook.com/anthony.steller.98/" class="foot-btn foot-fb" target="_blank" rel="noopener">Facebook</a>
+  </div>
+  <div class="foot-pill">Copyright &copy; 2026 Rudimental Drumming Mastery | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></div>
+</footer>
+</body>
+</html>
