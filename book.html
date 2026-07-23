@@ -50,7 +50,15 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
   transition:transform .14s ease,filter .2s ease;}
 .btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
 .microtrust{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:10px;}
+/* risk-reversal badges under the CTA (Hormozi: reduce risk right at the button) */
+.trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;}
+.trust span{font-size:.9rem;font-weight:600;color:rgba(255,255,255,.9);display:flex;align-items:center;gap:7px;}
+.trust span::before{content:"✓";color:var(--blue);font-weight:800;}
 .hero-art img{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 32px rgba(0,0,0,.45));}
+/* author / authority proof band */
+.author{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;}
+.author img{width:120px;height:120px;border-radius:50%;border:var(--b);object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,.3);}
+@media (max-width:600px){ .author{grid-template-columns:1fr;justify-items:center;text-align:center;} }
 
 /* stat strip */
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 50px;}
@@ -157,18 +165,22 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 
     <section class="hero">
       <div>
-        <span class="eyebrow">Digital handbook · Instant delivery</span>
-        <h1>The Drummer's <span class="o">Gridding</span> <span class="t">Handbook</span></h1>
+        <span class="eyebrow">The Drummer's Gridding Handbook</span>
+        <h1>Never Wonder What To <span class="o">Practice</span> Again</h1>
         <p class="lede">
-          Gridding is how drumlines turn basic rhythms into chops. This handbook gives you the whole
-          system: every grid type, every variation, applied across the five exercises every marching
-          snare drummer already knows. Open any page and you have something new to master.
+          Gridding is how drumlines turn a basic exercise into endless chops. This handbook hands you the
+          whole system: take one exercise you already know and multiply it into hundreds of new ones. Open
+          to any page and you will always have something harder to master.
         </p>
         <div class="price-row">
-          <span class="price">$27 <small>one time, yours forever</small></span>
+          <span class="price">$27 <small>one time, yours for life</small></span>
           <a class="btn" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the book →</a>
         </div>
-        <p class="microtrust">PDF download, sent to your email the moment you buy. Works on any device.</p>
+        <div class="trust">
+          <span>Sent to your email in minutes</span>
+          <span>Yours for life</span>
+          <span>Works on any device</span>
+        </div>
       </div>
       <div class="hero-art">
         <img src="assets/book-mockup.png" alt="The Drummer's Gridding Handbook" fetchpriority="high">
@@ -185,18 +197,17 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     <!-- 1: tan -->
     <section class="sec">
       <div class="panel panel--tan">
-        <h2>Stop repeating the same three <span class="o">warm-ups</span></h2>
+        <h2>You practice for hours and still hit the <span class="o">same wall</span></h2>
         <p>
-          You know the feeling. You sit down at the pad, run the exercises you always run, and nothing
-          gets harder. Gridding fixes that. It takes a rhythm you already know and varies it in ways
-          that force your hands, your reading, and your brain to keep up.
+          You run the exercises you always run. Your hands know them cold, so nothing gets harder and
+          nothing gets cleaner. That is the plateau, and grinding the same reps will not get you off it.
         </p>
-        <p class="tagline">One basic exercise becomes hundreds of new ones. That is the whole trick, and this book teaches all of it.</p>
+        <p class="tagline">Gridding does. It takes a rhythm you already own and bends it in ways that force your hands, your reading, and your brain to catch up. One exercise becomes hundreds, and every one of them is a rep you have never played before.</p>
         <ul class="perks">
-          <li>The 6 fundamental grid types: Exercise, AB, 4-2-1, Pyramid, 7/8, and Shopping Sprees</li>
-          <li>The 12 gridding variations, from Off The Left through Backwards and Reverse</li>
-          <li>Variation tables in every chapter, so you can build your own grids for years</li>
-          <li>Combination grids at the end of each chapter that stack variations into real challenges</li>
+          <li>The 6 grid types that turn any exercise into a system: Exercise, AB, 4-2-1, Pyramid, 7/8, and Shopping Sprees</li>
+          <li>The 12 variations that reshape it: accents, fill-ins, independence, ornaments, rudiments, displacement, stickings, groupings, rhythms, off the left, backwards, and reverse</li>
+          <li>Variation tables in every chapter, so you can keep building your own grids for years</li>
+          <li>Combination grids that stack the variations into challenges that will humble anyone</li>
         </ul>
       </div>
     </section>
@@ -206,10 +217,10 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
       <div class="panel panel--blue">
         <div class="grid2">
           <div>
-            <h2>Built on the five exercises <span class="hl">every line runs</span></h2>
+            <h2>Every exercise your line runs, <span class="hl">turned into hundreds</span></h2>
             <p>
               Each chapter takes one core drumline exercise and pushes it through all twelve variations,
-              written out in clean engraved notation with stickings.
+              written out in clean engraved notation with stickings so there is zero guesswork.
             </p>
             <div class="chips">
               <span class="chip">Eights</span>
@@ -228,29 +239,53 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
       </div>
     </section>
 
-    <!-- 3: tan -->
+    <!-- 3: tan — toolbox (effort) + who -->
     <section class="sec">
       <div class="panel panel--tan">
-        <h2>Who this is <span class="t">for</span></h2>
+        <h2>Open any page. Always know <span class="t">exactly what to work on</span></h2>
+        <p>
+          This is a toolbox, not a book you read once. Flip to any page and you have a fresh grid to
+          master. No more staring at your pad wondering what would actually make you better.
+        </p>
+        <p class="tagline">Who it is for:</p>
         <ul class="perks">
-          <li>Marching snare drummers working toward a high school, college, WGI, or DCI line</li>
-          <li>Concert percussionists who want sharper hands, reading, and rhythm interpretation</li>
+          <li>Marching snare drummers chasing a high school, college, WGI, or DCI line</li>
+          <li>Rudimental players who want sharper hands, faster reading, and cleaner chops</li>
           <li>Instructors and arrangers who need a deep bank of exercises for their students</li>
         </ul>
         <p>
-          It is not a learn-to-drum book. You should already play basic rhythms and rudiments; the
+          It is not a learn-to-drum book. If you already play basic rhythms and know your rudiments, the
           handbook takes it from there.
         </p>
       </div>
     </section>
 
-    <!-- 4: purple band -->
+    <!-- 4: blue band — author authority (proof) -->
+    <section class="sec">
+      <div class="panel panel--blue">
+        <div class="author">
+          <img src="pic%20of%20me.jpg" alt="Anthony Steller" loading="lazy">
+          <div>
+            <h2 style="margin-bottom:10px;">Written by a drummer who has <span class="hl">made the lines you are chasing</span></h2>
+            <p style="margin:0;">
+              Anthony Steller is a TMEA 6A All-State snare drummer and first chair in the state, a gold
+              medalist at the Lone Star and Plano Drumline snare solo contests, and second place at PASIC
+              2022. He has written drumline books for competing marching bands and coached lines to Best
+              Percussion and Best Snares captions. Every grid in this handbook is the exact system he used
+              to get there, and the one he teaches his own students.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5: purple band -->
     <section class="sec">
       <div class="panel panel--purple">
-        <h2>How it <span class="hl">works</span></h2>
+        <h2>Get it in <span class="hl">two minutes</span></h2>
         <div class="steps">
-          <div class="step"><div class="n">1</div><h3>Buy it</h3><p>Secure checkout through Stripe. $27, one time.</p></div>
-          <div class="step"><div class="n">2</div><h3>Check your email</h3><p>Your download link arrives automatically within a minute or two.</p></div>
+          <div class="step"><div class="n">1</div><h3>Buy it</h3><p>Secure checkout through Stripe. $27, one time, no account to make.</p></div>
+          <div class="step"><div class="n">2</div><h3>Check your email</h3><p>Your download link lands automatically, usually within a minute.</p></div>
           <div class="step"><div class="n">3</div><h3>Get on the pad</h3><p>Save the PDF to any device, open a page, and start slow with a metronome.</p></div>
         </div>
       </div>
@@ -274,6 +309,8 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     </section>
 
     <section class="final">
+      <h2 style="color:#fff;font-size:clamp(1.6rem,3.6vw,2.3rem);margin-bottom:8px;text-shadow:0 2px 8px rgba(0,0,0,.4);">Stop guessing. Start gridding.</h2>
+      <p style="color:rgba(255,255,255,.85);max-width:46ch;margin:0 auto 22px;">Hundreds of new reps, the exact system that makes the line, in your inbox in two minutes.</p>
       <a class="btn" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the Gridding Handbook, $27 →</a>
       <p class="microtrust">Instant email delivery · yours for life · no subscription</p>
     </section>
