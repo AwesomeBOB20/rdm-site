@@ -57,7 +57,11 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .hero-art img{width:100%;height:auto;display:block;filter:drop-shadow(0 18px 32px rgba(0,0,0,.45));}
 /* author / authority proof band */
 .author{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;}
-.author img{width:120px;height:120px;border-radius:50%;border:var(--b);object-fit:cover;box-shadow:0 8px 20px rgba(0,0,0,.3);}
+/* Photo of Anthony, shaded the EXACT same purple as the start/landing/academy-vsl about-photo
+   (Anthony, 2026-07-23): desaturate the image, then a purple color-blend overlay at .72. */
+.author-photo{position:relative;width:120px;height:120px;flex:none;border-radius:50%;border:var(--b);overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.3);}
+.author-photo img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.35) contrast(1.04);}
+.author-photo::after{content:"";position:absolute;inset:0;background:var(--purple);mix-blend-mode:color;opacity:.72;pointer-events:none;}
 @media (max-width:600px){ .author{grid-template-columns:1fr;justify-items:center;text-align:center;} }
 
 /* stat strip */
@@ -264,7 +268,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     <section class="sec">
       <div class="panel panel--blue">
         <div class="author">
-          <img src="pic%20of%20me.jpg" alt="Anthony Steller" loading="lazy">
+          <span class="author-photo"><img src="pic%20of%20me.jpg" alt="Anthony Steller" loading="lazy"></span>
           <div>
             <h2 style="margin-bottom:10px;">Written by a drummer who has <span class="hl">made the lines you are chasing</span></h2>
             <p style="margin:0;">
