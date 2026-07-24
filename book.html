@@ -27,13 +27,20 @@ main{position:relative;z-index:1;}
 .center{text-align:center;}
 
 /* top bar */
-.topbar{position:sticky;top:0;z-index:20;background:rgba(18,4,18,.86);backdrop-filter:blur(6px);border-bottom:var(--b);}
-.topbar-in{max-width:1040px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 20px;}
-.topbar img{height:44px;display:block;}
-.cta-sm{background:var(--orange);color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
-  border:var(--b);border-radius:999px;padding:10px 22px;text-shadow:0 1px 1px rgba(0,0,0,.3);white-space:nowrap;
-  transition:transform .14s ease,filter .2s ease;}
-.cta-sm:hover{transform:translateY(-2px);filter:brightness(1.05);}
+/* sticky nav — unified with start.html / landing.html / academy-vsl (Anthony, 2026-07-23) */
+nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:18px;
+  padding:12px 22px;background:var(--purple);border-bottom:var(--b);}
+.nav-logo{height:40px;display:block;}
+.nav-links{display:flex;gap:12px;align-items:center;}
+.nav-links a{background:var(--blue);color:#fff;text-decoration:none;text-align:center;
+  border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
+  text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+.nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
+.nav-cta{justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
+  padding:10px 22px;font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);
+  white-space:nowrap;transition:transform .14s,filter .2s;}
+.nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
+@media (max-width:680px){ .nav-links{display:none;} .nav-logo{height:34px;} .nav-cta{font-size:.8rem;padding:8px 14px;} }
 
 /* hero */
 .hero{padding:56px 0 34px;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;}
@@ -99,12 +106,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 /* exercise chips — brand-colored, never white on tan (Anthony, 2026-07-23) */
 .chips{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 6px;}
 .chip{border:2px solid #000;border-radius:999px;padding:8px 18px;font-weight:700;font-size:.95rem;color:#fff;
-  text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:2px 2px 0 rgba(0,0,0,.22);}
-.chip:nth-child(1){background:var(--blue-deep);}
-.chip:nth-child(2){background:var(--orange);}
-.chip:nth-child(3){background:var(--purple);}
-.chip:nth-child(4){background:var(--blue-deep);}
-.chip:nth-child(5){background:var(--orange);}
+  background:var(--purple);text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:2px 2px 0 rgba(0,0,0,.22);}
 
 /* how it works steps — colored number tiles on a purple band */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px;}
@@ -157,12 +159,15 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 <body>
 <div class="bg" aria-hidden="true"></div>
 
-<div class="topbar">
-  <div class="topbar-in">
-    <a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a>
-    <a class="cta-sm" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the book, $27</a>
+<nav>
+  <a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM Rudimental Drumming Mastery" class="nav-logo"></a>
+  <div class="nav-links">
+    <a href="#why">Why It Works</a>
+    <a href="#inside">Inside</a>
+    <a href="#faq">FAQ</a>
   </div>
-</div>
+  <a class="nav-cta" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the book, $27</a>
+</nav>
 
 <main>
   <div class="container">
@@ -217,7 +222,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     </section>
 
     <!-- 2: blue band -->
-    <section class="sec">
+    <section class="sec" id="why">
       <div class="panel panel--blue">
         <div class="grid2">
           <div>
@@ -244,7 +249,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     </section>
 
     <!-- 3: tan — toolbox (effort) + who -->
-    <section class="sec">
+    <section class="sec" id="inside">
       <div class="panel panel--tan">
         <h2>Open any page. Always know <span class="t">exactly what to work on</span></h2>
         <p>
