@@ -20,11 +20,11 @@
 body{overscroll-behavior:none;
   font-family:'Ubuntu',sans-serif; color:#fff; min-height:100vh;min-height:100svh;
   background:var(--purple);
-  display:flex; align-items:center; justify-content:center; padding:32px 18px;
+  display:flex; flex-direction:column; align-items:center; padding:0;
 }
 .bg{transform:translateZ(0);backface-visibility:hidden;position:fixed; inset:0;bottom:auto;height:100vh;height:100lvh; z-index:0; pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.45),rgba(18,4,18,.62)),url('Background%203.png') center/cover no-repeat;}
-.wrap{position:relative; z-index:1; width:100%; max-width:640px;}
+.wrap{position:relative; z-index:1; width:100%; max-width:676px; margin:auto; padding:32px 18px;}
 .logo{display:block; height:64px; margin:0 auto 22px;}
 .card{
   background:var(--tan); color:#000; border:var(--b); border-radius:var(--r);
@@ -55,7 +55,7 @@ h1 .o{color:var(--orange);} h1 .p{color:var(--purple);}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
 /* unified site footer (matches start.html) */
-.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+.site-footer{width:100%;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
