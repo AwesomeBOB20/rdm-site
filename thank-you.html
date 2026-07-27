@@ -51,7 +51,9 @@ h1 .o{color:var(--orange);} h1 .p{color:var(--purple);}
   text-shadow:0 1px 1px rgba(0,0,0,.3); transition:transform .14s ease, filter .2s ease;
 }
 .btn:hover{transform:translateY(-2px); filter:brightness(1.05);}
-.btn.blue{background:var(--blue);}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.btns .btn{flex:0 1 auto;}
+.btn.blue{background:#058890;}
 .note{margin-top:18px; font-size:.86rem; color:#555;}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
@@ -104,7 +106,10 @@ a.link{color:var(--purple); font-weight:700;}
       </div>
     </div>
 
-    <a href="https://www.skool.com/rudimental-drumming-mastery-8341" class="btn">Join the RDM Community →</a>
+    <div class="btns">
+      <a href="https://www.skool.com/rudimental-drumming-mastery-8341" class="btn">Join the RDM Community &rarr;</a>
+      <a href="https://app.rudimentaldrummingmastery.com/signup" class="btn blue">Set up your app account &rarr;</a>
+    </div>
     <p class="note">The best way to reach me is on <a class="link" href="https://instagram.com/anthony.steller200">Instagram</a> or right inside Skool. You can also email <a class="link" href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a>.</p>
   </div>
   <p class="foot">© 2026 RDM: Rudimental Drumming Mastery</p>
