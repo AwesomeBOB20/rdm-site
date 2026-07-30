@@ -57,6 +57,18 @@ h1 .o{color:var(--orange);}
 .note{margin-top:18px; font-size:.86rem; color:#555;}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
+/* Google Meet settings for a live PLAYING call. Both of these are ON by default and both actively
+   sabotage a drum lesson: noise cancellation hears a drum as background noise and ducks it, and
+   auto-framing keeps re-centring on the face so the hands crop out of shot. Only goes on pages that lead
+   to somebody actually playing for Anthony, never the strategy/sales call. (Anthony, 2026-07-30) */
+.meetset{text-align:left;max-width:520px;margin:0 auto 28px;background:#fff7e6;border:2px solid #000;border-radius:14px;padding:16px 18px;}
+.meetset h3{font-size:1.05rem;margin-bottom:4px;}
+.meetset>p{font-size:.94rem;color:#333;line-height:1.5;margin-bottom:10px;}
+.meetset ol{margin:0;padding-left:20px;}
+.meetset li{font-size:.94rem;color:#333;line-height:1.55;margin-bottom:10px;}
+.meetset li:last-child{margin-bottom:0;}
+.meetset li b{color:var(--orange);}
+.meetset .path{display:block;margin-top:3px;font-size:.86rem;color:#666;}
 .site-footer{position:relative;z-index:1;width:100%;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
@@ -104,6 +116,17 @@ a.link{color:var(--purple); font-weight:700;}
         <div class="n">3</div>
         <div><h3>Have this ready</h3><p>Lessons run on <strong>Google Meet</strong>, so all you need is the link I send you. Bring a pad and sticks, the music you’re working on, and a camera angle that actually shows your hands. I cannot fix what I cannot see.</p></div>
       </div>
+    </div>
+
+    <div class="meetset">
+      <h3>Two Google Meet settings to turn off</h3>
+      <p>Both are on by default, and both work against a drum lesson. Takes ten seconds.</p>
+      <ol>
+        <li><b>Noise cancellation, off.</b> Meet treats a drum as background noise and ducks it, so I cannot hear what you are actually playing.
+          <span class="path">Settings &rarr; Audio &rarr; Noise cancellation</span></li>
+        <li><b>Framing, off.</b> Auto-framing keeps re-centring on your face and crops your hands out of the shot.
+          <span class="path">Settings &rarr; Video &rarr; Backgrounds and effects &rarr; Appearance &rarr; Framing</span></li>
+      </ol>
     </div>
 
     <div class="btns">
