@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RDM Audio Test</title>
+<!-- THROWAWAY DIAGNOSTIC (2026-07-29). Answers ONE question: will iOS keep a media element playing
+     when the screen is locked, given that it kills Web Audio? Nothing here touches the app.
+     Delete this file once we have the answer.
+
+     It self-reports on purpose. Asking a student "did the sound keep going?" gets an unreliable answer,
+     so the page measures how far the audio clock advanced while the screen was off and prints the
+     verdict itself. Test A is a media element (the candidate fix); Test B is Web Audio (what the tools
+     use today) so we can confirm the two really do behave differently on the same device. -->
+<style>
+  :root { --purple:#96318d; --blue:#058890; --tan:#fff0d3; --ink:#1c1a1f; }
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { margin:0; padding:18px; background:#234048; color:var(--tan);
+         font-family:Ubuntu,system-ui,-apple-system,sans-serif; line-height:1.5; }
+  h1 { font-size:1.25rem; margin:0 0 4px; }
+  .sub { font-size:.85rem; opacity:.85; margin:0 0 18px; }
+  .card { background:var(--tan); color:var(--ink); border:2px solid #000; border-radius:14px;
+          padding:16px; margin-bottom:14px; }
+  .card h2 { font-size:1rem; margin:0 0 6px; }
+  .card p { font-size:.85rem; margin:0 0 12px; }
+  button { width:100%; height:54px; border:2px solid #000; border-radius:10px; color:#fff;
+           font:inherit; font-weight:700; font-size:1rem; cursor:pointer;
+           text-shadow:0 1px 0 rgba(0,0,0,.35); }
+  .a { background:var(--purple); }
+  .b { background:var(--blue); }
+  .stop { background:#893700; margin-top:8px; }
+  .read { font-variant-numeric:tabular-nums; font-size:.8rem; background:rgba(0,0,0,.06);
+          border-radius:8px; padding:10px; margin-top:10px; white-space:pre-wrap; }
+  .verdict { font-weight:700; font-size:.95rem; padding:12px; border-radius:10px; margin-top:10px;
+             display:none; }
+  .good { background:#1d9e75; color:#fff; display:block; }
+  .bad { background:#a32d2d; color:#fff; display:block; }
+  ol { font-size:.85rem; padding-left:20px; margin:0 0 18px; }
+  li { margin-bottom:5px; }
+</style>
+</head>
+<body>
+
+<h1>RDM audio test</h1>
+<p class="sub">This is a quick test page, not part of the app. It takes about 30 seconds.</p>
+
+<div class="card">
+  <h2>What to do</h2>
+  <ol>
+    <li>Tap <strong>Start test A</strong> below. You should hear a click loop.</li>
+    <li>Lock your phone with the power button.</li>
+    <li>Wait about 20 seconds. Listen.</li>
+    <li>Unlock your phone and come back to this page.</li>
+    <li>Read the green or red box, then send Anthony a screenshot.</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h2>Test A: media player</h2>
+  <p>This is the method we might be able to use. Tap it, lock your phone, then come back.</p>
+  <button class="a" id="btnA">Start test A</button>
+  <button class="stop" id="stopA">Stop</button>
+  <div class="read" id="readA">Not started.</div>
+  <div class="verdict" id="verdictA"></div>
+</div>
+
+<div class="card">
+  <h2>Test B: current method</h2>
+  <p>This is how the app plays sound today. Expected to stop when you lock the phone. Optional, only if you have time.</p>
+  <button class="b" id="btnB">Start test B</button>
+  <button class="stop" id="stopB">Stop</button>
+  <div class="read" id="readB">Not started.</div>
+  <div class="verdict" id="verdictB"></div>
+</div>
+
+<script>
+/* ---------- build a click loop as a real WAV, so Test A has a genuine media resource to play ----------
+   Generated in the page rather than shipped as an asset: keeps this a single throwaway file. */
+function clickLoopWav(seconds, bpm) {
+  var sr = 44100, n = Math.floor(sr * seconds), data = new Float32Array(n);
+  var period = Math.floor(sr * 60 / bpm);
+  for (var start = 0; start < n; start += period) {
+    // short bright click: decaying sine + a touch of noise, ~30ms
+    var len = Math.min(Math.floor(sr * 0.03), n - start);
+    for (var i = 0; i < len; i++) {
+      var t = i / sr, env = Math.exp(-t * 120);
+      data[start + i] += (Math.sin(2 * Math.PI * 1400 * t) * 0.7 + (Math.random() * 2 - 1) * 0.3) * env * 0.8;
+    }
+  }
+  // 16-bit mono PCM WAV
+  var buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf), o = 0;
+  function str(s) { for (var i = 0; i < s.length; i++) v.setUint8(o++, s.charCodeAt(i)); }
+  function u32(x) { v.setUint32(o, x, true); o += 4; }
+  function u16(x) { v.setUint16(o, x, true); o += 2; }
+  str("RIFF"); u32(36 + n * 2); str("WAVE");
+  str("fmt "); u32(16); u16(1); u16(1); u32(sr); u32(sr * 2); u16(2); u16(16);
+  str("data"); u32(n * 2);
+  for (var j = 0; j < n; j++) {
+    var s = Math.max(-1, Math.min(1, data[j]));
+    v.setInt16(o, s * 32767, true); o += 2;
+  }
+  return new Blob([buf], { type: "audio/wav" });
+}
+
+/* ---------- shared measurement ----------
+   The verdict comes from comparing how far the AUDIO clock advanced against how much WALL time passed
+   while the page was hidden. If they match, sound really did keep playing. */
+function makeProbe(readEl, verdictEl, getAudioClock) {
+  var hiddenAt = null, clockAtHide = 0, best = null;
+
+  function render(extra) {
+    var lines = [];
+    lines.push("audio clock: " + getAudioClock().toFixed(1) + "s");
+    if (best) {
+      lines.push("screen was off for: " + best.wall.toFixed(1) + "s");
+      lines.push("audio advanced during that: " + best.audio.toFixed(1) + "s");
+    }
+    if (extra) lines.push(extra);
+    readEl.textContent = lines.join("\n");
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
+      hiddenAt = Date.now(); clockAtHide = getAudioClock();
+    } else if (hiddenAt) {
+      var wall = (Date.now() - hiddenAt) / 1000;
+      var audio = getAudioClock() - clockAtHide;
+      hiddenAt = null;
+      if (wall < 4) { render("Screen was only off for " + wall.toFixed(1) + "s. Try again and wait ~20s."); return; }
+      best = { wall: wall, audio: audio };
+      var ratio = audio / wall;
+      if (ratio > 0.85) {
+        verdictEl.className = "verdict good";
+        verdictEl.textContent = "KEPT PLAYING. Audio ran the whole time the screen was off.";
+      } else if (ratio > 0.15) {
+        verdictEl.className = "verdict bad";
+        verdictEl.textContent = "PARTLY PLAYED, then stopped after about " + audio.toFixed(1) + "s.";
+      } else {
+        verdictEl.className = "verdict bad";
+        verdictEl.textContent = "STOPPED as soon as the screen went off.";
+      }
+      render();
+    }
+  });
+
+  return { tick: function () { if (!hiddenAt) render(); } };
+}
+
+/* ---------- Test A: media element (the candidate) ---------- */
+var el = document.createElement("audio");
+el.loop = true; el.preload = "auto"; el.setAttribute("playsinline", "");
+var probeA = makeProbe(document.getElementById("readA"), document.getElementById("verdictA"),
+  function () { return el.currentTime + (el._laps || 0); });
+// currentTime resets on every loop pass, so accumulate laps or a 20s test would read as ~8s
+el.addEventListener("seeked", function () {});
+el.addEventListener("timeupdate", function () {
+  if (el._last != null && el.currentTime < el._last - 0.3) el._laps = (el._laps || 0) + el._last;
+  el._last = el.currentTime;
+});
+
+document.getElementById("btnA").addEventListener("click", function () {
+  if (!el.src) el.src = URL.createObjectURL(clickLoopWav(8, 100));
+  el._laps = 0; el._last = null;
+  el.play().then(function () {
+    document.getElementById("readA").textContent = "Playing. Now lock your phone.";
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({ title: "RDM audio test", artist: "Rudimental Drumming Mastery" });
+      navigator.mediaSession.playbackState = "playing";
+    }
+  }).catch(function (e) {
+    document.getElementById("readA").textContent = "Could not start: " + e.name + " " + e.message;
+  });
+});
+document.getElementById("stopA").addEventListener("click", function () { el.pause(); });
+
+/* ---------- Test B: Web Audio (what the tools do today) ---------- */
+var ctx = null, srcNode = null, startedAt = 0;
+var probeB = makeProbe(document.getElementById("readB"), document.getElementById("verdictB"),
+  function () { return ctx ? ctx.currentTime - startedAt : 0; });
+
+document.getElementById("btnB").addEventListener("click", function () {
+  if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+  ctx.resume();
+  if (srcNode) { try { srcNode.stop(); } catch (e) {} }
+  // one decoded buffer looped through Web Audio, the closest simple analogue of the tools' playback
+  clickLoopWav(8, 100).arrayBuffer().then(function (ab) {
+    return ctx.decodeAudioData(ab);
+  }).then(function (buf) {
+    srcNode = ctx.createBufferSource();
+    srcNode.buffer = buf; srcNode.loop = true;
+    srcNode.connect(ctx.destination);
+    startedAt = ctx.currentTime;
+    srcNode.start();
+    document.getElementById("readB").textContent = "Playing. Now lock your phone.";
+  }).catch(function (e) {
+    document.getElementById("readB").textContent = "Could not start: " + e.name + " " + e.message;
+  });
+});
+document.getElementById("stopB").addEventListener("click", function () {
+  if (srcNode) { try { srcNode.stop(); } catch (e) {} srcNode = null; }
+});
+
+setInterval(function () { probeA.tick(); probeB.tick(); }, 500);
+</script>
+</body>
+</html>
