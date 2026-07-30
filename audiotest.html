@@ -49,9 +49,9 @@
   <ol>
     <li>Tap <strong>Start test A</strong> below. You should hear a click loop.</li>
     <li>Lock your phone with the power button.</li>
-    <li>Wait about 20 seconds. Listen.</li>
+    <li>Wait about 30 seconds. Listen carefully: is the click perfectly steady the whole time, or does it hiccup or lurch at any point?</li>
     <li>Unlock your phone and come back to this page.</li>
-    <li>Read the green or red box, then send Anthony a screenshot.</li>
+    <li>Read the green or red box, then send Anthony a screenshot and tell him whether the click stayed steady.</li>
   </ol>
 </div>
 
@@ -76,9 +76,14 @@
 <script>
 /* ---------- build a click loop as a real WAV, so Test A has a genuine media resource to play ----------
    Generated in the page rather than shipped as an asset: keeps this a single throwaway file. */
-function clickLoopWav(seconds, bpm) {
-  var sr = 44100, n = Math.floor(sr * seconds), data = new Float32Array(n);
-  var period = Math.floor(sr * 60 / bpm);
+/* Takes BEATS, not seconds, and makes the buffer an EXACT whole number of click periods. The first
+   version took 8 seconds at 100bpm = 13.33 beats, so the loop restarted a third of a beat early and the
+   rhythm lurched at every seam. That read as "iOS is glitchy" when it was really bad authoring. Any real
+   implementation has to obey the same rule: the rendered length must be a whole number of beats. */
+function clickLoopWav(beats, bpm) {
+  var sr = 44100;
+  var period = Math.round(sr * 60 / bpm);
+  var n = period * beats, data = new Float32Array(n);
   for (var start = 0; start < n; start += period) {
     // short bright click: decaying sine + a touch of noise, ~30ms
     var len = Math.min(Math.floor(sr * 0.03), n - start);
@@ -159,7 +164,7 @@ el.addEventListener("timeupdate", function () {
 });
 
 document.getElementById("btnA").addEventListener("click", function () {
-  if (!el.src) el.src = URL.createObjectURL(clickLoopWav(8, 100));
+  if (!el.src) el.src = URL.createObjectURL(clickLoopWav(32, 100));
   el._laps = 0; el._last = null;
   el.play().then(function () {
     document.getElementById("readA").textContent = "Playing. Now lock your phone.";
@@ -183,7 +188,7 @@ document.getElementById("btnB").addEventListener("click", function () {
   ctx.resume();
   if (srcNode) { try { srcNode.stop(); } catch (e) {} }
   // one decoded buffer looped through Web Audio, the closest simple analogue of the tools' playback
-  clickLoopWav(8, 100).arrayBuffer().then(function (ab) {
+  clickLoopWav(32, 100).arrayBuffer().then(function (ab) {
     return ctx.decodeAudioData(ab);
   }).then(function (buf) {
     srcNode = ctx.createBufferSource();
