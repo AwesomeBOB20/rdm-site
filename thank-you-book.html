@@ -57,7 +57,11 @@ h1 .o{color:var(--orange);}
 .note{margin-top:18px; font-size:.86rem; color:#555;}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
-.site-footer{position:relative;z-index:1;width:100%;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+/* Footer on --dark, NOT --purple. The body is --purple here, and the fixed .bg photo layer is only
+   100vh tall, so anything below the first screen sits on plain purple — which is exactly where the
+   footer lands. A purple footer on a purple body simply vanished, leaving the white pills and social
+   buttons floating (found 2026-07-30 while fixing precall-guide.html; SIX pages had it). */
+.site-footer{position:relative;z-index:1;width:100%;background:#0c0810;border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}

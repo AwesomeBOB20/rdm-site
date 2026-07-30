@@ -58,7 +58,11 @@ h1 .o{color:var(--orange);} h1 .p{color:var(--purple);}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
 /* unified site footer (matches start.html) */
-.site-footer{position:relative;z-index:1;width:100%;background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+/* Footer on --dark, NOT --purple. The body is --purple here, and the fixed .bg photo layer is only
+   100vh tall, so anything below the first screen sits on plain purple — which is exactly where the
+   footer lands. A purple footer on a purple body simply vanished, leaving the white pills and social
+   buttons floating (found 2026-07-30 while fixing precall-guide.html; SIX pages had it). */
+.site-footer{position:relative;z-index:1;width:100%;background:#0c0810;border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
@@ -102,7 +106,8 @@ a.link{color:var(--purple); font-weight:700;}
       </div>
       <div class="step">
         <div class="n">3</div>
-        <div><h3>Schedule your 3 private lessons</h3><p>In that same message, just say you're ready to book, and we'll lock in your 3 lesson times. Lessons run on <strong>Google Meet</strong>, so all you need is the link I send you, a pad and sticks, and a camera angle that shows your hands. We'll use them to fix your hands and work through whatever's tripping you up.</p></div>
+        <div><h3>Book your 3 private lessons</h3><p>Grab your times below. You bought three, so book it three times: take the first one now and space the other two out as you work through the course. Lessons run on <strong>Google Meet</strong>, so all you need is the link I send you, a pad and sticks, and a camera angle that shows your hands.</p>
+        <a href="#" class="btn full" data-cal-namespace="rdm-lesson" data-cal-link="anthony-steller-zy5ahs/rdm-lesson" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>Book A Lesson &rarr;</a></div>
       </div>
     </div>
 
@@ -125,5 +130,13 @@ a.link{color:var(--purple); font-weight:700;}
 </footer>
 <script>/* analytics — Method+Lessons bundle purchase conversion (Stripe redirect target) */
 if(window.rdmTrack) rdmTrack('Purchase', { product:'Method + Lessons', value:247, currency:'USD' });</script>
+<!-- Cal.com element-click embed — same loader as academy-application.html, namespace "rdm-lesson".
+     Element-click (not inline) so the page stays fast and the calendar only loads when a buyer taps Book. -->
+<script type="text/javascript">
+(function(C,A,L){let p=function(a,ar){a.q.push(ar);};let d=C.document;C.Cal=C.Cal||function(){let cal=C.Cal;let ar=arguments;if(!cal.loaded){cal.ns={};cal.q=cal.q||[];d.head.appendChild(d.createElement("script")).src=A;cal.loaded=true;}if(ar[0]===L){const api=function(){p(api,arguments);};const namespace=ar[1];api.q=api.q||[];if(typeof namespace==="string"){cal.ns[namespace]=cal.ns[namespace]||api;p(cal.ns[namespace],ar);p(cal,["initNamespace",namespace]);}else p(cal,ar);return;}p(cal,ar);};})(window,"https://app.cal.com/embed/embed.js","init");
+Cal("init","rdm-lesson",{origin:"https://app.cal.com"});
+Cal.config = Cal.config || {};
+Cal.config.forwardQueryParams = true;
+</script>
 </body>
 </html>
