@@ -63,7 +63,12 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .foot{text-align:center;color:rgba(255,255,255,.7);font-size:.92rem;margin-top:10px;}
 .foot a{color:rgba(255,255,255,.85);}
 /* unified site footer (matches start.html) */
-.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+/* Footer sits on --dark, NOT --purple. This page's BODY is --purple, so a purple footer was the same
+   colour as the page behind it — the band disappeared and left the white pills and social buttons
+   floating with nothing under them (Anthony, 2026-07-30: "the footer is like hidden"). The other
+   funnel pages have dark bodies, which is why purple reads fine there and nobody caught it here.
+   start.html has the same purple-on-purple body and is fixed the same way. */
+.site-footer{background:var(--dark);border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);margin:0 auto;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}

@@ -179,7 +179,12 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .pricecard .small{color:#5b5563;font-size:.92rem;margin-bottom:18px;}
 
 /* footer (matches the Playalongs landing footer: white pills + colored social buttons) */
-.site-footer{background:var(--purple);border-top:var(--b);padding:48px 22px;text-align:center;}
+/* Footer sits on --dark, NOT --purple. This page's BODY is --purple, so a purple footer was the same
+   colour as the page behind it — the band disappeared and left the white pills and social buttons
+   floating with nothing under them (Anthony, 2026-07-30: "the footer is like hidden"). The other
+   funnel pages have dark bodies, which is why purple reads fine there and nobody caught it here.
+   start.html has the same purple-on-purple body and is fixed the same way. */
+.site-footer{background:var(--dark);border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;
   border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;
   overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);}
