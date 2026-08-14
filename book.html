@@ -116,6 +116,11 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .step h3{font-size:1.02rem;margin-bottom:5px;color:#fff;}
 .step p{font-size:.92rem;color:rgba(255,255,255,.85);line-height:1.5;margin:0;}
 
+/* the quiet second option under a primary CTA — same rule as start.html and landing.html */
+.altline{text-align:center;margin-top:18px;}
+.altline a{color:#f0d3ec;font-weight:600;text-decoration:underline;text-underline-offset:3px;}
+.altline a:hover{color:#fff;}
+
 /* faq — EXACT match to start.html / landing.html (teal circle, rotate to ×, smooth max-height) */
 .faq{max-width:820px;margin:0 auto;}
 .faq-list{margin-top:26px;display:flex;flex-direction:column;gap:14px;}
@@ -338,6 +343,12 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
       <p style="color:rgba(255,255,255,.85);max-width:46ch;margin:0 auto 22px;">Hundreds of new reps, the exact system that makes the line, in your inbox in two minutes.</p>
       <a class="btn" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}'>Get the Gridding Handbook, $27 →</a>
       <p class="microtrust">Instant email delivery · yours for life · no subscription</p>
+      <!-- WHERE THEY GO NEXT. This page had three buy buttons and no mention of anything else, so the
+           cheapest entry in the whole business - the most likely person to buy again - was a dead end.
+           Under the CTA rather than above it, and text rather than buttons, so the page still asks for
+           exactly one thing. -->
+      <p class="altline">Already have the book? <a href="landing.html">The RDM Method is the full system it comes from &rarr;</a></p>
+      <p class="altline" style="margin-top:10px">Want to actually play these? <a href="/start">Try the practice tool for $1 &rarr;</a></p>
     </section>
 
   </div>
