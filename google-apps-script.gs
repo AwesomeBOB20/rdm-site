@@ -284,8 +284,12 @@ function extras_(ss) {
     // one worth giving real width to. Top-aligned, or a long answer pushes its own row
     // taller and leaves the rest of the row floating in the middle.
     quiz.setColumnWidth(14, 460);
-    quiz.getRange(HEADER_ROW, 14, quiz.getMaxRows() - HEADER_ROW + 1, 1)
-        .setWrap(true).setVerticalAlignment('top');
+    quiz.getRange(HEADER_ROW, 14, quiz.getMaxRows() - HEADER_ROW + 1, 1).setWrap(true);
+    // Top-align the WHOLE data range, not just the wrapped column. A long free-text
+    // answer makes its row taller, and everything else in that row then floats in the
+    // vertical middle while the paragraph starts at the top, which reads as misaligned.
+    quiz.getRange(HEADER_ROW + 1, 1, quiz.getMaxRows() - HEADER_ROW, 14)
+        .setVerticalAlignment('top');
   }
 
   var app = ss.getSheetByName('Academy Applications');
