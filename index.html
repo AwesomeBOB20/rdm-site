@@ -570,8 +570,19 @@ function winner(){
   //   Q3 challenge = "I freeze at auditions and can't make the line"
   //   Q4 timeline  = "I've got an audition coming up"
   //   Q5 help      = "Intensive 1-on-1 coaching until I make it"
-  const academyEligible =
-    answers[0] === 2 || answers[2] === 3 || answers[3] === 0 || answers[4] === 3;
+  const academySignals =
+    (answers[0] === 2 ? 1 : 0) + (answers[2] === 3 ? 1 : 0) +
+    (answers[3] === 0 ? 1 : 0) + (answers[4] === 3 ? 1 : 0);
+  const academyEligible = academySignals >= 1;
+  // TWO OR MORE of those signals routes to the Academy outright, ahead of the points.
+  // This is here because of a real lead who ticked "make a specific competitive line",
+  // "I freeze at auditions and can't make the line" AND "I've got an audition coming
+  // up", and still landed on the $147 Method: Method points accumulate on every engaged
+  // answer, while each Academy signal is only worth 2. The bet is not symmetric.
+  // Routing a serious drummer to a course instead of the Academy costs the difference
+  // between $147 and $2,000. Routing a casual one to an application page costs nothing,
+  // because they simply do not apply.
+  if(academySignals >= 2) return 'A';
   // Overall strongest signal across all four products (tie-break A > L > M > P).
   let top = 'P', topVal = -1;
   ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
