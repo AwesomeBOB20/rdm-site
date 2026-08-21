@@ -60,6 +60,19 @@ function igLink(ig) {
 function getOrCreateSheet(ss, name, headers) {
   var sh = ss.getSheetByName(name);
   if (!sh) { sh = ss.insertSheet(name); }
-  if (sh.getLastRow() === 0) { sh.appendRow(headers); }
+  if (sh.getLastRow() === 0) { sh.appendRow(headers); return sh; }
+
+  // Repair the header row in place. The line above only ever fires on a brand new sheet,
+  // so before this existed, adding a column to an existing tab meant its data landed in an
+  // unlabelled column forever and somebody had to go type the header by hand. Now the
+  // script is the single source of truth for what the columns are called: add one here and
+  // the sheet catches up on the next submission.
+  var need = sh.getRange(1, 1, 1, headers.length).getValues()[0];
+  for (var i = 0; i < headers.length; i++) {
+    if (need[i] !== headers[i]) {
+      sh.getRange(1, 1, 1, headers.length).setValues([headers]);
+      break;
+    }
+  }
   return sh;
 }
