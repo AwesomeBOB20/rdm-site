@@ -103,6 +103,11 @@ select.field{-webkit-appearance:none;appearance:none;cursor:pointer;padding-righ
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23000' d='M1 1l5 5 5-5' stroke='%23000' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px;}
 select.field:invalid{color:#888;}
+/* The one free-text answer. Deliberately the last field and deliberately optional:
+   it is worth more than any of the multiple choice for writing the first DM, but a
+   required essay at the exact moment of the email ask would cost more leads than the
+   answer is worth. */
+textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inherit;}
 .qerr{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .qerr.show{display:block;}
 
@@ -306,6 +311,8 @@ select.field:invalid{color:#888;}
             <option>Me</option>
             <option>Both of us</option>
           </select>
+          <textarea class="field" id="story-input" rows="4"
+            placeholder="Optional: in your own words, what are you chasing and what's stopping you? This is what I read before I message you."></textarea>
           <div class="qerr" id="email-err"></div>
           <button class="btn full" type="submit">Show my result &rarr;</button>
         </form>
@@ -514,7 +521,8 @@ function submitEmail(e){
   if(!age){ return showEmailErr('Please pick your age.'); }
   const payer = document.getElementById('payer-input').value;
   if(!payer){ return showEmailErr('Please pick who would be paying.'); }
-  saveLead(firstName, email, ig, age, payer);   // fire-and-forget; never blocks the result
+  const story = document.getElementById('story-input').value.trim();
+  saveLead(firstName, email, ig, age, payer, story);   // fire-and-forget; never blocks the result
   if(window.rdmTrack){ var _pn={P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[winner()]||winner(); rdmTrack('Lead',{product:_pn}); rdmTrack('quiz_complete',{product:_pn}); }
   showResult();
   return false;
@@ -540,7 +548,7 @@ function cleanIG(v){
 function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/.test(h); }
 function fmtIG(v){ var h = cleanIG(v); return h ? '@'+h : ''; }
 
-function saveLead(firstName, email, ig, age, payer){
+function saveLead(firstName, email, ig, age, payer, story){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const productNames = {P:'Playalongs', M:'Method', L:'Method + Lessons', A:'Academy'};
   const payload = {
@@ -551,7 +559,8 @@ function saveLead(firstName, email, ig, age, payer){
     product: productNames[winner()] || winner(),
     answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : ''),
     age: age || '',
-    payer: payer || ''
+    payer: payer || '',
+    story: story || ''
   };
   try{
     fetch(SHEET_ENDPOINT, {

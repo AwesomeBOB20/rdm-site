@@ -34,7 +34,7 @@ function doPost(e) {
       qs.appendRow(
         [ new Date(), data.firstName||'', data.email||'', data.product||'' ]
           .concat(ans)
-          .concat([ igLink(data.instagram), data.age||'', data.payer||'' ])
+          .concat([ igLink(data.instagram), data.age||'', data.payer||'', data.story||'' ])
       );
     }
 
@@ -50,7 +50,7 @@ function doPost(e) {
 
 function QUIZ_HEADERS() {
   return ['Date','First Name','Email','Recommended Product',
-          'Q1','Q2','Q3','Q4','Q5','Q6','Instagram','Age','Who Pays'];
+          'Q1','Q2','Q3','Q4','Q5','Q6','Instagram','Age','Who Pays','In Their Words'];
 }
 function ACADEMY_HEADERS() {
   return ['Date','First Name','Last Name','Email','Phone','Instagram','Age',
@@ -62,7 +62,7 @@ function QUIZ_INTRO() {
   return [
     'QUIZ LEADS',
     'HOW TO USE IT: this tab fills itself in from the quiz on your website. You never type in it. Open it every morning and DM every new row within 24 hours. The Instagram cell is a live link, so just click it.',
-    'A lead is HOT if any of these appear in their answers: chasing a specific competitive line, freezes at auditions, an audition coming up, wants intensive 1-on-1, or practised 6 to 7 days last week. Age and Who Pays tell you who you are really selling to: under 18 with parents paying means the parent must be on the sales call, so say so when you book it.'
+    'READ THE LAST COLUMN FIRST. "In Their Words" is whatever they typed about their own goals and struggles, and it is the only answer they were not handed a multiple choice for, so it is the one to quote back to them. A lead is HOT if any of these appear: chasing a specific competitive line, freezes at auditions, an audition coming up, wants intensive 1-on-1, or practised 6 to 7 days last week. Age and Who Pays tell you who you are really selling to: under 18 with parents paying means the parent must be on the sales call, so say so when you book it.'
   ];
 }
 function ACADEMY_INTRO() {
@@ -133,7 +133,7 @@ function formatWorkbook() {
   styleTab_(ss, 'Daily Log',            BRAND.purple, 9,  5, 6);
   styleTab_(ss, 'Totals',               BRAND.orange, 3,  5, 0);
   styleTab_(ss, 'Weekly',               BRAND.blue,   8,  5, 0);
-  styleTab_(ss, 'Quiz Leads',           BRAND.blue,   13, HEADER_ROW, 0);
+  styleTab_(ss, 'Quiz Leads',           BRAND.blue,   14, HEADER_ROW, 0);
   styleTab_(ss, 'Academy Applications', BRAND.purple, 14, HEADER_ROW, 0);
 
   extras_(ss);
@@ -148,12 +148,15 @@ function formatWorkbook() {
 function prepAutoTab_(ss, name, headers, intro) {
   var sh = ss.getSheetByName(name);
   if (!sh) return;
+  // Only INSERT the reserved rows if they are not there yet, or a second run pushes
+  // everything down again. The text itself is rewritten every time, so editing the
+  // intro in this file is enough to update the sheet.
   if (sh.getRange(1, 1).getValue() !== intro[0]) {
     sh.insertRowsBefore(1, 4);
-    sh.getRange(1, 1).setValue(intro[0]);
-    sh.getRange(2, 1).setValue(intro[1]);
-    sh.getRange(3, 1).setValue(intro[2]);
   }
+  sh.getRange(1, 1).setValue(intro[0]);
+  sh.getRange(2, 1).setValue(intro[1]);
+  sh.getRange(3, 1).setValue(intro[2]);
   // The old instruction cell that used to sit off to the right of the headers.
   sh.getRange(HEADER_ROW, headers.length + 2, 1, 4).clearContent();
   sh.getRange(HEADER_ROW, 1, 1, headers.length).setValues([headers]);
@@ -217,7 +220,12 @@ function styleTab_(ss, name, accent, cols, headerRow, subRow) {
 
 function mergeRow_(sh, row, cols) {
   var r = sh.getRange(row, 1, 1, cols);
-  if (!r.isPartOfMerge()) r.merge();
+  // Break first, then merge. A narrower merge left over from a previous run makes
+  // isPartOfMerge() true for the wider range, so a plain "merge if not merged" check
+  // silently leaves the new last column outside the block. Adding a column to a tab is
+  // exactly when that happens, which is exactly when this runs.
+  r.breakApart();
+  r.merge();
   return r;
 }
 
@@ -272,6 +280,12 @@ function extras_(ss) {
     quiz.setColumnWidth(12, 90); quiz.setColumnWidth(13, 100);
     for (var q = 5; q <= 10; q++) quiz.setColumnWidth(q, 220);
     quiz.getRange(6, 12, quiz.getMaxRows() - 5, 2).setHorizontalAlignment('center');
+    // "In Their Words" is free text, so it is the one column that has to wrap and the
+    // one worth giving real width to. Top-aligned, or a long answer pushes its own row
+    // taller and leaves the rest of the row floating in the middle.
+    quiz.setColumnWidth(14, 460);
+    quiz.getRange(HEADER_ROW, 14, quiz.getMaxRows() - HEADER_ROW + 1, 1)
+        .setWrap(true).setVerticalAlignment('top');
   }
 
   var app = ss.getSheetByName('Academy Applications');
