@@ -96,6 +96,13 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .field{width:100%;font-family:inherit;font-size:1.05rem;padding:15px 18px;border:var(--b);border-radius:var(--rad);
   background:#fff;color:#000;margin-bottom:16px;}
 .field::placeholder{color:#888;}
+/* The two selects on the email screen. Native arrow is replaced so they read as the same
+   control as the text fields; :invalid greys the "pick one" option so it looks like a placeholder
+   (the option carries value="", so it stays invalid until they actually choose). */
+select.field{-webkit-appearance:none;appearance:none;cursor:pointer;padding-right:44px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23000' d='M1 1l5 5 5-5' stroke='%23000' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px;}
+select.field:invalid{color:#888;}
 .qerr{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .qerr.show{display:block;}
 
@@ -281,6 +288,24 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
           <input class="field" id="fname-input" type="text" placeholder="First name" autocomplete="given-name">
           <input class="field" id="email-input" type="email" placeholder="you@email.com" autocomplete="email">
           <input class="field" id="ig-input" type="text" placeholder="@yourusername (so I can DM you)" autocomplete="off" required>
+          <!-- Age + who-pays. These do NOT change the routing (the scored questions do that). They
+               exist because the buyer is 15-20 and the parent usually holds the money, so the
+               follow-up DM and the sales call are completely different conversations depending on
+               these two answers. Asked here rather than as a 7th question so the question count,
+               and the drop-off that comes with it, stays the same. -->
+          <select class="field" id="age-input" required>
+            <option value="">How old are you?</option>
+            <option>Under 15</option>
+            <option>15 to 17</option>
+            <option>18 to 20</option>
+            <option>21 or older</option>
+          </select>
+          <select class="field" id="payer-input" required>
+            <option value="">Who would be paying?</option>
+            <option>My parents</option>
+            <option>Me</option>
+            <option>Both of us</option>
+          </select>
           <div class="qerr" id="email-err"></div>
           <button class="btn full" type="submit">Show my result &rarr;</button>
         </form>
@@ -355,12 +380,15 @@ const QUESTIONS = [
     ]
   },
   {
-    title: "How serious are you about this?",
+    // Was "How serious are you about this?", which everybody answers "very" to. Stated
+    // commitment predicts nothing. Days practised last week is behaviour that already
+    // happened, so it is the only honest commitment signal in the quiz.
+    title: "How many days did you practice last week?",
     opts: [
-      {t:"Mostly for fun / casual", s:{P:3}},
-      {t:"Committed. I'll put in the work on my own", s:{M:3}},
-      {t:"Serious. I want some guidance to speed it up", s:{L:4}},
-      {t:"All-in. I'll do whatever it takes (and invest in it)", s:{A:4,L:1}},
+      {t:"0 to 1", s:{P:3}},
+      {t:"2 to 3", s:{P:2,M:2}},
+      {t:"4 to 5", s:{M:3,L:2}},
+      {t:"6 to 7", s:{A:4,L:2}},
     ]
   },
 ];
@@ -482,7 +510,11 @@ function submitEmail(e){
   if(!isEmail(email)){ return showEmailErr('Please enter a valid email address.'); }
   const ig = document.getElementById('ig-input').value;
   if(!isIG(cleanIG(ig))){ return showEmailErr('Please enter a valid Instagram username (letters, numbers, . and _ only).'); }
-  saveLead(firstName, email, ig);   // fire-and-forget; never blocks the result
+  const age = document.getElementById('age-input').value;
+  if(!age){ return showEmailErr('Please pick your age.'); }
+  const payer = document.getElementById('payer-input').value;
+  if(!payer){ return showEmailErr('Please pick who would be paying.'); }
+  saveLead(firstName, email, ig, age, payer);   // fire-and-forget; never blocks the result
   if(window.rdmTrack){ var _pn={P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[winner()]||winner(); rdmTrack('Lead',{product:_pn}); rdmTrack('quiz_complete',{product:_pn}); }
   showResult();
   return false;
@@ -508,7 +540,7 @@ function cleanIG(v){
 function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/.test(h); }
 function fmtIG(v){ var h = cleanIG(v); return h ? '@'+h : ''; }
 
-function saveLead(firstName, email, ig){
+function saveLead(firstName, email, ig, age, payer){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const productNames = {P:'Playalongs', M:'Method', L:'Method + Lessons', A:'Academy'};
   const payload = {
@@ -517,7 +549,9 @@ function saveLead(firstName, email, ig){
     email: email,
     instagram: fmtIG(ig),
     product: productNames[winner()] || winner(),
-    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : '')
+    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : ''),
+    age: age || '',
+    payer: payer || ''
   };
   try{
     fetch(SHEET_ENDPOINT, {
@@ -544,6 +578,12 @@ function winner(){
   // If their strongest pull is full coaching: Academy if they're chasing a line,
   // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
   if(top === 'A') return academyEligible ? 'A' : 'L';
+  // Q5 option 2 ("the system PLUS a few 1-on-1 sessions with you") is the only place someone
+  // asks for my time without asking for the full Academy. That is a direct request for the
+  // bundle, so it outranks accumulated Method points, which every engaged answer feeds.
+  // Without this the bundle rung is nearly unreachable: a plateaued drummer who explicitly
+  // ticks "plus a few sessions" still totals more M than L and lands on the plain course.
+  if(answers[4] === 2) return 'L';
   // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
   let best = 'P', bestVal = -1;
   ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });

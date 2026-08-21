@@ -29,12 +29,12 @@ function doPost(e) {
       var ans = data.answers || [];
       var qs = getOrCreateSheet(ss, 'Quiz Leads', [
         'Date','First Name','Email','Recommended Product',
-        'Q1','Q2','Q3','Q4','Q5','Q6','Instagram'
+        'Q1','Q2','Q3','Q4','Q5','Q6','Instagram','Age','Who Pays'
       ]);
       qs.appendRow(
         [ new Date(), data.firstName||'', data.email||'', data.product||'' ]
           .concat(ans)
-          .concat([ igLink(data.instagram) ])
+          .concat([ igLink(data.instagram), data.age||'', data.payer||'' ])
       );
     }
 
