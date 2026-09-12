@@ -229,6 +229,21 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
             <p class="tier-note">No commitment. Cancel anytime.</p>
           </div>
 
+          <!-- METHOD - HIDDEN 2026-09-11 (Anthony: "we should probably hide the course option from the
+               survey, the level up section on the app, and the landing page for the course").
+
+               WHY: nobody has ever bought it standalone. The live database showed 0 accounts on the
+               `method` tier against 45 Playalongs, 14 free and 8 Academy. A course is a LIKELIHOOD
+               product - it only converts if the buyer believes they will finish it alone - and this
+               avatar's own words are "I don't know what to do", so they are buying Anthony, not
+               information. PROGRAMS.md had already demoted it to "a catch for the unready, not a focus".
+
+               KEPT, NOT DELETED, and that is deliberate. landing.html stays live and the Stripe link
+               stays valid, because the Method is still a DOWNSELL he can offer by hand on a call when a
+               parent balks at $500, and it is still stacked value inside the Intensive and the Academy
+               ("the course alone is $147"). A price nobody can pay is not really a price.
+               To put it back: delete this comment wrapper. -->
+          <!--
           <!-- METHOD (featured) -->
           <div class="tier featured t-orange">
             <span class="tier-flag">&#9733; Most Popular</span>
@@ -246,6 +261,7 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
             <p class="tier-note">$701 value &middot; no subscription</p>
           </div>
 
+          -->
           <!-- ACADEMY -->
           <div class="tier t-purple">
             <div class="tier-name tn-academy">RDM Academy</div>
@@ -412,6 +428,11 @@ const RESULTS = {
     cta:"Start the $1 Trial",
     url:"start"
   },
+  /* ⚠️ M AND L ARE NO LONGER REACHABLE AS RESULTS (2026-09-11). The Method is hidden, so the two
+     outcomes that sold it are remapped in winner() below rather than deleted: M -> P, L -> A. The copy is
+     left here intact because these are the two best-written diagnoses in the quiz, and they are exactly
+     what to start from if the INTENSIVE ever gets a page - the L text ("the whole system AND some real
+     guidance, without going all-in on the full Academy") is the Intensive described almost word for word. */
   M: {
     flag:"Your path: the system",
     title:"Get <b style='color:#d35400'>The RDM Method</b>",
@@ -591,24 +612,45 @@ function winner(){
   // Routing a serious drummer to a course instead of the Academy costs the difference
   // between $147 and $2,000. Routing a casual one to an application page costs nothing,
   // because they simply do not apply.
-  if(academySignals >= 2) return 'A';
+  if(academySignals >= 2) return 'A';   // (already an Academy answer; remap is a no-op for it)
   // Overall strongest signal across all four products (tie-break A > L > M > P).
   let top = 'P', topVal = -1;
   ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
   // If their strongest pull is full coaching: Academy if they're chasing a line,
   // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
-  if(top === 'A') return academyEligible ? 'A' : 'L';
+  if(top === 'A') return remap(academyEligible ? 'A' : 'L');
   // Q5 option 2 ("the system PLUS a few 1-on-1 sessions with you") is the only place someone
   // asks for my time without asking for the full Academy. That is a direct request for the
   // bundle, so it outranks accumulated Method points, which every engaged answer feeds.
   // Without this the bundle rung is nearly unreachable: a plateaued drummer who explicitly
   // ticks "plus a few sessions" still totals more M than L and lands on the plain course.
-  if(answers[4] === 2) return 'L';
+  if(answers[4] === 2) return remap('L');
   // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
   let best = 'P', bestVal = -1;
   ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
-  return best;
+  return remap(best);
 }
+
+/* ⚠️ THE METHOD IS HIDDEN, SO ITS TWO OUTCOMES ARE REMAPPED AT THE EXIT (2026-09-11).
+
+   Done here, as one translation of the ANSWER, rather than by editing the scoring above. Everything in
+   winner() is the product of real routing bugs - the two-signal Academy override exists because a lead
+   who ticked "make a specific competitive line", "I freeze at auditions" AND "I've got an audition
+   coming up" still landed on the $147 course. Rewriting that to remove two letters would risk all of it
+   for no gain. The letters still score, still tie-break, and still mean what they meant.
+
+   WHERE THEY GO, and this is the judgement call to check:
+     M -> P  a plateaued, self-directed drummer. With the course not for sale, the tool is the honest
+             cheap answer, and it is the one thing that works without Anthony's time.
+     L -> A  someone who explicitly asked for eyes on their hands. That is a coaching conversation, and
+             the Academy path is what books the call. The $500 Intensive is then the natural downsell
+             ON the call, which is also where a parent can be present - the buyers are 15-20 and do not
+             hold the money.
+
+   TO RESTORE THE METHOD: delete this function and the `remap(...)` calls. Nothing else changed.
+   IF THE INTENSIVE EVER GETS A PAGE: L should point at it instead of A - the L copy in RESULTS is
+   already an almost word-perfect description of it. */
+function remap(k){ return k === 'M' ? 'P' : (k === 'L' ? 'A' : k); }
 
 function showResult(){
   document.getElementById('progress').classList.add('hide');
