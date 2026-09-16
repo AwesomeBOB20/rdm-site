@@ -243,8 +243,19 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
                parent balks at $500, and it is still stacked value inside the Intensive and the Academy
                ("the course alone is $147"). A price nobody can pay is not really a price.
                To put it back: delete this comment wrapper. -->
-          <!--
-          <!-- METHOD (featured) -->
+          <!-- ⚠️ HTML COMMENTS DO NOT NEST, AND THIS ONE MUST NOT CONTAIN COMMENT MARKERS OF ITS OWN.
+
+               This wrapper used to have a second comment opened immediately inside it, labelling the
+               Method card. A browser ends a comment at the FIRST close marker it meets, so the wrapper
+               ended at that inner label instead of at the bottom of the block: the entire Method card
+               rendered live at $147, and a bare close marker printed as text under the tier grid. It had
+               been meant to be hidden since 2026-09-11.
+
+               It happened a second time on 2026-09-16, in the comment written to explain the first one,
+               because that text quoted the markers literally. Hence this note describes them in words.
+               Do not write either marker inside this block, not even as an example.
+
+               METHOD (featured), hidden: the Method is no longer a product (CLAUDE.md section 2).
           <div class="tier featured t-orange">
             <span class="tier-flag">&#9733; Most Popular</span>
             <div class="tier-name tn-method">RDM Method</div>
