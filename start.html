@@ -175,6 +175,11 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .toolshot{display:block;width:100%;height:auto;margin:0 0 14px;}
 
 /* video placeholder */
+/* The Playalongs testimonial video (Anthony, 2026-09-16). It sits at the head of the testimonials
+   section, above the written quotes, because hearing a drummer say it beats reading it. */
+.vidframe{position:relative;max-width:820px;margin:0 auto 30px;aspect-ratio:16/9;background:#000;
+  border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;}
+.vidframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 .videobox{max-width:820px;margin:0 auto;aspect-ratio:16/9;background:rgba(0,0,0,.35);border:var(--b);border-radius:var(--rad);
   box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;color:rgba(255,255,255,.7);font-weight:600;}
 
@@ -386,6 +391,12 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <span class="eyebrow blue">Real drummers, real words</span>
     <h2>Don't take my word for it.</h2>
     <p class="sub">Hear what the RDM Playalongs did for their drumming.</p>
+    <div class="vidframe reveal">
+      <iframe src="https://www.youtube.com/embed/yJe5ELaOx4I?rel=0&amp;modestbranding=1"
+        title="What the RDM Playalongs did for their drumming"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen loading="lazy"></iframe>
+    </div>
     <div class="quotes" style="text-align:left">
       <div class="quote reveal"><p>"My timing has improved probably tenfold since I've been using the Playalongs."</p><span class="who">RDM Playalongs user</span></div>
       <div class="quote reveal"><p>"It trained my ears out of so many bad habits I had."</p><span class="who">RDM Playalongs user</span></div>
