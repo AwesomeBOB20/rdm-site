@@ -60,8 +60,14 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   padding:24px 24px;margin-bottom:22px;}
 .parent-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
 .parent-box p{color:#fff;font-size:1rem;}
-.foot{text-align:center;color:rgba(255,255,255,.7);font-size:.92rem;margin-top:10px;}
-.foot a{color:rgba(255,255,255,.85);}
+/* ⚠️ THIS PARAGRAPH IS INSIDE THE TAN CARD, NOT ON THE DARK PAGE (Anthony, 2026-09-16: "some text
+   that's white on top of the tan background"). It was white at 70% opacity, which measured 1.09:1
+   against #fff0d3 and was effectively invisible; the mailto link inside it was 1.11:1. The rule was
+   written for text sitting on the purple page and the markup puts it in a card, which is the kind of
+   mismatch a stylesheet never shows you. Dark ink now, and the link takes the deep purple that already
+   passes on tan everywhere else on the site. */
+.foot{text-align:center;color:#555;font-size:.92rem;margin-top:10px;}
+.foot a{color:var(--purple-deep);font-weight:700;}
 /* unified site footer (matches start.html) */
 /* Footer sits on --dark, NOT --purple. This page's BODY is --purple, so a purple footer was the same
    colour as the page behind it — the band disappeared and left the white pills and social buttons
