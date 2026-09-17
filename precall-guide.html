@@ -92,7 +92,10 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
    A Drive embed has no poster attribute, so the thumbnail is a still from Anthony's master file and the
    player is swapped in on click. Drive's player never loads for anyone who does not press it. */
 .vf-poster{cursor:pointer;}
-.vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
+/* ⚠️ contain, NOT cover. The poster is Anthony's designed cover with four captioned panels, so any
+   crop cuts one of them. The box is 16:9 and so is the cover, but the 3px border makes the content
+   box very slightly wider than 16:9, and cover was shaving the top and bottom. */
+.vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0c0810;}
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:86px;height:86px;border-radius:50%;
   background:var(--orange);border:var(--b);box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;}
@@ -210,7 +213,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <div class="cardbody">
         <p class="lead">This is what's possible for you.</p>
         <div class="video-frame vf-poster" data-src="https://drive.google.com/file/d/1l-UsOkGP-yJm-trb9y--4V969IC229YQ/preview">
-          <img src="assets/video/testimonial-poster.jpg" alt="An RDM student talking about working with Anthony" width="1280" height="720" loading="lazy">
+          <img src="assets/video/testimonial-poster.jpg" alt="RDM students on what working with Anthony did for their drumming" width="1280" height="720" loading="lazy">
           <button type="button" class="vf-play" aria-label="Play the video"><span></span></button>
         </div>
       </div>
