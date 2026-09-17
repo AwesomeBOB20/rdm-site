@@ -19,7 +19,7 @@
    ============================================================ */
 :root{
   --purple:#96318d; --purple-deep:#792671;
-  --blue:#06aeb9; --blue-deep:#058890;
+  --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
   --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
@@ -42,7 +42,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
   padding:12px 22px;background:var(--purple);border-bottom:var(--b);}
 .nav-logo{height:40px;display:block;}
 .nav-links{display:flex;gap:12px;align-items:center;}
-.nav-links a{background:var(--blue);color:#fff;text-decoration:none;text-align:center;
+.nav-links a{background:var(--blue-darker);color:#fff;text-decoration:none;text-align:center;
   border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
 .nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
@@ -76,7 +76,7 @@ section{position:relative;padding:44px 0;}   /* match landing.html .pad — the 
   letter-spacing:.12em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:20px;}
 /* section eyebrows are all .45 dark (unified with landing + academy-vsl); .blue/.purple are no-ops so existing markup still works */
 /* HERO eyebrow = the product's brand color, matching landing (orange) / academy (purple). Playalongs = blue #06aeb9. */
-.hero-eyebrow{display:inline-block;background:var(--blue);color:#fff;border:var(--b);font-size:.78rem;font-weight:700;
+.hero-eyebrow{display:inline-block;background:var(--blue-darker);color:#fff;border:var(--b);font-size:.78rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;padding:7px 18px;border-radius:999px;margin-bottom:26px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 h1{font-size:clamp(2.4rem,6.4vw,4.6rem);font-weight:700;line-height:1.05;letter-spacing:-.5px;text-shadow:0 3px 18px rgba(0,0,0,.5);margin-bottom:18px;text-wrap:balance;}
 h2{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:700;line-height:1.12;margin-bottom:12px;text-shadow:0 2px 12px rgba(0,0,0,.45);text-wrap:balance;}
@@ -122,7 +122,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .card ul li{position:relative;padding-left:26px;color:#231d29;font-weight:500;font-size:.98rem;}
 .card ul li::before{content:"✓";position:absolute;left:0;color:var(--blue);font-weight:800;}
 .toolcard .toolsub{color:var(--orange-deep);font-weight:700;font-size:.95rem;margin-bottom:8px;}
-.bignote{background:var(--blue);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+.bignote{background:var(--blue-darker);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:22px 24px;font-size:1.08rem;font-weight:500;max-width:820px;margin:0 auto 32px;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.3);}
 
 /* testimonials */
@@ -143,7 +143,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .cmp-ic{flex:0 0 auto;width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;
   font-size:1rem;font-weight:800;line-height:1;margin-top:1px;}
 .cmp-ic.x{background:transparent;border:2px solid #1a1320;color:#1a1320;}
-.cmp-ic.c{background:var(--blue);border:2px solid #000;color:#fff;box-shadow:2px 2px 0 rgba(0,0,0,.22);}
+.cmp-ic.c{background:var(--blue-darker);border:2px solid #000;color:#fff;box-shadow:2px 2px 0 rgba(0,0,0,.22);}
 .cmp-top{grid-column:1/-1;text-align:center;margin-bottom:8px;}
 .cmp-title{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:700;color:#000;line-height:1.1;margin-bottom:12px;text-shadow:none;text-wrap:balance;}
 .cmp-sub{color:#4a4350;font-size:clamp(1rem,1.6vw,1.15rem);max-width:700px;margin:0 auto;line-height:1.5;}
@@ -157,7 +157,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .faq-q{width:100%;text-align:left;background:none;border:none;color:#000;cursor:pointer;
   padding:20px 24px;font-size:1.05rem;font-weight:700;font-family:inherit;
   display:flex;justify-content:space-between;align-items:center;gap:16px;}
-.faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue);color:#fff;
+.faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue-darker);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
   box-shadow:2px 2px 0 rgba(0,0,0,.25);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}

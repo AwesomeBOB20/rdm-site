@@ -25,8 +25,8 @@ function doPost(e) {
       sh.appendRow([
         new Date(), data.firstName||'', data.lastName||'', data.email||'',
         data.phone||'', igLink(data.instagram), data.age||'', data.level||'',
-        data.goal||'', data.challenges||'', data.hours||'', data.watchedVideo||'',
-        data.parents||'', data.finances||''
+        data.goal||'', data.working||'', data.deadline||'', data.challenges||'',
+        data.hours||'', data.parents||''
       ]);
     } else {
       var ans = data.answers || [];
@@ -54,8 +54,8 @@ function QUIZ_HEADERS() {
 }
 function ACADEMY_HEADERS() {
   return ['Date','First Name','Last Name','Email','Phone','Instagram','Age',
-          'Player Level','#1 Goal','Struggles','Hours/Week','Watched Video',
-          'Parents On Board','Financial Readiness'];
+          'Player Level','#1 Goal','Working On Now','Date They Are Chasing',
+          'Struggles','Hours/Week','Parents On Board'];
 }
 
 function QUIZ_INTRO() {
@@ -69,7 +69,7 @@ function ACADEMY_INTRO() {
   return [
     'ACADEMY APPLICATIONS',
     'HOW TO USE IT: this tab fills itself in from the application form. You never type in it. It stays empty until somebody applies, and every row that appears is the highest-intent lead you can get, because a person filled in a long form to reach you. Reply the same day.',
-    'Before you book the call, read Parents On Board and Financial Readiness. If they are under 18 a parent has to be on the call, which is already the rule in your pre-call video, so tell them that when you book rather than discovering it live.'
+    'READ "Working On Now" AND "Date They Are Chasing" FIRST. Together they tell you whether this is one named piece of material or everything they have got, which is the whole difference between the two programs and the thing you sort on the call. The form never asks about money, so there is nothing here to pre-judge them on. Check Parents On Board before you book: under 18 means a parent has to be on the call, so say so when you book it rather than discovering it live.'
   ];
 }
 

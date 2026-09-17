@@ -14,7 +14,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --purple:#96318d; --blue:#06aeb9; --orange:#d35400; --tan:#fff0d3;
+  --purple:#96318d; --blue:#06aeb9; --blue-darker:#047078; --orange:#d35400; --tan:#fff0d3;
   --black:#000; --b:3px solid #000; --r:20px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -32,7 +32,7 @@ body{overscroll-behavior:none;
   box-shadow:0 14px 40px rgba(0,0,0,.45); padding:38px 34px; text-align:center;
 }
 .badge{
-  display:inline-block; background:var(--blue); color:#fff; border:2px solid #000;
+  display:inline-block; background:var(--blue-darker); color:#fff; border:2px solid #000;
   border-radius:999px; font-size:.78rem; font-weight:700; letter-spacing:.08em;
   text-transform:uppercase; padding:6px 16px; margin-bottom:18px; text-shadow:0 1px 1px rgba(0,0,0,.3);
 }
@@ -156,6 +156,10 @@ if(window.rdmTrack) rdmTrack('Purchase', { product:'PrivateLessons', currency:'U
 Cal("init","rdm-lesson",{origin:"https://app.cal.com"});
 Cal.config = Cal.config || {};
 Cal.config.forwardQueryParams = true;
+/* Brand the booker purple, same as academy-application.html. The account-level brand colour
+   is an Appearance setting with no v2 API, so every embed sets it here or it falls back to
+   cal.com's own default. */
+Cal.ns["rdm-lesson"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#96318d"},"dark":{"cal-brand":"#96318d"}},"hideEventTypeDetails":false,"layout":"month_view"});
 </script>
 </body>
 </html>

@@ -16,12 +16,14 @@
 <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@29.1.1/dist/js/intlTelInput.min.js"></script>
 <style>
 /* ============================================================
-   RDM — ACADEMY APPLICATION (qualifying quiz)
+   RDM COACHING APPLICATION (qualifying quiz)
+   Serves BOTH coached programs, not just the Academy. Which one a person is right for is
+   sorted on the call, from what they type into "What are you working on right now?".
    Same brand identity as quiz.html / landing / VSL.
    ============================================================ */
 :root{
   --purple:#96318d; --purple-deep:#792671;
-  --blue:#06aeb9; --blue-deep:#058890;
+  --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
   --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
@@ -69,7 +71,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:16px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
 .opt:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
-.opt.sel{background:var(--blue);color:#fff;}
+.opt.sel{background:var(--blue-darker);color:#fff;}
 .opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
 .opt.sel .dot{background:var(--orange);}
 .opt .box{flex:0 0 auto;width:24px;height:24px;border-radius:6px;border:2px solid #000;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;}
@@ -82,7 +84,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
-.btn.blue{background:var(--blue);} .btn.purple{background:var(--purple);}
+.btn.blue{background:var(--blue-darker);} .btn.purple{background:var(--purple);}
 .btn.full{display:block;width:100%;}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
 .row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
@@ -235,6 +237,17 @@ const STEPS = [
   { type:'text', key:'goal', title:"If you could hit ONE snare goal, what would it be?", hint:"Your real dream. (ex: make a top DCI or WGI line, win a solo contest, finally play advanced music clean.)",
     ph:"Type your #1 goal here..."
   },
+  { type:'text', key:'working', title:"What are you working on right now?", hint:"The actual music in front of you. An audition packet, a piece of show music, a solo, your grids, your own exercises.",
+    ph:"Tell me what's on your stand..."
+  },
+  { type:'single', key:'deadline', title:"Is there a date you're working against?", hint:"An audition, a camp, a contest. It changes what we go after first.",
+    opts:[
+      "Yes, in the next month",
+      "Yes, in 2 to 3 months",
+      "Yes, later this year",
+      "No date yet, I just want to get better"
+    ]
+  },
   { type:'multi', key:'challenges', title:"What are you struggling with most? Check all that fit.", hint:"This tells me exactly where to start with you.",
     opts:[
       "Technique & grip: my hands don't look or feel right",
@@ -250,23 +263,12 @@ const STEPS = [
   { type:'single', key:'hours', title:"How many hours a week would you commit if you knew it would get you there?", hint:"Trusting the process. This work rewards the reps.",
     opts:["Less than 3 hours","3–6 hours","7–10 hours","10+ hours"]
   },
-  { type:'single', key:'watchedVideo', title:"Have you watched the training video yet?", hint:"It makes our call 10x better, we skip the basics and go straight to you.",
-    opts:["Yes, I've finished it","Not yet, but I'll watch it before our call"]
-  },
   { type:'single', key:'parents', title:"Are your parents or family on board with this?", hint:"Most of my drummers are 15–20, so the people who help with the decision should be in the loop, and ideally on the call.",
     opts:[
       "Yes, and they'll be on the call with me",
       "Yes, they support me but won't be on the call",
       "Not yet, I still need to talk to them",
       "I'm 21+ and handle this myself"
-    ]
-  },
-  { type:'single', key:'finances', title:"If working together was clearly the right fit, where's your family financially?", hint:"No wrong answer. It just helps me know how to support you. We figure out the details on the call.",
-    opts:[
-      "We're ready to invest in the right thing",
-      "Open to a payment plan that works for us",
-      "We'd need to talk it through on the call",
-      "Not financially ready right now"
     ]
   },
 ];
@@ -443,32 +445,20 @@ function finishApp(){
   }
 }
 
-// Coaching isn't a fit right now if the money or the
-// time commitment clearly isn't there. 21+ drummers have aged out of the target
-// lines (DCI 21, WGI 22), so we only book them if they're clearly ready to invest.
-// Everyone else books a call. (Edit these rules to loosen/tighten the downsell.)
+// PROGRAMS.md section 5: nothing disqualifies except under 3 hours a week.
+// At ground zero the goal is conversations, not a perfect filter. Money is handled
+// on the call and is never asked about here, so there is no financial gate, and 21+
+// drummers book like everyone else.
 function isQualified(){
-  if(data.finances === "Not financially ready right now") return false;
   if(data.hours === "Less than 3 hours") return false;
-  if(data.age === "21+ (aged out or other)"){
-    var readyToPay = (data.finances === "We're ready to invest in the right thing" ||
-                      data.finances === "Open to a payment plan that works for us");
-    if(!readyToPay) return false;
-  }
   return true;
 }
 
 function showDownsell(){
   document.getElementById('ds-name').textContent = (data.firstName || 'drummer');
-  let reason;
-  if(data.finances === "Not financially ready right now"){
-    reason = "Working with me directly is a real commitment for any family, and right now is not the moment. Zero shame in that.";
-  } else if(data.hours === "Less than 3 hours"){
-    reason = "Coaching with me is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
-  } else {
-    reason = "My coaching is built around making a competitive line before the audition clock runs out (DCI ages out at 21, WGI at 22). At your stage the tool gives you the reps to keep getting better, without the cost or the intensity.";
-  }
-  document.getElementById('ds-reason').textContent = reason;
+  // Under 3 hours a week is the only thing that lands anyone here.
+  document.getElementById('ds-reason').textContent =
+    "Coaching with me is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
   show('screen-downsell');
 }
 
@@ -495,9 +485,9 @@ function saveApplication(){
     formType:'academy',
     firstName:data.firstName||'', lastName:data.lastName||'', email:data.email||'',
     phone:data.phone||'', instagram:data.instagram||'', age:data.age||'',
-    level:data.level||'', goal:data.goal||'', challenges:data.challenges||'',
-    hours:data.hours||'', watchedVideo:data.watchedVideo||'', parents:data.parents||'',
-    finances:data.finances||''
+    level:data.level||'', goal:data.goal||'', working:data.working||'',
+    deadline:data.deadline||'', challenges:data.challenges||'',
+    hours:data.hours||'', parents:data.parents||''
   };
   try{
     fetch(SHEET_ENDPOINT, {
@@ -518,7 +508,7 @@ startApp();
 Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
 Cal.config = Cal.config || {};
 Cal.config.forwardQueryParams = true;
-Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#4D1948"},"dark":{"cal-brand":"#06aeb9"}},"hideEventTypeDetails":false,"layout":"month_view"});
+Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#96318d"},"dark":{"cal-brand":"#96318d"}},"hideEventTypeDetails":false,"layout":"month_view"});
 /* After a successful booking, send them to the pre-call guide. */
 Cal.ns["rdm-strategy"]("on",{
   action:"bookingSuccessful",

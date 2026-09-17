@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --purple:#96318d; --purple-deep:#6d2c66; --blue:#06aeb9; --blue-deep:#058890;
+  --purple:#96318d; --purple-deep:#6d2c66; --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --tan:#fff0d3; --black:#000; --b:3px solid #000; --r:20px;
   --shadow:0 12px 34px rgba(0,0,0,.4);
 }
@@ -32,7 +32,7 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
   padding:12px 22px;background:var(--purple);border-bottom:var(--b);}
 .nav-logo{height:40px;display:block;}
 .nav-links{display:flex;gap:12px;align-items:center;}
-.nav-links a{background:var(--blue);color:#fff;text-decoration:none;text-align:center;
+.nav-links a{background:var(--blue-darker);color:#fff;text-decoration:none;text-align:center;
   border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
 .nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
@@ -128,7 +128,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .faq-q{width:100%;text-align:left;background:none;border:none;color:#000;cursor:pointer;
   padding:20px 24px;font-size:1.05rem;font-weight:700;font-family:inherit;
   display:flex;justify-content:space-between;align-items:center;gap:16px;}
-.faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue);color:#fff;
+.faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue-darker);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
   box-shadow:2px 2px 0 rgba(0,0,0,.25);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}
