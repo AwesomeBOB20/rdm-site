@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RDM: Find Your Path</title>
-<meta name="description" content="Answer a few quick questions and find the exact RDM path to clean your hands, break your plateau, and make your line.">
+<title>RDM: Where You Stand</title>
+<meta name="description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -14,8 +14,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   RDM — FIND YOUR PATH (diagnostic quiz / router)
-   Same brand identity as the landing + VSL pages.
+   RDM: WHERE YOU STAND (the quiz)
+   Rebuilt 2026-09-16. Two destinations only: the practice tool, or
+   "send me a video". Coaching never shows a price here. Same brand
+   identity as start.html and academy-vsl.html.
+
+   EVERY CUSTOMER-FACING STRING LIVES IN THE `COPY` OBJECT at the top
+   of the script block. Edit words there, not in the markup.
    ============================================================ */
 :root{
   --purple:#96318d; --purple-deep:#792671;
@@ -38,11 +43,8 @@ img{max-width:100%;height:auto;}
 .topbar img{height:38px;display:block;}
 
 /* shell */
-/* Fills the space under the header and centres the question in it. With no footer below there's nothing
-   left to push down, so this reads as centred rather than as a gap. */
 .shell{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 18px 32px;}
 @media (max-width:760px){ .shell{padding:20px 16px 24px;} }
-
 .stage{width:100%;max-width:680px;}
 
 /* progress */
@@ -52,7 +54,7 @@ img{max-width:100%;height:auto;}
 .progress-fill{height:100%;width:0;background:var(--orange);transition:width .35s cubic-bezier(.2,.7,.2,1);}
 .progress-wrap.hide{display:none;}
 
-/* cards / screens */
+/* screens */
 .screen{display:none;animation:fade .4s ease;}
 .screen.active{display:block;}
 @keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
@@ -61,8 +63,13 @@ img{max-width:100%;height:auto;}
   letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:14px;}
 .q-title{font-size:clamp(1.4rem,3.6vw,2.1rem);font-weight:700;line-height:1.14;margin-bottom:22px;text-shadow:0 2px 12px rgba(0,0,0,.4);}
+.q-hint{display:block;font-size:.95rem;font-weight:400;color:rgba(255,255,255,.7);margin-top:7px;text-shadow:none;}
 .sub{color:rgba(255,255,255,.85);font-size:clamp(1.02rem,1.7vw,1.18rem);margin-bottom:28px;}
 .co{color:var(--orange);} .cb{color:var(--blue);} .cp{color:#e9b8e4;}
+/* ⚠️ INSIDE THE TAN CARD THE BRAND BLUE IS UNREADABLE. #06aeb9 on #fff0d3 measures 2.40:1, which fails
+   every contrast threshold there is; it only works as a FILL under white text (CLAUDE.md section 8).
+   --blue-deep #058890 measures 3.78:1, which passes for large bold text, which is all this is used for. */
+.result-card .cb{color:var(--blue-deep);}
 
 /* option cards */
 .opts{display:flex;flex-direction:column;gap:12px;}
@@ -70,115 +77,115 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:18px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
 .opt:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
-.opt.sel{background:var(--blue);color:#fff;}
+.opt.sel{background:var(--blue-deep);color:#fff;}
 .opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
 .opt.sel .dot{background:var(--orange);}
+/* A multi-select reads as a checkbox, not a radio, so the shape tells them they can tick several. */
+.opt.multi .dot{border-radius:7px;}
+.opt.multi.sel .dot{background:var(--orange);position:relative;}
+.opt.multi.sel .dot::after{content:"";position:absolute;left:7px;top:2px;width:6px;height:12px;border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg);}
 
 /* buttons */
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
-.btn.blue{background:var(--blue);} .btn.purple{background:var(--purple);}
+.btn.blue{background:var(--blue-deep);} .btn.purple{background:var(--purple);}
 .btn.full{display:block;width:100%;}
+.btn.ghost{background:rgba(0,0,0,.28);}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
 .row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
 .back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
 .back:hover{color:#fff;}
-.skip{color:rgba(255,255,255,.62);font-size:.92rem;text-decoration:underline;cursor:pointer;background:none;border:none;font-family:inherit;margin-top:18px;display:inline-block;}
+.skip{color:rgba(255,255,255,.72);font-size:.95rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;background:none;border:none;font-family:inherit;margin-top:18px;display:inline-block;}
 .skip:hover{color:#fff;}
-
-/* intro extras */
-.intro-note{margin-top:18px;font-size:.9rem;color:rgba(255,255,255,.62);}
-.intro-note b{color:var(--tan);font-weight:500;}
+.intro-or{margin-top:22px;font-size:.9rem;color:rgba(255,255,255,.62);}
+.foot-note{margin-top:34px;font-size:.88rem;color:rgba(255,255,255,.55);}
+.foot-note a{color:#f0d3ec;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
 
 /* email capture */
 .field{width:100%;font-family:inherit;font-size:1.05rem;padding:15px 18px;border:var(--b);border-radius:var(--rad);
   background:#fff;color:#000;margin-bottom:16px;}
 .field::placeholder{color:#888;}
-/* The two selects on the email screen. Native arrow is replaced so they read as the same
-   control as the text fields; :invalid greys the "pick one" option so it looks like a placeholder
-   (the option carries value="", so it stays invalid until they actually choose). */
 select.field{-webkit-appearance:none;appearance:none;cursor:pointer;padding-right:44px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath fill='%23000' d='M1 1l5 5 5-5' stroke='%23000' stroke-width='1.6' fill='none'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px;}
 select.field:invalid{color:#888;}
-/* The one free-text answer. Deliberately the last field and deliberately optional:
-   it is worth more than any of the multiple choice for writing the first DM, but a
-   required essay at the exact moment of the email ask would cost more leads than the
-   answer is worth. */
 textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inherit;}
 .qerr{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .qerr.show{display:block;}
 
-/* RESULT */
-.result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:34px 30px;text-align:left;}
-.result-flag{display:inline-block;background:var(--purple);color:#fff;border:2px solid #000;border-radius:999px;font-size:.72rem;
-  font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 15px;margin-bottom:14px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
-.result-card h2{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;line-height:1.12;margin-bottom:6px;color:#000;}
-.result-card .price{font-weight:700;color:var(--purple-deep);font-size:1.05rem;margin-bottom:16px;}
-.result-block{margin-bottom:16px;}
-.result-block h3{font-size:.78rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:5px;}
+/* ===== RESULT =====
+   Rebuilt 2026-09-16 (Anthony: "all the text looks nice but the layout is a little bit ugly"). What was
+   wrong: every block was a flat run of text under a small orange label, and the read-back rows were a
+   two-column flex whose long values wrapped into a ragged hanging indent. Now the card has a header band
+   that carries the flag and the title, the read-back is its own inset panel with a label ABOVE each
+   value instead of beside it (so nothing can wrap into a hanging indent), and the sections are separated
+   by rules rather than by guesswork spacing. */
+.result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);text-align:left;overflow:hidden;}
+.result-head{background:var(--purple);padding:22px 26px 20px;border-bottom:var(--b);}
+.result-flag{display:inline-block;background:rgba(0,0,0,.28);color:#fff;border:2px solid rgba(0,0,0,.5);border-radius:999px;font-size:.68rem;
+  font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:11px;}
+.result-card h2{font-size:clamp(1.5rem,3.7vw,2.05rem);font-weight:700;line-height:1.14;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.result-body{padding:22px 26px 26px;}
+.result-block + .result-block{margin-top:20px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
+.result-block h3{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:10px;}
 .result-block p{color:#222;font-size:1.02rem;}
-.result-card .btn{margin-top:8px;}
+.result-block p + p{margin-top:9px;}
+/* What they told me: an inset panel, label over value, so a long answer wraps as a paragraph. */
+.readback{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;
+  background:rgba(0,0,0,.045);border:2px solid rgba(0,0,0,.12);border-radius:14px;padding:14px 16px;}
+.readback li{display:block;font-size:.97rem;color:#111;line-height:1.4;}
+.readback li .k{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--purple-deep);margin-bottom:2px;}
+.readback li.wide{grid-column:1 / -1;}
+@media (max-width:430px){ .readback{grid-template-columns:1fr;gap:11px;} }
+/* what's in the training. Same tick list as the coaching landing page, so the two doors match. */
+.secrets{list-style:none;display:flex;flex-direction:column;gap:9px;}
+.secrets li{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;line-height:1.42;color:#222;}
+.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-deep);color:#fff;border:2px solid #000;
+  font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.secrets li .hl{color:var(--purple-deep);font-weight:700;}
+/* The three tools, on the tool result only. Each image is one composite: the desktop layout beside the
+   phone layout, both whole. Stacked full width rather than three across, because three columns inside a
+   card on a phone leaves about 100px per tool, at which point nothing in them can be read. */
+.shots{display:flex;flex-direction:column;gap:14px;}
+.shots figure{margin:0;}
+.shots img{width:100%;display:block;}
+.shots figcaption{margin-top:5px;font-size:.82rem;font-weight:700;text-align:center;color:#444;line-height:1.3;}
+.shots figcaption span{display:block;font-weight:400;font-size:.78rem;color:#666;}
+/* The CTA gets its own band at the foot of the card, so the button is never just another paragraph. */
+.result-cta{margin-top:22px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
+.result-card .btn{margin-top:0;}
+.result-price{font-weight:700;color:var(--blue-deep);font-size:.98rem;margin-top:11px;text-align:center;}
+.result-small{font-size:.86rem;color:#555;margin-top:11px;text-align:center;line-height:1.45;}
+.result-small a{color:var(--blue-deep);font-weight:700;}
+.result-alt{margin-top:16px;padding:13px 15px;border:2px dashed rgba(0,0,0,.28);border-radius:14px;font-size:.93rem;color:#222;background:rgba(255,255,255,.45);line-height:1.45;}
+.result-alt a{color:var(--purple-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot{text-align:center;margin-top:22px;}
-.result-foot a{color:rgba(255,255,255,.7);font-size:.9rem;text-decoration:underline;}
+.result-foot a{color:rgba(255,255,255,.7);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot a:hover{color:#fff;}
 
 @media (max-width:560px){
-  .result-card,.shell{padding-left:16px;padding-right:16px;}
-  .result-card{padding:26px 22px;}
+  .shell{padding-left:16px;padding-right:16px;}
+  .result-head{padding:18px 18px 16px;}
+  .result-body{padding:18px 18px 22px;}
 }
-
-/* ===== product picker panels (matches RDM Method landing tiers) ===== */
-.prodbreak{position:relative;left:50%;transform:translateX(-50%);width:92vw;max-width:1180px;text-align:center;}
-.prodbreak .picker-sub{color:rgba(255,255,255,.82);font-size:1rem;margin:0 auto 30px;max-width:560px;}
-.tiers-4{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch;text-align:left;margin-top:34px;}
-.tier{display:flex;flex-direction:column;position:relative;padding:30px 24px;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);}
-.tier.featured{transform:translateY(-8px);box-shadow:8px 8px 0 var(--orange);}
-.tier-flag{position:absolute;top:-15px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--orange);color:#fff;border:2px solid #000;border-radius:999px;font-size:.67rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 13px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
-.tier-flag.bestval{background:var(--orange-deep);}
-.tier.t-blue{border-color:var(--blue);box-shadow:6px 6px 0 var(--blue-deep);}
-.tier.t-orange{border-color:var(--orange);box-shadow:6px 6px 0 var(--orange-deep);}
-.tier.t-purple{border-color:var(--purple);box-shadow:6px 6px 0 var(--purple-deep);}
-.t-orange .tier-feats li .ck{color:var(--orange-deep);}
-.t-purple .tier-feats li .ck{color:var(--purple);}
-.tier-name{font-size:1.22rem;font-weight:700;margin-bottom:4px;}
-.tn-pa{color:var(--blue-deep);} .tn-method{color:var(--orange-deep);} .tn-bundle{color:var(--orange-deep);} .tn-academy{color:var(--purple);}
-.tier-tagline{color:#444;font-size:.88rem;min-height:52px;}
-.tier-price{font-size:2.4rem;font-weight:700;line-height:1;margin:14px 0 2px;color:#000;}
-.tier-price .per{font-size:.9rem;font-weight:500;color:#555;}
-.tier-price.apply{font-size:1.5rem;color:var(--purple);}
-.tier-sub{font-size:.82rem;color:#555;min-height:20px;margin-bottom:18px;}
-.tier-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px;flex:1;}
-.tier-feats li{display:flex;gap:9px;align-items:flex-start;font-size:.9rem;color:#222;}
-.tier-feats li .ck{color:var(--blue-deep);font-weight:700;flex:0 0 auto;}
-.tier-feats li.head{color:#000;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;}
-.tier .cta{width:100%;}
-.cta{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);padding:13px 18px;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.cta:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
-.cta.orange{background:var(--orange);} .cta.purple{background:var(--purple);} .cta.blue{background:var(--blue-deep);}
-.cta .big{display:block;font-size:1.02rem;font-weight:700;line-height:1.15;}
-.cta .small{display:block;font-size:.82rem;font-weight:400;color:rgba(255,255,255,.92);margin-top:4px;}
-.tier-note{font-size:.8rem;color:#555;margin-top:11px;text-align:center;}
-.tier-note.urgent{color:#b5430f;font-weight:600;}
-@media (max-width:980px){.tiers-4{grid-template-columns:repeat(2,1fr);gap:16px;}.tier.featured{transform:none;}.prodbreak{width:94vw;}}
-@media (max-width:560px){.tiers-4{grid-template-columns:1fr;gap:24px;max-width:420px;margin-left:auto;margin-right:auto;}.tier-tagline{min-height:0;}}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/index.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rudimental Drumming Mastery">
-<meta property="og:title" content="RDM: Find Your Path">
-<meta property="og:description" content="Answer a few quick questions and find the exact RDM path to clean your hands, break your plateau, and make your line.">
+<meta property="og:title" content="RDM: Where You Stand">
+<meta property="og:description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
 <meta property="og:url" content="https://rudimentaldrummingmastery.com/index.html">
 <meta property="og:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Rudimental Drumming Mastery">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="RDM: Find Your Path">
-<meta name="twitter:description" content="Answer a few quick questions and find the exact RDM path to clean your hands, break your plateau, and make your line.">
+<meta name="twitter:title" content="RDM: Where You Stand">
+<meta name="twitter:description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
 <meta name="twitter:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 </head>
 <body>
@@ -187,176 +194,62 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 
   <div class="topbar"><a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a></div>
 
-  <!-- progress -->
   <div class="progress-wrap hide" id="progress">
-    <div class="progress-row"><span id="pstep">Question 1 of 6</span><span id="ppct">0%</span></div>
+    <div class="progress-row"><span id="pstep"></span><span id="ppct">0%</span></div>
     <div class="progress-bar"><div class="progress-fill" id="pfill"></div></div>
   </div>
 
   <div class="shell">
     <div class="stage">
 
-      <!-- ===== INTRO ===== -->
+      <!-- INTRO. Two doors: the questions, or straight to the video. -->
       <section class="screen active" id="screen-intro">
-        <span class="eyebrow">Find your path · 60 seconds</span>
-        <h1>Not sure where to start? <span class="co">Let's figure it out.</span></h1>
-        <p class="sub">Answer 6 quick questions about where you're at and what you're chasing. I'll show you the exact RDM path to get there, and what to do first.</p>
-        <button class="btn full" onclick="start()">Start &rarr;</button>
-        <button class="skip" onclick="show('screen-q0picker')">I already know what I want &rarr;</button>
+        <span class="eyebrow" id="i-eyebrow"></span>
+        <h1 id="i-title"></h1>
+        <p class="sub" id="i-sub"></p>
+        <button class="btn full" id="i-start" onclick="start()"></button>
+        <p class="intro-or" id="i-or"></p>
+        <button class="btn full ghost" id="i-skip" onclick="skipToTraining()"></button>
+        <p class="foot-note" id="i-foot"></p>
       </section>
 
-      <!-- ===== "I KNOW WHAT I WANT" QUICK PICKER ===== -->
-      <section class="screen" id="screen-q0picker">
-        <div class="prodbreak">
-        <span class="eyebrow">Pick your product</span>
-        <h1 class="q-title">Jump straight to it.</h1>
-        <p class="picker-sub">Three ways to train with RDM. Pick the one that fits where you're at.</p>
-        <div class="tiers-4">
-
-          <!-- PLAYALONGS -->
-          <div class="tier t-blue">
-            <div class="tier-name tn-pa">RDM Playalongs</div>
-            <p class="tier-tagline">The web practice tool. Get clean, fast, on your own time.</p>
-            <div class="tier-price">$9.99<span class="per">/mo</span></div>
-            <p class="tier-sub">Start with a $1, 7-day trial</p>
-            <ul class="tier-feats">
-              <li><span class="ck">&#10003;</span> 500+ looping play-along exercises</li>
-              <li><span class="ck">&#10003;</span> Sight-Reading Lab</li>
-              <li><span class="ck">&#10003;</span> Advanced marching metronome</li>
-              <li><span class="ck">&#10003;</span> Practice anywhere, in your browser</li>
-            </ul>
-            <a href="start" class="cta blue"><span class="big">See the Practice Tool</span><span class="small">$1, 7-day trial · cancel anytime</span></a>
-            <p class="tier-note">No commitment. Cancel anytime.</p>
-          </div>
-
-          <!-- METHOD - HIDDEN 2026-09-11 (Anthony: "we should probably hide the course option from the
-               survey, the level up section on the app, and the landing page for the course").
-
-               WHY: nobody has ever bought it standalone. The live database showed 0 accounts on the
-               `method` tier against 45 Playalongs, 14 free and 8 Academy. A course is a LIKELIHOOD
-               product - it only converts if the buyer believes they will finish it alone - and this
-               avatar's own words are "I don't know what to do", so they are buying Anthony, not
-               information. PROGRAMS.md had already demoted it to "a catch for the unready, not a focus".
-
-               KEPT, NOT DELETED, and that is deliberate. landing.html stays live and the Stripe link
-               stays valid, because the Method is still a DOWNSELL he can offer by hand on a call when a
-               parent balks at $500, and it is still stacked value inside the Intensive and the Academy
-               ("the course alone is $147"). A price nobody can pay is not really a price.
-               To put it back: delete this comment wrapper. -->
-          <!-- ⚠️ HTML COMMENTS DO NOT NEST, AND THIS ONE MUST NOT CONTAIN COMMENT MARKERS OF ITS OWN.
-
-               This wrapper used to have a second comment opened immediately inside it, labelling the
-               Method card. A browser ends a comment at the FIRST close marker it meets, so the wrapper
-               ended at that inner label instead of at the bottom of the block: the entire Method card
-               rendered live at $147, and a bare close marker printed as text under the tier grid. It had
-               been meant to be hidden since 2026-09-11.
-
-               It happened a second time on 2026-09-16, in the comment written to explain the first one,
-               because that text quoted the markers literally. Hence this note describes them in words.
-               Do not write either marker inside this block, not even as an example.
-
-               METHOD (featured), hidden: the Method is no longer a product (CLAUDE.md section 2).
-          <div class="tier featured t-orange">
-            <span class="tier-flag">&#9733; Most Popular</span>
-            <div class="tier-name tn-method">RDM Method</div>
-            <p class="tier-tagline">The complete self-paced course. The best place to start.</p>
-            <div class="tier-price">$147</div>
-            <p class="tier-sub">One-time &middot; lifetime access</p>
-            <ul class="tier-feats">
-              <li><span class="ck">&#10003;</span> All 8 course modules</li>
-              <li><span class="ck">&#10003;</span> <b>Lifetime</b> Playalongs access ($9.99/mo value)</li>
-              <li><span class="ck">&#10003;</span> Community: post questions, I answer them</li>
-              <li><span class="ck">&#10003;</span> Cheat sheet &amp; checklists</li>
-            </ul>
-            <a href="academy-vsl.html" class="cta orange"><span class="big">Work with me</span><span class="small">$147 · one-time, lifetime access</span></a>
-            <p class="tier-note">$701 value &middot; no subscription</p>
-          </div>
-
-          -->
-          <!-- ACADEMY -->
-          <div class="tier t-purple">
-            <div class="tier-name tn-academy">RDM Academy</div>
-            <p class="tier-tagline">Private coaching with Anthony. Limited spots.</p>
-            <div class="tier-price apply">By Application</div>
-            <p class="tier-sub">Apply to see if it's a fit</p>
-            <ul class="tier-feats">
-              <li class="head">Everything above, plus:</li>
-              <li><span class="ck">&#10003;</span> Weekly video feedback</li>
-              <li><span class="ck">&#10003;</span> Ongoing 1-on-1 coaching</li>
-              <li><span class="ck">&#10003;</span> Group coaching calls</li>
-              <li><span class="ck">&#10003;</span> Direct DM access to Anthony</li>
-            </ul>
-            <a href="academy-vsl.html" class="cta purple"><span class="big">Apply for the Academy</span></a>
-            <p class="tier-note urgent">For drummers chasing a goal line.</p>
-          </div>
-
-        </div>
-        <!-- THE BOOK, under the three tiers rather than beside them. It is a $27 one-off, not a rung of
-             the ladder, so making it a fourth card would put it in a comparison it does not belong in
-             and make the real choice harder. But nothing on the site linked to it at all, which meant
-             the cheapest way into RDM only existed if Anthony pasted the link himself. -->
-        <p class="tier-note" style="text-align:center;margin-top:26px;">
-          Just want more reps on paper? <a href="book.html" style="color:#f0d3ec;font-weight:700;text-decoration:underline;text-underline-offset:3px;">The Drummer's Gridding Handbook, $27 &rarr;</a>
-        </p>
-        <div class="row" style="justify-content:center;margin-top:18px;"><button class="back" onclick="show('screen-intro')">&larr; Back</button></div>
-        </div>
-      </section>
-
-      <!-- ===== QUESTIONS render here ===== -->
+      <!-- QUESTIONS render here -->
       <section class="screen" id="screen-question">
         <h2 class="q-title" id="q-title"></h2>
         <div class="opts" id="q-opts"></div>
         <div class="row">
           <button class="back" id="q-back" onclick="prevQ()">&larr; Back</button>
+          <button class="btn" id="q-next" onclick="nextQ()" style="display:none">Next &rarr;</button>
         </div>
       </section>
 
-      <!-- ===== EMAIL CAPTURE ===== -->
+      <!-- LEAD CAPTURE. Sits before the result on both paths: the result is the reason to fill it in. -->
       <section class="screen" id="screen-email">
-        <span class="eyebrow">One last thing</span>
-        <h2 class="q-title">Where should I send your <span class="co">result + a free practice plan?</span></h2>
-        <p class="sub">Drop your email and I'll show your path now and send you a starter plan to go with it. Your Instagram is so I can follow up with you personally.</p>
+        <span class="eyebrow" id="e-eyebrow"></span>
+        <h2 class="q-title" id="e-title"></h2>
+        <p class="sub" id="e-sub"></p>
         <form id="email-form" novalidate onsubmit="return submitEmail(event)">
-          <input class="field" id="fname-input" type="text" placeholder="First name" autocomplete="given-name">
-          <input class="field" id="email-input" type="email" placeholder="you@email.com" autocomplete="email">
-          <input class="field" id="ig-input" type="text" placeholder="@yourusername (so I can DM you)" autocomplete="off" required>
-          <!-- Age + who-pays. These do NOT change the routing (the scored questions do that). They
-               exist because the buyer is 15-20 and the parent usually holds the money, so the
-               follow-up DM and the sales call are completely different conversations depending on
-               these two answers. Asked here rather than as a 7th question so the question count,
-               and the drop-off that comes with it, stays the same. -->
-          <select class="field" id="age-input" required>
-            <option value="">How old are you?</option>
-            <option>Under 15</option>
-            <option>15 to 17</option>
-            <option>18 to 20</option>
-            <option>21 or older</option>
-          </select>
-          <select class="field" id="payer-input" required>
-            <option value="">Who would be paying?</option>
-            <option>My parents</option>
-            <option>Me</option>
-            <option>Both of us</option>
-          </select>
-          <textarea class="field" id="story-input" rows="4"
-            placeholder="Optional: in your own words, what are you chasing and what's stopping you? This is what I read before I message you."></textarea>
+          <input class="field" id="fname-input" type="text" autocomplete="given-name">
+          <input class="field" id="email-input" type="email" autocomplete="email">
+          <input class="field" id="ig-input" type="text" autocomplete="off" required>
+          <!-- ⚠️ AGE AND "WHO WOULD BE PAYING" BOTH LIVE ON THE APPLICATION NOW, NOT HERE (Anthony,
+               2026-09-16). The application already asks both, and they are strange things to ask somebody
+               who has not been offered anything yet. What is left is the smallest set that lets him reach
+               them: a name, an email and an Instagram handle.
+               ⚠️ The Quiz Leads tab still has an Age column and a Who Pays column, so saveLead keeps
+               sending both as empty strings. Dropping the fields from the payload would slide every
+               column after them one cell left. -->
+          <textarea class="field" id="story-input" rows="4"></textarea>
           <div class="qerr" id="email-err"></div>
-          <button class="btn full" type="submit">Show my result &rarr;</button>
+          <button class="btn full" type="submit" id="e-submit"></button>
         </form>
+        <div class="row"><button class="back" id="e-back" onclick="emailBack()">&larr; Back</button></div>
       </section>
 
-      <!-- ===== RESULT ===== -->
+      <!-- RESULT: one card, one CTA. Built from COPY + the answers. -->
       <section class="screen" id="screen-result">
-        <div class="result-card">
-          <span class="result-flag" id="r-flag">Your path</span>
-          <h2 id="r-title"></h2>
-          <p class="price" id="r-price"></p>
-          <div class="result-block"><h3>Where you're at</h3><p id="r-where"></p></div>
-          <div class="result-block"><h3>What's holding you back</h3><p id="r-why"></p></div>
-          <div class="result-block"><h3>Your next step</h3><p id="r-next"></p></div>
-          <a class="btn full" id="r-cta" href="#">Get Started</a>
-        </div>
-        <div class="result-foot"><a id="r-other" href="#" onclick="show('screen-q0picker');return false;">See all the options instead</a></div>
+        <div class="result-card" id="result-card"></div>
+        <div class="result-foot" id="result-foot"></div>
       </section>
 
     </div>
@@ -364,321 +257,450 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 </div>
 
 <script>
-/* ---------------- QUIZ DATA ----------------
-   Each option carries points toward P (Playalongs), M (Method),
-   L (Method + Lessons bundle), or A (Academy).
-   Q5 (how much help) + Q6 (commitment) are weighted heaviest because the
-   level-of-help is what really separates the 4 products. Highest total wins. */
-const QUESTIONS = [
-  {
-    title: "What's your #1 goal with snare drumming right now?",
-    opts: [
-      {t:"Just get better: cleaner hands, for fun or for my section", s:{P:2}},
-      {t:"Break my plateau and finally learn HOW to actually get good", s:{M:2}},
-      {t:"Make a specific competitive line (DCI, WGI, college, top HS)", s:{A:2}},
-    ]
-  },
-  {
-    title: "Where are you at as a player?",
-    opts: [
-      {t:"Beginner: still getting the basics down", s:{P:2}},
-      {t:"Intermediate, but stuck on a plateau", s:{M:2}},
-      {t:"Advanced: grinding for the next level", s:{A:1,M:1}},
-    ]
-  },
-  {
-    title: "What's your biggest challenge right now?",
-    opts: [
-      {t:"I don't know what to practice, or how", s:{M:2}},
-      {t:"I can't get clean. I can't even hear my own mistakes yet", s:{P:2}},
-      {t:"I can't play fast enough, or my timing falls apart", s:{P:1,M:1}},
-      {t:"I freeze at auditions and can't make the line", s:{A:2}},
-    ]
-  },
-  {
-    title: "What's your timeline?",
-    opts: [
-      {t:"I've got an audition coming up I need to be ready for", s:{A:2}},
-      {t:"No deadline, I'm just tired of being stuck on a plateau", s:{M:2}},
-      {t:"No rush, I just want to keep getting cleaner", s:{P:2}},
-      {t:"Building now for next season's auditions", s:{A:1,M:1}},
-    ]
-  },
-  {
-    title: "How much help do you want to get there?",
-    opts: [
-      {t:"Just a tool to practice with on my own", s:{P:4}},
-      {t:"The full system to follow on my own", s:{M:4}},
-      {t:"The system PLUS a few 1-on-1 sessions with you", s:{L:5}},
-      {t:"Intensive 1-on-1 coaching until I make it", s:{A:4,L:2}},
-    ]
-  },
-  {
-    // Was "How serious are you about this?", which everybody answers "very" to. Stated
-    // commitment predicts nothing. Days practised last week is behaviour that already
-    // happened, so it is the only honest commitment signal in the quiz.
-    title: "How many days did you practice last week?",
-    opts: [
-      {t:"0 to 1", s:{P:3}},
-      {t:"2 to 3", s:{P:2,M:2}},
-      {t:"4 to 5", s:{M:3,L:2}},
-      {t:"6 to 7", s:{A:4,L:2}},
-    ]
-  },
-];
+/* =====================================================================
+   COPY. Every word a visitor reads. No em dashes anywhere in this file.
+   Coaching never shows a price. Only the tool does.
+   ===================================================================== */
+/* WHERE THE TWO EXITS GO.
+   Coaching goes to the VSL page, NOT to coaching.html: the quiz has already taken their name and
+   email, so the landing page would ask for both a second time. coaching.html is the opt-in for
+   people who arrive on it cold, from an ad or a coaching post. Both doors end at the same video.
+   (Decided with Anthony 2026-09-16.) */
+const TRAINING_URL = "training.html";
+const TOOL_URL = "start";
 
-/* ---------------- PRODUCT RESULTS ---------------- */
-const RESULTS = {
-  P: {
-    flag:"Your path: the practice tool",
-    title:"Start with <b style='color:#058890'>The RDM Playalongs</b>",
-    price:"$1 for 7 days, then $9.99/mo &middot; cancel anytime",
-    where:"You're building your foundation and your hands just need the right reps every day. No matter your level, this is where clean comes from.",
-    why:"You don't have a tool that forces good reps and trains your ear to hear clean vs. dirty. That's exactly the gap.",
-    next:"Use <b style='color:#058890'>The RDM Playalongs</b> tool every day. It'll make you cleaner, more accurate, and sharpen your ears, no matter what.",
-    cta:"Start the $1 Trial",
-    url:"start"
+const COPY = {
+  intro: {
+    eyebrow: "60 seconds",
+    title: "Where are you at, <span class='co'>really?</span>",
+    sub: "Four quick questions about what you're going for and what's in the way. At the end I'll tell you what I'd do first.",
+    start: "Start &rarr;",
+    or: "Already know you want to work with me?",
+    skip: "Skip the questions. Watch the training.",
+    foot: ""
   },
-  /* ⚠️ M AND L ARE NO LONGER REACHABLE AS RESULTS (2026-09-11). The Method is hidden, so the two
-     outcomes that sold it are remapped in winner() below rather than deleted: M -> P, L -> A. The copy is
-     left here intact because these are the two best-written diagnoses in the quiz, and they are exactly
-     what to start from if the INTENSIVE ever gets a page - the L text ("the whole system AND some real
-     guidance, without going all-in on the full Academy") is the Intensive described almost word for word. */
-  M: {
-    flag:"Your path: the system",
-    title:"Work with me",
-    price:"By application &middot; send me a video and I'll tell you where you stand",
-    where:"You're past the basics and putting in work, but you're plateaued because no one's handed you the system.",
-    why:"You don't need more reps. You need to know HOW: how to break down any music, what's limiting you, and how to practice so it actually sticks.",
-    next:"Go through <b style='color:#d35400'>The RDM Method</b>. You'll learn the full system and mindset, and you'll never be stuck wondering what to do again. Stuck on something? Post in the community and I'll help.",
-    cta:"Send me a video",
-    url:"academy-vsl.html"
+
+  /* ⚠️ FOUR QUESTIONS, NOT SIX (Anthony, 2026-09-16: "shouldn't question three be saved for the Academy
+     application? Same thing with question 4 and 5"). He was right, and checking the application proved
+     it: `academy-application.html` already asks their LEVEL ("Where are you at as a snare player right
+     now?") and their HOURS A WEEK, so the quiz was asking the same people the same things twice.
+       cut   - level  (the application asks it)
+       cut   - days practised last week (the application asks hours a week)
+       kept  - the blocker, because most quiz leads never reach the application: the DM comes first and
+               this is the only thing that gives him something real to open with
+       kept  - audition timing, because the application does NOT ask it and it is the one honest urgency
+               signal in the business (the age-out clock)
+       kept  - what would help, because it is the only question that routes
+     Answers are in their words (CLAUDE.md section 4), not mine. */
+  questions: [
+    /* TWO ANSWERS ONLY, and phrased the way Anthony said it (2026-09-16): somebody serious about making
+       a line, or somebody just getting better. ⚠️ Not "a serious line" ("sounds stupid") and not "a TOP
+       high school drumline" (his call, both). The school-line option was cut earlier for telling him
+       nothing: people who make their school line stay on it. This does not pick a product. It tells him
+       which conversation he is about to have. */
+    { title: "What are you going for?",
+      key: "goal",
+      opts: [
+        "I want to make a DCI, WGI, college or high school drumline.",
+        "I just want to get better. Nothing I'm auditioning for."
+      ] },
+    /* MULTI-SELECT (Anthony, 2026-09-16: "make sure people can choose multiple so it's checkboxes").
+       Six options is too many to force one pick, and the real answer is usually several of them. */
+    { title: "What's the thing you can't get past?",
+      hint: "Tick everything that fits.",
+      key: "blocker",
+      multi: true,
+      opts: [
+        "I can't get clean.",
+        "I can't play fast enough.",
+        "I don't know what to practice next.",
+        "My technique feels wrong. I get tense and my hands won't relax.",
+        "I'm scared of getting cut.",
+        "I can't sight-read fast, or I can't march and play."
+      ] },
+    { title: "When's your next audition?",
+      key: "when",
+      opts: [
+        "Within a month.",
+        "This season. A few months out.",
+        "Next season.",
+        "I don't have one."
+      ] },
+    /* ⚠️ THE ONLY QUESTION THAT DECIDES THE EXIT. Its title was "What do you actually want from me?"
+       until Anthony called it harsh, and he was right: "actually" reads as suspicion on the one screen
+       that decides where someone goes. The third option went through several rounds with him ("sounds
+       weird", "short and lame and not attractive") and must stay a promise about the WORK, never about
+       what an audition panel decides. */
+    { title: "What would help you most right now?",
+      key: "want",
+      opts: [
+        "A tool I can practice with on my own.",
+        "Watch me play and tell me exactly what to fix.",
+        "Everything. Coach me until I'm playing at the level I want."
+      ] }
+  ],
+
+  /* ⚠️ NOTHING HERE PROMISES A DM (Anthony, 2026-09-16: "I don't know if it's smart to tell them that
+     I'm going to follow up with them on the Instagram username"). The handle is still asked for and is
+     still how he reaches people. It is simply not announced, because saying it turns a two-second field
+     into a commitment the visitor did not ask for. */
+  email: {
+    eyebrow: "One last thing",
+    quizTitle: "Last thing. <span class='co'>Who are you?</span>",
+    quizSub: "Your result is on the next screen.",
+    skipTitle: "Last thing. <span class='co'>Who are you?</span>",
+    skipSub: "So I know who's watching.",
+    fname: "First name",
+    emailPh: "you@email.com",
+    ig: "@yourusername",
+    story: "Optional: in your own words, what are you working on and what's in the way?",
+    quizSubmit: "Show my result &rarr;",
+    skipSubmit: "Take me to the training &rarr;",
+    errName: "Put your first name in.",
+    errEmail: "That email doesn't look right.",
+    errIG: "Instagram username only: letters, numbers, dots and underscores."
   },
-  L: {
-    flag:"Your path: the system + my eyes on you",
-    title:"Work with me",
-    price:"By application &middot; send me a video and I'll tell you where you stand",
-    where:"You want the whole system AND some real guidance, without going all-in on the full Academy. Smart middle ground.",
-    why:"A course alone is slower when you're not sure your hands are right. A few sessions with me catch what you can't see and answer your specific questions.",
-    next:"Get the Method + Lessons. You go through the course and the Playalongs, and we hop on 3 calls so I can fix your hands and drum through whatever's tripping you up.",
-    cta:"Send me a video",
-    url:"academy-vsl.html"
+
+  /* Read back to them under "What you told me". Index matches the option index. */
+  readback: {
+    goal: [ "making a DCI, WGI, college or high school line", "getting better, nothing you're auditioning for" ],
+    blocker: [ "you can't get clean", "you can't play fast enough", "you don't know what to practice next",
+               "your technique feels wrong and your hands tense up", "you're scared of getting cut",
+               "you can't sight-read fast or can't march and play" ],
+    when: [ "within a month", "this season", "next season", "none on the calendar" ],
+    want: [ "a tool to practice with on your own", "my eyes on your hands", "me coaching you" ]
   },
-  A: {
-    flag:"Your path: private coaching",
-    title:"Apply for <b style='color:#96318d'>The RDM Academy</b>",
-    price:"By application &middot; limited spots",
-    where:"You're serious about a specific line and you're willing to do hard work to get there. You don't want to guess anymore. You want a coach.",
-    why:"You need eyes on YOUR hands every day plus accountability. Going it alone is exactly why serious players stall out.",
-    next:"Apply for the Academy. We work together 1-on-1 until you can play the 5 etudes. It's hard. That's the point.",
-    cta:"Apply for the Academy",
-    url:"academy-vsl.html"
+
+  /* RESULT C: coaching. Hands off to the free training, which is what the landing page does for
+     traffic that did not take the quiz. The four lines under "What's in it" are ANTHONY'S OWN, lifted
+     word for word from coaching.html so the two doors say the same thing. Do not paraphrase them here
+     without changing them there too. */
+  coaching: {
+    flag: "Your next step",
+    title: "First, <span class='co'>watch the training.</span>",
+    toldMe: "What you told me",
+    skippedNote: "You skipped the questions, which is fine. Watch this first either way.",
+    whatsIn: "What's in it",
+    secrets: [
+      "The practice system that lets you <span class='hl'>MASTER</span> any advanced snare part, and <span class='hl'>STOP</span> wasting time hacking, guessing, or repping mistakes",
+      "How to play <span class='hl'>CLEAN, CONTROLLED,</span> and <span class='hl'>LOCKED-IN</span> with metronome strategies that sharpen your timing and make you stand out in any audition, without having to guess through trial and error",
+      "The <span class='hl'>TRIAD OF RUDIMENTAL DRUMMING MASTERY</span>, a complete roadmap to <span class='hl'>LEVEL UP</span> your technique, structure your practice, and expand your drumming vocabulary <span class='hl'>FAST</span>",
+      "How to <span class='hl'>CRUSH</span> fear and <span class='hl'>DOMINATE</span> auditions by learning the prep, mindset, and confidence frameworks the best players use to <span class='hl'>win top spots</span>"
+    ],
+    cta: "Watch the free training &rarr;",
+    after: "It's free, and there's nothing to buy in it. If you want to go further after watching, there's an application at the end.",
+    foot: "Want something to practice with in the meantime? <a href='start'>The practice tool&nbsp;&rarr;</a>"
+  },
+
+  /* RESULT T: the tool. The only place a price appears. */
+  tool: {
+    flag: "Your next step",
+    title: "Train your hands. <span class='cb'>Start with the tool.</span>",
+    toldMe: "What you told me",
+    myRead: "My read",
+    readIntro: "You want to practice on your own. Good. The tool is exactly that: 500+ exercises with audio, the metronome, and the sight-reading lab. Use it every day and you get cleaner. No matter what.",
+    /* THE REAL APP, IN A LAPTOP AND A PHONE. Not the tool on its own and not a mockup: the nav rail, the
+       bottom tab bar and the brand background are the shipping app's, captured through
+       rdm-app-react/dev-harness/toolframe.html, which mounts a real tool in the real shell with a
+       stubbed profile and no login (so no member data is ever in a public image).
+       ⚠️ NOT assets/playalongs/*.png. Those are the retired Webflow tool and would show a visitor an
+       interface that no longer exists.
+       To rebuild: node appshot2.cjs (shell and tool as two layers, because Chrome gives an iframe an
+       opaque white base and the brand background can never show through it), then frames.py. */
+    shotsTitle: "Three tools, on your laptop and your phone",
+    shots: [
+      { img: "assets/tool/playalongs.png",   h: 502, cap: "Playalongs<span>500+ exercises with the audio to play along to</span>" },
+      { img: "assets/tool/metronome.png",    h: 502, cap: "Metronome<span>Stack subdivisions most metronomes cannot play</span>" },
+      { img: "assets/tool/sightreading.png", h: 502, cap: "Sight-Reading Lab<span>A brand new page every time you tap generate</span>" }
+    ],
+    cta: "Start the $1 trial &rarr;",
+    price: "$1 for 7 days, then $9.99/mo. Cancel anytime.",
+    altLead: "You also said ",
+    altTail: ". If you want my eyes on your hands, <a onclick='switchToCoaching();return false;' href='#'>watch the free training instead&nbsp;&rarr;</a>",
+    /* the "you also said" reasons, checked in this order */
+    altWhen: [ "your audition is inside a month", "you've got an audition this season", "", "" ],
+    altGoal: "you're going for a DCI, WGI, college or high school line",
+    foot: "Changed your mind? <a onclick='switchToCoaching();return false;' href='#'>Watch the free training instead</a>"
   }
 };
 
-/* ---------------- ENGINE ---------------- */
-let qi = 0;
-const answers = [];
-const score = {P:0,M:0,L:0,A:0};
+/* =====================================================================
+   ROUTING. Two outcomes: T (the tool) or C (coaching, via the free training).
+   T only when they said, in so many words, that they want a tool to practice
+   with on their own. Everything else is C, because the training and then the
+   application are what sort Intensive from Academy, not this page.
+   ===================================================================== */
+const QUESTIONS = COPY.questions;
+/* Positions, not guesses: goal, blocker, audition timing, what would help. These moved when the level
+   and days-practised questions were cut, and every index below is read from here for that reason. */
+const Q_GOAL = 0, Q_BLOCKER = 1, Q_WHEN = 2, Q_WANT = 3;
 
+function route(answers){
+  if(answers[Q_WANT] === 0) return 'T';
+  return 'C';
+}
+/* On the tool result: the one thing they said that argues for coaching anyway, or ''. */
+function hotReason(answers){
+  const w = COPY.tool.altWhen[answers[Q_WHEN]] || '';
+  if(w) return w;
+  if(answers[Q_GOAL] === 0) return COPY.tool.altGoal;
+  return '';
+}
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+let qi = 0;
+let skipped = false;
+const answers = [];
+
+function $(id){ return document.getElementById(id); }
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  $(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function start(){ qi=0; answers.length=0; score.P=score.M=score.L=score.A=0; renderQ(); }
+
+function paintStatic(){
+  $('i-eyebrow').innerHTML = COPY.intro.eyebrow;
+  $('i-title').innerHTML = COPY.intro.title;
+  $('i-sub').innerHTML = COPY.intro.sub;
+  $('i-start').innerHTML = COPY.intro.start;
+  $('i-or').innerHTML = COPY.intro.or;
+  $('i-skip').innerHTML = COPY.intro.skip;
+  $('i-foot').innerHTML = COPY.intro.foot;
+  $('e-eyebrow').innerHTML = COPY.email.eyebrow;
+  $('fname-input').placeholder = COPY.email.fname;
+  $('email-input').placeholder = COPY.email.emailPh;
+  $('ig-input').placeholder = COPY.email.ig;
+  $('story-input').placeholder = COPY.email.story;
+}
+
+function start(){
+  skipped = false; qi = 0; answers.length = 0;
+  if(window.rdmTrack) rdmTrack('quiz_start', {});
+  renderQ();
+}
+
+function skipToTraining(){
+  skipped = true; answers.length = 0;
+  if(window.rdmTrack) rdmTrack('quiz_skip_to_training', {});
+  $('progress').classList.add('hide');
+  paintEmail();
+  show('screen-email');
+}
+
+/* A multi-select question stores an ARRAY of indices; a single-select stores one number. Everything
+   downstream (readback, the sheet payload) has to handle both, so isMulti is checked, never assumed. */
+function isMulti(i){ return !!QUESTIONS[i].multi; }
+function picked(i){ const a = answers[i]; return Array.isArray(a) ? a : (a == null ? [] : [a]); }
 
 function renderQ(){
   const q = QUESTIONS[qi];
-  document.getElementById('progress').classList.remove('hide');
-  document.getElementById('pstep').textContent = `Question ${qi+1} of ${QUESTIONS.length}`;
+  $('progress').classList.remove('hide');
+  $('pstep').textContent = 'Question ' + (qi+1) + ' of ' + QUESTIONS.length;
   const pct = Math.min(100, Math.max(0, Math.round((qi/QUESTIONS.length)*100)));
-  document.getElementById('ppct').textContent = pct + '%';
-  document.getElementById('pfill').style.width = pct + '%';
-  document.getElementById('q-title').innerHTML = q.title;
-  const wrap = document.getElementById('q-opts');
+  $('ppct').textContent = pct + '%';
+  $('pfill').style.width = pct + '%';
+  $('q-title').innerHTML = q.title + (q.hint ? '<span class="q-hint">' + q.hint + '</span>' : '');
+  const wrap = $('q-opts');
   wrap.innerHTML = '';
-  q.opts.forEach((o,idx)=>{
+  const sel = picked(qi);
+  q.opts.forEach((t,idx)=>{
     const b = document.createElement('button');
-    b.className = 'opt';
-    b.innerHTML = '<span class="dot"></span> <span>'+o.t+'</span>';
+    b.className = 'opt' + (sel.indexOf(idx) >= 0 ? ' sel' : '') + (q.multi ? ' multi' : '');
+    b.innerHTML = '<span class="dot"></span> <span>' + t + '</span>';
     b.onclick = ()=>pick(idx);
     wrap.appendChild(b);
   });
-  document.getElementById('q-back').style.visibility = qi===0 ? 'hidden' : 'visible';
+  /* The Next button only exists on a multi-select, because a single-select advances on the tap. */
+  $('q-next').style.display = q.multi ? 'inline-block' : 'none';
+  if(q.multi) $('q-next').disabled = sel.length === 0;
+  $('q-back').style.visibility = qi===0 ? 'hidden' : 'visible';
   show('screen-question');
 }
 
 function pick(idx){
-  // remove previous answer's score if re-answering
-  if(answers[qi]!=null){
-    const prev = QUESTIONS[qi].opts[answers[qi]].s;
-    for(const k in prev) score[k]-=prev[k];
+  if(isMulti(qi)){
+    /* Toggle, stay on the question, wait for Next. No auto-advance: they are picking several. */
+    const sel = picked(qi).slice();
+    const at = sel.indexOf(idx);
+    if(at >= 0) sel.splice(at,1); else sel.push(idx);
+    sel.sort((a,b)=>a-b);
+    answers[qi] = sel;
+    document.querySelectorAll('#q-opts .opt').forEach((b,i)=>b.classList.toggle('sel', sel.indexOf(i) >= 0));
+    $('q-next').disabled = sel.length === 0;
+    return;
   }
-  answers[qi]=idx;
-  const s = QUESTIONS[qi].opts[idx].s;
-  for(const k in s) score[k]=(score[k]||0)+s[k];
-  // brief highlight then advance
-  const btns = document.querySelectorAll('#q-opts .opt');
-  btns.forEach((b,i)=>b.classList.toggle('sel', i===idx));
-  setTimeout(()=>{
-    if(qi < QUESTIONS.length-1){ qi++; renderQ(); }
-    else { finishProgress(); show('screen-email'); }
-  }, 240);
+  answers[qi] = idx;
+  document.querySelectorAll('#q-opts .opt').forEach((b,i)=>b.classList.toggle('sel', i===idx));
+  setTimeout(nextQ, 240);
+}
+function nextQ(){
+  if(isMulti(qi) && picked(qi).length === 0) return;
+  if(qi < QUESTIONS.length-1){ qi++; renderQ(); }
+  else {
+    $('pstep').textContent = 'Done';
+    $('ppct').textContent = '100%';
+    $('pfill').style.width = '100%';
+    paintEmail();
+    show('screen-email');
+  }
+}
+function prevQ(){ if(qi>0){ qi--; renderQ(); } }
+function emailBack(){
+  if(skipped){ show('screen-intro'); }
+  else { qi = QUESTIONS.length-1; renderQ(); }
 }
 
-function prevQ(){
-  if(qi>0){ qi--; renderQ(); }
+function paintEmail(){
+  $('e-title').innerHTML = skipped ? COPY.email.skipTitle : COPY.email.quizTitle;
+  $('e-sub').innerHTML = skipped ? COPY.email.skipSub : COPY.email.quizSub;
+  $('e-submit').innerHTML = skipped ? COPY.email.skipSubmit : COPY.email.quizSubmit;
+  $('email-err').classList.remove('show');
 }
 
-function finishProgress(){
-  document.getElementById('pstep').textContent = 'Done!';
-  document.getElementById('ppct').textContent = '100%';
-  document.getElementById('pfill').style.width = '100%';
-}
-
-// ===== LEAD CAPTURE → GOOGLE SHEET =====
-// Paste your Google Apps Script Web App URL between the quotes (setup steps from Claude).
+/* ===== LEAD CAPTURE: Google Sheet, "Quiz Leads" tab =====
+   The sheet's columns are Date, First Name, Email, Product, Q1..Q6, Instagram, Age, Who Pays,
+   In Their Words. ⚠️ `answers` MUST STILL BE EXACTLY SIX ENTRIES even though the quiz now asks four:
+   the tab has six question columns, and sending fewer would slide Instagram, Age, Who Pays and their
+   own words one cell left for every new row. The last two go out empty. */
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
+const PRODUCT_NAME = { T: 'Playalongs', C: 'Coaching' };
+
+function currentResult(){ return skipped ? 'C' : route(answers); }
 
 function submitEmail(e){
   e.preventDefault();
-  const firstName = document.getElementById('fname-input').value.trim();
-  const email = document.getElementById('email-input').value.trim();
-  if(!firstName){ return showEmailErr('Please enter your first name.'); }
-  if(!isEmail(email)){ return showEmailErr('Please enter a valid email address.'); }
-  const ig = document.getElementById('ig-input').value;
-  if(!isIG(cleanIG(ig))){ return showEmailErr('Please enter a valid Instagram username (letters, numbers, . and _ only).'); }
-  const age = document.getElementById('age-input').value;
-  if(!age){ return showEmailErr('Please pick your age.'); }
-  const payer = document.getElementById('payer-input').value;
-  if(!payer){ return showEmailErr('Please pick who would be paying.'); }
-  const story = document.getElementById('story-input').value.trim();
-  saveLead(firstName, email, ig, age, payer, story);   // fire-and-forget; never blocks the result
-  if(window.rdmTrack){ var _pn={P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[winner()]||winner(); rdmTrack('Lead',{product:_pn}); rdmTrack('quiz_complete',{product:_pn}); }
-  showResult();
+  const firstName = $('fname-input').value.trim();
+  const email = $('email-input').value.trim();
+  if(!firstName){ return showEmailErr(COPY.email.errName); }
+  if(!isEmail(email)){ return showEmailErr(COPY.email.errEmail); }
+  const ig = $('ig-input').value;
+  if(!isIG(cleanIG(ig))){ return showEmailErr(COPY.email.errIG); }
+  const story = $('story-input').value.trim();
+  /* age and payer go out EMPTY, not dropped: the Quiz Leads tab still has both columns, and the
+     application is where those two questions live now. */
+  saveLead(firstName, email, ig, '', '', story);
+  const pn = PRODUCT_NAME[currentResult()];
+  if(window.rdmTrack){ rdmTrack('Lead',{product:pn}); rdmTrack('quiz_complete',{product:pn, skipped: skipped ? 1 : 0}); }
+  showResult(currentResult());
   return false;
 }
-
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+function showEmailErr(msg){ const el = $('email-err'); el.textContent = msg; el.classList.add('show'); return false; }
 
-function showEmailErr(msg){
-  const el = document.getElementById('email-err');
-  el.textContent = msg; el.classList.add('show');
-}
-
-// Instagram helpers. cleanIG strips a pasted URL / @ / spaces down to a bare handle.
-// isIG checks it against Instagram's real username rules (letters, numbers, dot,
-// underscore; 1-30 chars; no leading/trailing dot; no double dots). This validates
-// FORMAT only. A static site can't truly confirm the account exists (Instagram
-// blocks that), so the DM is the real existence check.
+/* Instagram helpers: strip a pasted URL or @ down to a bare handle, then check the format only.
+   A static page cannot confirm the account exists. The DM is the real check. */
 function cleanIG(v){
   if(!v) return '';
-  return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'')
-                 .replace(/^@+/,'').replace(/\/+$/,'').trim();
+  return v.trim().replace(/^https?:\/\/(www\.)?instagram\.com\//i,'').replace(/^@+/,'').replace(/\/+$/,'').trim();
 }
 function isIG(h){ return /^(?!.*\.\.)[a-zA-Z0-9_](?:[a-zA-Z0-9_.]{0,28}[a-zA-Z0-9_])?$/.test(h); }
 function fmtIG(v){ var h = cleanIG(v); return h ? '@'+h : ''; }
 
 function saveLead(firstName, email, ig, age, payer, story){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
-  const productNames = {P:'Playalongs', M:'Method', L:'Method + Lessons', A:'Academy'};
+  const six = [];
+  for(let i=0;i<6;i++){
+    if(skipped){ six.push(i===0 ? 'skipped the questions' : ''); continue; }
+    /* A multi-select lands in its column as one cell, semicolons between the ticks. */
+    const sel = picked(i);
+    six.push(QUESTIONS[i] ? sel.map(x=>QUESTIONS[i].opts[x]).join('; ') : '');
+  }
   const payload = {
     formType: 'quiz',
     firstName: firstName || '',
     email: email,
     instagram: fmtIG(ig),
-    product: productNames[winner()] || winner(),
-    answers: answers.map((a,i)=> QUESTIONS[i].opts[a] ? QUESTIONS[i].opts[a].t : ''),
+    product: PRODUCT_NAME[currentResult()],
+    answers: six,
     age: age || '',
     payer: payer || '',
     story: story || ''
   };
+  /* Fire and forget, and it must STAY forgotten. try/catch only sees a synchronous throw; a network
+     failure rejects the promise instead, which surfaced as an unhandled rejection in the browser
+     console. A blocked extension or a dropped connection must never show the visitor an error. */
   try{
-    fetch(SHEET_ENDPOINT, {
-      method:'POST',
-      mode:'no-cors',
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(payload)
-    });
-  }catch(err){ /* fail silently so a capture hiccup never stops the user */ }
+    fetch(SHEET_ENDPOINT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(payload) })
+      .catch(function(){ /* the lead is lost, the result still shows */ });
+  }catch(err){ /* never block the result */ }
 }
 
-function winner(){
-  // Academy is in play if they show real line/coaching intent on ANY of these,
-  // not just Q1. Any one opens the Academy door (the sales call still qualifies them):
-  //   Q1 goal      = "make a specific competitive line"
-  //   Q3 challenge = "I freeze at auditions and can't make the line"
-  //   Q4 timeline  = "I've got an audition coming up"
-  //   Q5 help      = "Intensive 1-on-1 coaching until I make it"
-  const academySignals =
-    (answers[0] === 2 ? 1 : 0) + (answers[2] === 3 ? 1 : 0) +
-    (answers[3] === 0 ? 1 : 0) + (answers[4] === 3 ? 1 : 0);
-  const academyEligible = academySignals >= 1;
-  // TWO OR MORE of those signals routes to the Academy outright, ahead of the points.
-  // This is here because of a real lead who ticked "make a specific competitive line",
-  // "I freeze at auditions and can't make the line" AND "I've got an audition coming
-  // up", and still landed on the $147 Method: Method points accumulate on every engaged
-  // answer, while each Academy signal is only worth 2. The bet is not symmetric.
-  // Routing a serious drummer to a course instead of the Academy costs the difference
-  // between $147 and $2,000. Routing a casual one to an application page costs nothing,
-  // because they simply do not apply.
-  if(academySignals >= 2) return 'A';   // (already an Academy answer; remap is a no-op for it)
-  // Overall strongest signal across all four products (tie-break A > L > M > P).
-  let top = 'P', topVal = -1;
-  ['A','L','M','P'].forEach(k=>{ if(score[k] > topVal){ topVal = score[k]; top = k; } });
-  // If their strongest pull is full coaching: Academy if they're chasing a line,
-  // otherwise the Method + Lessons bundle (their 1-on-1 option without the $2k).
-  if(top === 'A') return remap(academyEligible ? 'A' : 'L');
-  // Q5 option 2 ("the system PLUS a few 1-on-1 sessions with you") is the only place someone
-  // asks for my time without asking for the full Academy. That is a direct request for the
-  // bundle, so it outranks accumulated Method points, which every engaged answer feeds.
-  // Without this the bundle rung is nearly unreachable: a plateaued drummer who explicitly
-  // ticks "plus a few sessions" still totals more M than L and lands on the plain course.
-  if(answers[4] === 2) return remap('L');
-  // Otherwise pick the best of the non-Academy rungs (tie-break L > M > P).
-  let best = 'P', bestVal = -1;
-  ['L','M','P'].forEach(k=>{ if(score[k] > bestVal){ bestVal = score[k]; best = k; } });
-  return remap(best);
+/* ===== RESULT ===== */
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function readbackHTML(){
+  if(skipped) return '<p>' + COPY.coaching.skippedNote + '</p>';
+  const R = COPY.readback;
+  /* The blocker row is multi-select, so it joins however many they ticked. */
+  const blockers = picked(Q_BLOCKER).map(i=>R.blocker[i]);
+  const blockerText = blockers.length > 1
+    ? blockers.slice(0,-1).join(', ') + ' and ' + blockers[blockers.length-1]
+    : (blockers[0] || '');
+  /* "In the way" can hold several ticks, so it spans both columns and never squeezes into a half. */
+  const rows = [
+    ['Going for', R.goal[answers[Q_GOAL]], true],
+    ['Next audition', R.when[answers[Q_WHEN]], false],
+    ['You want', R.want[answers[Q_WANT]], false],
+    ['In the way', blockerText, true]
+  ];
+  return '<ul class="readback">' + rows.map(r=>'<li' + (r[2] ? ' class="wide"' : '') + '><span class="k">' + esc(r[0]) + '</span>' + esc(r[1]) + '</li>').join('') + '</ul>';
 }
 
-/* ⚠️ THE METHOD IS HIDDEN, SO ITS TWO OUTCOMES ARE REMAPPED AT THE EXIT (2026-09-11).
+/* One shell for both results: a purple header band, then the blocks, then a CTA band. */
+function card(flag, title, blocks, cta){
+  return '<div class="result-head"><span class="result-flag">' + flag + '</span><h2>' + title + '</h2></div>'
+       + '<div class="result-body">' + blocks + '<div class="result-cta">' + cta + '</div></div>';
+}
+const block = (h3, inner) => '<div class="result-block"><h3>' + h3 + '</h3>' + inner + '</div>';
 
-   Done here, as one translation of the ANSWER, rather than by editing the scoring above. Everything in
-   winner() is the product of real routing bugs - the two-signal Academy override exists because a lead
-   who ticked "make a specific competitive line", "I freeze at auditions" AND "I've got an audition
-   coming up" still landed on the $147 course. Rewriting that to remove two letters would risk all of it
-   for no gain. The letters still score, still tie-break, and still mean what they meant.
+function coachingHTML(){
+  const C = COPY.coaching;
+  return card(C.flag, C.title,
+      block(C.toldMe, readbackHTML())
+    + block(C.whatsIn, '<ul class="secrets">'
+        /* NOT escaped: these are Anthony's landing-page lines carried over verbatim, markup and all. */
+        + C.secrets.map(s=>'<li><span class="ck">&#10003;</span><span>' + s + '</span></li>').join('')
+        + '</ul>'),
+      '<a class="btn full" id="r-cta" href="' + TRAINING_URL + '">' + C.cta + '</a>'
+    + '<p class="result-small">' + C.after + '</p>');
+}
 
-   WHERE THEY GO, and this is the judgement call to check:
-     M -> P  a plateaued, self-directed drummer. With the course not for sale, the tool is the honest
-             cheap answer, and it is the one thing that works without Anthony's time.
-     L -> A  someone who explicitly asked for eyes on their hands. That is a coaching conversation, and
-             the Academy path is what books the call. The $500 Intensive is then the natural downsell
-             ON the call, which is also where a parent can be present - the buyers are 15-20 and do not
-             hold the money.
+function toolHTML(){
+  const C = COPY.tool;
+  const hot = hotReason(answers);
+  return card(C.flag, C.title,
+      block(C.toldMe, readbackHTML())
+    + block(C.myRead, '<p>' + C.readIntro + '</p>')
+    + block(C.shotsTitle, '<div class="shots">'
+        /* width/height are each composite's REAL pixel size, so the card does not jump as they load. */
+        + C.shots.map(s=>'<figure><img src="' + s.img + '" alt="" loading="lazy" width="1000" height="' + s.h + '"><figcaption>' + s.cap + '</figcaption></figure>').join('')
+        + '</div>'),
+      '<a class="btn full blue" id="r-cta" href="' + TOOL_URL + '">' + C.cta + '</a>'
+    + '<p class="result-price">' + C.price + '</p>'
+    + (hot ? '<div class="result-alt">' + C.altLead + esc(hot) + C.altTail + '</div>' : ''));
+}
 
-   TO RESTORE THE METHOD: delete this function and the `remap(...)` calls. Nothing else changed.
-   IF THE INTENSIVE EVER GETS A PAGE: L should point at it instead of A - the L copy in RESULTS is
-   already an almost word-perfect description of it. */
-function remap(k){ return k === 'M' ? 'P' : (k === 'L' ? 'A' : k); }
-
-function showResult(){
-  document.getElementById('progress').classList.add('hide');
-  const r = RESULTS[winner()];
-  document.getElementById('r-flag').innerHTML = r.flag;
-  document.getElementById('r-title').innerHTML = r.title;
-  document.getElementById('r-price').innerHTML = r.price;
-  document.getElementById('r-where').innerHTML = r.where;
-  document.getElementById('r-why').innerHTML = r.why;
-  document.getElementById('r-next').innerHTML = r.next;
-  const cta = document.getElementById('r-cta');
-  cta.textContent = r.cta;
-  cta.href = r.url;
-  var _w = winner(), _pn = {P:'Playalongs',M:'Method',L:'Method + Lessons',A:'Academy'}[_w]||_w;
-  cta.onclick = function(){ if(window.rdmTrack){ _w==='A' ? rdmTrack('academy_apply_click',{product:_pn}) : rdmTrack('InitiateCheckout',{product:_pn}); } };
+function showResult(kind){
+  $('progress').classList.add('hide');
+  const card = $('result-card');
+  card.innerHTML = kind === 'C' ? coachingHTML() : toolHTML();
+  $('result-foot').innerHTML = kind === 'C' ? COPY.coaching.foot : COPY.tool.foot;
+  const pn = PRODUCT_NAME[kind];
+  $('r-cta').onclick = function(){
+    if(!window.rdmTrack) return;
+    if(kind === 'C') rdmTrack('ViewContent', {product: pn}); else rdmTrack('InitiateCheckout', {product: pn});
+  };
   show('screen-result');
 }
+function switchToCoaching(){
+  if(window.rdmTrack) rdmTrack('quiz_switch_to_coaching', {});
+  showResult('C');
+}
+
+paintStatic();
 </script>
 </body>
 </html>

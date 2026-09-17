@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDM Coaching</title>
+<meta name="description" content="Free training for marching snare drummers: how to break through the intermediate plateau and make your dream drumline.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RDM COACHING: the short landing page (DRAFT 2026-09-16)
+   One screen. Job: get them to watch the training. Modelled on
+   Anthony's original opt-in page. The lines are his old lines.
+   Every visitor-facing string is in the COPY object in the script.
+   ============================================================ */
+:root{
+  --purple:#96318d; --purple-deep:#792671;
+  --blue:#06aeb9; --blue-deep:#058890;
+  --orange:#d35400; --tan:#fff0d3;
+  --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);color:#fff;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{max-width:100%;height:auto;display:block;}
+.bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(18,4,18,.52),rgba(18,4,18,.72)),url('Background%203.png') center/cover no-repeat;background-color:var(--purple);}
+.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:center;min-height:56px;padding:10px;border-bottom:var(--b);background:var(--purple);}
+.topbar img{height:32px;}
+
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:16px 18px 18px;}
+.wrap{width:100%;max-width:1120px;}
+.head{text-align:center;max-width:900px;margin:0 auto 16px;}
+.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 14px;border-radius:999px;margin-bottom:10px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+h1{font-size:clamp(1.6rem,3.2vw,2.4rem);font-weight:700;line-height:1.1;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:8px;}
+.co{color:var(--orange);} .cb{color:var(--blue);}
+.sub{color:rgba(255,255,255,.88);font-size:clamp(1rem,1.5vw,1.12rem);}
+.sub b{color:var(--tan);font-weight:700;}
+
+.grid{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:start;}
+.left{display:flex;flex-direction:column;gap:8px;}
+.img-card{border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;background:#000;aspect-ratio:16/9;}
+.img-card img{width:100%;height:100%;object-fit:cover;}
+.presenter{text-align:center;font-size:.92rem;color:rgba(255,255,255,.8);}
+.presenter b{color:var(--tan);font-weight:700;}
+.quote{text-align:center;font-style:italic;color:rgba(255,255,255,.72);font-size:.92rem;padding:0 8px;}
+
+.right{display:flex;flex-direction:column;gap:12px;}
+.card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:14px 16px;}
+.secrets{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.secrets li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;line-height:1.4;color:#111;}
+.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-deep);color:#fff;border:2px solid #000;font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.secrets li b{color:var(--orange);}
+.secrets li .hl{color:var(--purple-deep);font-weight:700;}
+form{display:flex;flex-direction:column;gap:10px;}
+.field{width:100%;font-family:inherit;font-size:1rem;padding:11px 16px;border:var(--b);border-radius:14px;background:#fff;color:#000;}
+.field::placeholder{color:#888;}
+.btn{display:block;width:100%;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);
+  background:var(--orange);border:var(--b);border-radius:var(--rad);padding:14px 20px;font-size:1.08rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.fine{text-align:center;font-size:.76rem;color:#555;margin-top:0;}
+.qerr{color:#8a2b00;font-size:.88rem;display:none;}
+.qerr.show{display:block;}
+
+/* The footer is a purple band, matching the top bar (Anthony, 2026-09-16). It used to be a bare line of
+   text with a black rule above it and the page background showing through, which read as an unfinished
+   edge rather than a footer. Same fill and the same 3px border as .topbar, so the page is bookended. */
+footer{text-align:center;padding:10px 12px;font-size:.74rem;color:rgba(255,255,255,.72);
+  background:var(--purple);border-top:var(--b);}
+footer a{color:#fff;}
+
+/* Phone: one column, and the form comes straight after the image so the button is reachable on the
+   first or second screen. The bullets follow, then the presenter line. */
+@media (max-width:900px){
+  .grid{display:flex;flex-direction:column;gap:14px;align-items:stretch;}
+  .card{width:100%;}
+  .left,.right{display:contents;}
+  .img-card{order:1;} .card.form{order:2;} .card.secrets-card{order:3;} .presenter{order:4;} .quote{order:5;}
+  main{padding:16px 16px 20px;}
+  .head{margin-bottom:14px;}
+}
+</style>
+<script src="analytics.js"></script>
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="site">
+  <div class="topbar"><a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a></div>
+
+  <main>
+    <div class="wrap">
+      <div class="head">
+        <span class="eyebrow" id="c-eyebrow"></span>
+        <h1 id="c-title"></h1>
+        <p class="sub" id="c-sub"></p>
+      </div>
+
+      <div class="grid">
+        <div class="left">
+          <div class="img-card"><img src="VSL%20Thumbnail.png" alt="Anthony Steller and the drumlines RDM students have made"></div>
+          <p class="presenter" id="c-presenter"></p>
+          <p class="quote" id="c-quote"></p>
+        </div>
+
+        <div class="right">
+          <div class="card secrets-card">
+            <ul class="secrets" id="c-secrets"></ul>
+          </div>
+          <div class="card form">
+            <form id="optin" novalidate onsubmit="return go(event)">
+              <input class="field" id="fname" type="text" autocomplete="given-name">
+              <input class="field" id="email" type="email" autocomplete="email">
+              <div class="qerr" id="err"></div>
+              <button class="btn" type="submit" id="c-btn"></button>
+              <p class="fine" id="c-fine"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>&copy; 2026 RDM: Rudimental Drumming Mastery &middot; <a href="privacy-policy.html">Privacy</a> &middot; <a href="terms.html">Terms</a></footer>
+</div>
+
+<script>
+/* Anthony's original opt-in page lines, kept as written (em dash swapped for a period). */
+const COPY = {
+  eyebrow: "Free training for marching snare drummers",
+  title: "How To Break Through The <span class='co'>Intermediate Plateau</span> And Make Your <span class='cb'>Dream Drumline</span>",
+  sub: "Even if you have <b>NO</b> structured training, <b>NO</b> clear path forward, and <b>NO</b> idea what's holding you back!",
+  presenter: "Presenter: <b>Anthony Steller</b> of Rudimental Drumming Mastery",
+  quote: "\"From self-doubt and confusion to confidence and wins. This is the exact system that changed everything for me.\"",
+  secrets: [
+    "<b>Secret #1:</b> The practice system that lets you <span class='hl'>MASTER</span> any advanced snare part, and <span class='hl'>STOP</span> wasting time hacking, guessing, or repping mistakes",
+    "<b>Secret #2:</b> How to play <span class='hl'>CLEAN, CONTROLLED,</span> and <span class='hl'>LOCKED-IN</span> with metronome strategies that sharpen your timing and make you stand out in any audition, without having to guess through trial and error",
+    "<b>Secret #3:</b> The <span class='hl'>TRIAD OF RUDIMENTAL DRUMMING MASTERY</span>, a complete roadmap to <span class='hl'>LEVEL UP</span> your technique, structure your practice, and expand your drumming vocabulary <span class='hl'>FAST</span>",
+    "<b>Secret #4:</b> How to <span class='hl'>CRUSH</span> fear and <span class='hl'>DOMINATE</span> auditions by learning the prep, mindset, and confidence frameworks the best players use to <span class='hl'>win top spots</span>"
+  ],
+  fname: "First name",
+  email: "Email",
+  btn: "Get the free training &rarr;",
+  fine: "100% free. No cost, no card.",
+  errName: "Put your first name in.",
+  errEmail: "That email doesn't look right."
+};
+const NEXT = "training.html";
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
+
+const $ = (id) => document.getElementById(id);
+$('c-eyebrow').innerHTML = COPY.eyebrow; $('c-title').innerHTML = COPY.title; $('c-sub').innerHTML = COPY.sub;
+$('c-presenter').innerHTML = COPY.presenter; $('c-quote').innerHTML = COPY.quote;
+$('c-secrets').innerHTML = COPY.secrets.map(s => '<li><span class="ck">&#10003;</span><span>' + s + '</span></li>').join('');
+$('fname').placeholder = COPY.fname; $('email').placeholder = COPY.email; $('c-btn').innerHTML = COPY.btn; $('c-fine').innerHTML = COPY.fine;
+
+function go(e){
+  e.preventDefault();
+  const name = $('fname').value.trim(), email = $('email').value.trim();
+  const err = $('err'); err.classList.remove('show');
+  if(!name){ err.textContent = COPY.errName; err.classList.add('show'); return false; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ err.textContent = COPY.errEmail; err.classList.add('show'); return false; }
+  /* Lands in the Quiz Leads tab (six blank answer columns keep the sheet aligned). */
+  try{
+    /* Fire and forget. The .catch matters: a network failure rejects the promise, which try/catch does
+       not see, and an unhandled rejection must never stand between them and the training. */
+    fetch(SHEET_ENDPOINT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ formType:'quiz', firstName:name, email, instagram:'', product:'Free training', answers:['coaching landing page','','','','',''], age:'', payer:'', story:'' }) })
+      .catch(function(){ /* the lead is lost, the hand-off still happens */ });
+  }catch(_){}
+  if(window.rdmTrack){ rdmTrack('Lead',{product:'Coaching'}); }
+  window.location.href = NEXT;
+  return false;
+}
+</script>
+</body>
+</html>

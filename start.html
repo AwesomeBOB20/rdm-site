@@ -169,6 +169,11 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .altline a{color:#f0d3ec;font-weight:600;text-decoration:underline;text-underline-offset:3px;}
 .altline a:hover{color:#fff;}
 
+/* Device shots at the head of each tool card. Real captures of the shipping app inside its own nav
+   chrome, framed in a laptop and a phone, so a visitor can see it runs on both before they pay.
+   Rebuilt by dev-harness/toolframe.html + appshot2.cjs + frames.py; see index.html for why. */
+.toolshot{display:block;width:100%;height:auto;margin:0 0 14px;}
+
 /* video placeholder */
 .videobox{max-width:820px;margin:0 auto;aspect-ratio:16/9;background:rgba(0,0,0,.35);border:var(--b);border-radius:var(--rad);
   box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;color:rgba(255,255,255,.7);font-weight:600;}
@@ -322,18 +327,21 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <div class="bignote reveal">A metronome only clicks on the beat. That leaves 90% of every measure as empty space where you're just guessing. The RDM Playalongs fills that silence, so you hear every dirty note the instant you play it.</div>
     <div class="grid3" style="text-align:left">
       <div class="card toolcard reveal">
+        <img class="toolshot" src="assets/tool/playalongs.png" alt="The Playalongs tool on a laptop and a phone" loading="lazy" width="1000" height="502">
         <h3>The Playalongs Tool</h3>
         <p class="toolsub">500+ exercises that loop until your hands lock in</p>
         <p>Press play and the exercise audio loops continuously at the tempo you set. Sheet music and audio side by side, so you see it and hear it at the same time.</p>
         <ul><li>Categories, filters, and search to find any exercise fast</li><li>Curated 30-minute playlists: warm-up, chop-building, conditioning</li><li>Tempo randomization bounces the tempo inside a range so you learn to adapt</li><li>Bump-tempo jumps faster every few reps to find your true top speed</li></ul>
       </div>
       <div class="card toolcard reveal">
+        <img class="toolshot" src="assets/tool/sightreading.png" alt="The Sight-Reading Lab on a laptop and a phone" loading="lazy" width="1000" height="502">
         <h3>The Sight-Reading Lab</h3>
         <p class="toolsub">Endless new sheet music, generated on demand</p>
         <p>Hit generate and the lab builds a fresh page of rhythms every time. Dial in exactly how hard you want it, then read something you have never seen before.</p>
         <ul><li>Adjustable tempo, rest density, and time signatures</li><li>Stickings and counts shown under every rhythm</li><li>An expansive rhythm bank with every rhythm you'll ever need</li><li>The fastest way to change rhythmic speeds on the fly</li></ul>
       </div>
       <div class="card toolcard reveal">
+        <img class="toolshot" src="assets/tool/metronome.png" alt="The RDM Metronome on a laptop and a phone" loading="lazy" width="1000" height="502">
         <h3>The RDM Metronome</h3>
         <p class="toolsub">Built for rudimental drumming, not just keeping time</p>
         <p>Tempo, sound, and time signature, plus the advanced subdivisions a normal metronome cannot touch. The tool you actually need in the practice room.</p>

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RDM Academy: Application</title>
-<meta name="description" content="Apply for the RDM Academy. A few questions so Anthony can see if you're a fit before your call.">
+<title>RDM Coaching: Application</title>
+<meta name="description" content="Apply to work with Anthony. A few questions so he can see what fits before your call.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -137,16 +137,16 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/academy-application.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rudimental Drumming Mastery">
-<meta property="og:title" content="RDM Academy: Application">
-<meta property="og:description" content="Apply for the RDM Academy. A few questions so Anthony can see if you're a fit before your call.">
+<meta property="og:title" content="RDM Coaching: Application">
+<meta property="og:description" content="Apply to work with Anthony. A few questions so he can see what fits before your call.">
 <meta property="og:url" content="https://rudimentaldrummingmastery.com/academy-application.html">
 <meta property="og:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Rudimental Drumming Mastery">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="RDM Academy: Application">
-<meta name="twitter:description" content="Apply for the RDM Academy. A few questions so Anthony can see if you're a fit before your call.">
+<meta name="twitter:title" content="RDM Coaching: Application">
+<meta name="twitter:description" content="Apply to work with Anthony. A few questions so he can see what fits before your call.">
 <meta name="twitter:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 </head>
 <body>
@@ -186,16 +186,16 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
         </div>
       </section>
 
-      <!-- ===== DOWNSELL (not a fit for the Academy right now) ===== -->
+      <!-- ===== DOWNSELL (not a fit for coaching right now) ===== -->
       <section class="screen" id="screen-downsell">
         <div class="result-card">
           <span class="result-flag">Real talk</span>
-          <h2>The Academy might not be your move <span style="color:var(--purple-deep)">right now.</span></h2>
+          <h2>Coaching might not be your move <span style="color:var(--purple-deep)">right now.</span></h2>
           <p>Thanks for being straight with me, <span id="ds-name">drummer</span>. <span id="ds-reason"></span></p>
-          <p>Here's the good news: you do not need 1-on-1 coaching to start getting better. The exact system I teach inside the Academy is in <b style="color:#d35400">The RDM Method</b>, and you can start today for a fraction of the cost.</p>
-          <a href="start.html" class="btn full">Start with the practice tool ($9.99/mo) &rarr;</a>
-          <p style="text-align:center;margin:14px 0 0;font-size:.96rem;color:#444;">Just want to train your hands daily? Try <a href="start" style="color:var(--purple-deep);font-weight:700;">RDM Playalongs ($1 trial)</a>.</p>
-          <p style="margin-top:16px;font-size:.9rem;color:#555;">When you're ready for me to work with you 1-on-1, the Academy will be here.</p>
+          <p>Here's the good news: you do not need me 1-on-1 to start getting better. The practice tool is the same one my students use every day, and you can start on it today.</p>
+          <a href="start" class="btn full">Start with the practice tool &rarr;</a>
+          <p style="text-align:center;margin:14px 0 0;font-size:.96rem;color:#444;">$1 for 7 days, then $9.99/mo. Cancel anytime.</p>
+          <p style="margin-top:16px;font-size:.9rem;color:#555;">When you're ready for me to work with you directly, I'll be here.</p>
         </div>
       </section>
 
@@ -247,7 +247,7 @@ const STEPS = [
       "Sound: I can't get things (flams, rolls) to sound good"
     ]
   },
-  { type:'single', key:'hours', title:"How many hours a week would you commit if you knew it would get you there?", hint:"Trusting the process. The Academy rewards the work.",
+  { type:'single', key:'hours', title:"How many hours a week would you commit if you knew it would get you there?", hint:"Trusting the process. This work rewards the reps.",
     opts:["Less than 3 hours","3–6 hours","7–10 hours","10+ hours"]
   },
   { type:'single', key:'watchedVideo', title:"Have you watched the training video yet?", hint:"It makes our call 10x better, we skip the basics and go straight to you.",
@@ -261,7 +261,7 @@ const STEPS = [
       "I'm 21+ and handle this myself"
     ]
   },
-  { type:'single', key:'finances', title:"If the Academy was clearly the right fit, where's your family financially?", hint:"No wrong answer. It just helps me know how to support you. We figure out the details on the call.",
+  { type:'single', key:'finances', title:"If working together was clearly the right fit, where's your family financially?", hint:"No wrong answer. It just helps me know how to support you. We figure out the details on the call.",
     opts:[
       "We're ready to invest in the right thing",
       "Open to a payment plan that works for us",
@@ -443,7 +443,7 @@ function finishApp(){
   }
 }
 
-// The Academy ($2k, intense 12 weeks) isn't a fit right now if the money or the
+// Coaching isn't a fit right now if the money or the
 // time commitment clearly isn't there. 21+ drummers have aged out of the target
 // lines (DCI 21, WGI 22), so we only book them if they're clearly ready to invest.
 // Everyone else books a call. (Edit these rules to loosen/tighten the downsell.)
@@ -462,11 +462,11 @@ function showDownsell(){
   document.getElementById('ds-name').textContent = (data.firstName || 'drummer');
   let reason;
   if(data.finances === "Not financially ready right now"){
-    reason = "The Academy is a $2,000 investment, and that's a real commitment for any family. Zero shame in that.";
+    reason = "Working with me directly is a real commitment for any family, and right now is not the moment. Zero shame in that.";
   } else if(data.hours === "Less than 3 hours"){
-    reason = "The Academy is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
+    reason = "Coaching with me is intense. It only works if you can put in the weekly reps, and right now your schedule says that would be a stretch.";
   } else {
-    reason = "The Academy is built around making a competitive line before the audition clock runs out (DCI ages out at 21, WGI at 22). At your stage, the Method gives you the same system to keep getting better, without the cost or intensity of the full program.";
+    reason = "My coaching is built around making a competitive line before the audition clock runs out (DCI ages out at 21, WGI at 22). At your stage the tool gives you the reps to keep getting better, without the cost or the intensity.";
   }
   document.getElementById('ds-reason').textContent = reason;
   show('screen-downsell');
