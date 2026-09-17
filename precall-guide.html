@@ -56,18 +56,34 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .card p.lead{font-size:1.01rem;color:#333;margin-bottom:14px;}
 .guar{background:#fff7e6;border:2px solid #000;border-radius:14px;padding:14px 16px;margin-top:14px;font-size:.96rem;color:#333;}
 .guar b{color:var(--purple-deep);}
+/* Rebuilt 2026-09-16 on Anthony's own pre-call PDF plus the confirmation page that used to follow a
+   booking. Four numbered steps: the training, the program walkthrough, the investment framing in his
+   words, then the students. The two extra videos are his own Drive files (Program Walkthrough.mp4 and
+   Coaching Testimonial.mp4); their sharing was checked as "anyone with the link" BEFORE embedding, or a
+   prospect would have hit a Google sign-in wall instead of a video. */
+.steptag{display:inline-block;background:var(--purple);color:#fff;border:2px solid #000;border-radius:999px;
+  font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:12px;}
+.callout{background:#fff7e6;border:var(--b);border-radius:14px;padding:14px 18px;color:#222;font-size:1.02rem;
+  line-height:1.5;text-align:left;box-shadow:var(--shadow);}
+.callout b{color:var(--purple-deep);}
+.card .video-frame{margin-top:16px;}
+.sig{margin-top:10px;font-weight:700;color:var(--purple-deep);font-size:1.05rem;}
 .parent-box{background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:24px 24px;margin-bottom:22px;}
 .parent-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
 .parent-box p{color:#fff;font-size:1rem;}
-/* ⚠️ THIS PARAGRAPH IS INSIDE THE TAN CARD, NOT ON THE DARK PAGE (Anthony, 2026-09-16: "some text
-   that's white on top of the tan background"). It was white at 70% opacity, which measured 1.09:1
-   against #fff0d3 and was effectively invisible; the mailto link inside it was 1.11:1. The rule was
-   written for text sitting on the purple page and the markup puts it in a card, which is the kind of
-   mismatch a stylesheet never shows you. Dark ink now, and the link takes the deep purple that already
-   passes on tan everywhere else on the site. */
-.foot{text-align:center;color:#555;font-size:.92rem;margin-top:10px;}
-.foot a{color:var(--purple-deep);font-weight:700;}
+/* ⚠️ THIS LINE HAS NOW BEEN INVISIBLE IN BOTH DIRECTIONS, SO IT NO LONGER DEPENDS ON WHAT IS BEHIND IT.
+   It was white at 70% while sitting inside the tan card (1.09:1, which is what Anthony spotted). Dark ink
+   fixed that, and then the rebuild moved it out of the card onto the purple page, where dark ink measured
+   1.11:1 and it vanished again. A colour that only works in one location will keep breaking every time
+   the markup moves.
+   So it carries its own surface: a tan pill with the same border as everything else on the page. Wherever
+   it ends up, the background under the text is the one declared right here.
+   Checkable with dev/contrast.cjs, which walks every text node and resolves the real painted ancestor. */
+.foot{display:block;width:fit-content;max-width:92%;margin:26px auto 0;text-align:center;
+  background:var(--tan);color:#333;border:var(--b);border-radius:999px;box-shadow:3px 3px 0 rgba(0,0,0,.3);
+  padding:11px 22px;font-size:.92rem;line-height:1.5;overflow-wrap:anywhere;}
+.foot a{color:var(--purple-deep);font-weight:700;text-decoration:underline;}
 /* unified site footer (matches start.html) */
 /* Footer sits on --dark, NOT --purple. This page's BODY is --purple, so a purple footer was the same
    colour as the page behind it — the band disappeared and left the white pills and social buttons
@@ -116,20 +132,62 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   <div class="shell">
     <div class="wrap">
 
-      <span class="eyebrow">You're booked</span>
-      <h1>You're in. <span class="co">Watch this before our call.</span></h1>
-      <p class="sub">This is the most important thing you can do before we talk. It walks you through exactly how I work with drummers and what's possible for your hands, so on the call we skip the basics and go straight to your goals.</p>
+      <span class="eyebrow">Your call is confirmed</span>
+      <h1>You're booked. <span class="co">Now do this before we talk.</span></h1>
+      <p class="sub">You'll get text and email reminders before the meeting, and the Google Calendar invite is on its way to your inbox.</p>
 
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/frtsmNH29Lc?rel=0&modestbranding=1"
-          title="RDM coaching training" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="callout">
+        <b>Important:</b> please make sure anyone involved in the financial decision (parents, guardians, family) is on the call with you. Go through this guide with them too.
+      </div>
+
+      <p class="sub" style="margin-top:22px;"><b>At minimum, finish the training below before your call.</b> Recommended: watch at 1.2x speed.</p>
+
+      <div class="card">
+        <span class="steptag">Step 1</span>
+        <h2>Watch the training</h2>
+        <p class="lead">Don't skim it. If a parent is joining you on the call, watch it together so you're both on the same page.</p>
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/frtsmNH29Lc?rel=0&amp;modestbranding=1"
+            title="RDM training" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="steptag">Step 2</span>
+        <h2>An inside look at how it works</h2>
+        <p class="lead">A full walkthrough of the program: what happens week to week, and what I actually do with you.</p>
+        <div class="video-frame">
+          <iframe src="https://drive.google.com/file/d/1GDhs8YRvhCk_cqVGJRJanM_f2Ut9NCjQ/preview"
+            title="Program walkthrough" allow="autoplay" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <!-- STEP 3 IS ANTHONY'S OWN COPY, lifted from his pre-call PDF. Do not rewrite it. -->
+      <div class="card">
+        <span class="steptag">Step 3</span>
+        <h2>Understand that there is an investment</h2>
+        <p class="lead">Finding the right mentor can be the turning point in your drumming career. If you've been searching for someone who truly understands how to help you improve and will <b>MAKE SURE</b> you know how to reach your goals, this is it.</p>
+        <p class="lead">Don't think of the cost, think of the <b>OUTCOME</b> you will receive from investing in yourself.</p>
+        <p class="lead">Think long-term. Think like a successful artist, not just someone who "wishes" they would've tried.</p>
+        <p class="lead">I look forward to speaking with you.</p>
+        <p class="sig">Anthony</p>
+      </div>
+
+      <div class="card">
+        <span class="steptag">Step 4</span>
+        <h2>Don't take my word for it. Let them tell you.</h2>
+        <p class="lead">This is what's possible for you.</p>
+        <div class="video-frame">
+          <iframe src="https://drive.google.com/file/d/1l-UsOkGP-yJm-trb9y--4V969IC229YQ/preview"
+            title="What students are saying" allow="autoplay" allowfullscreen></iframe>
+        </div>
       </div>
 
       <div class="card">
         <h2>Show up ready</h2>
         <ul class="steps">
-          <li><span class="n">1</span><span class="t"><b>Watch the full video above first.</b> Don't skim it. The drummers who come having watched it get way more out of the call, because we spend the time on you instead of the basics. If a parent or whoever's joining you on the call is coming, watch it together so you're both on the same page.</span></li>
-          <li><span class="n">2</span><span class="t"><b>Be somewhere quiet with zero distractions.</b> Not driving, not at work, not on a 5-minute break. Give this your full attention and have your drum or pad nearby if you can.</span></li>
+          <li><span class="n">1</span><span class="t"><b>Finish the training first.</b> The drummers who come having watched it get far more out of the call.</span></li>
+          <li><span class="n">2</span><span class="t"><b>Be somewhere quiet with zero distractions.</b> Not driving, not at work, not on a 5-minute break. Give this your full attention.</span></li>
           <li><span class="n">3</span><span class="t"><b>Have your parent or guardian on the call.</b> If anyone helps with the decision, they need to be there to hear it firsthand and ask their own questions. If you're under 18 or rely on family for financial support, this is required. If your time doesn't work for everyone, just reschedule for one that does.</span></li>
           <li><span class="n">4</span><span class="t"><b>Know your goal and your honest blockers.</b> The line you're chasing, your timeline, and what's really been holding your hands back. The clearer you are, the more I can help.</span></li>
         </ul>
@@ -137,11 +195,10 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 
       <div class="card">
         <h2>What we'll actually do on the call</h2>
-        <p class="lead">No pressure, and no hard pitch. Here's exactly how it goes:</p>
         <ul class="checks">
-          <li><span class="ck">→</span><span>We talk about where your playing is now, the line you're chasing, and what's been stopping you.</span></li>
-          <li><span class="ck">→</span><span>I tell you straight which way of working together fits you, if any. There is more than one, and they are not the same size. If none of them fit, I'll say that too.</span></li>
-          <li><span class="ck">→</span><span>If it is a fit, there's an investment to go deeper, and I'll walk you and your family through exactly what that looks like. You don't have to decide anything on the spot.</span></li>
+          <li><span class="ck">&rarr;</span><span>We talk about where your playing is now, the line you're chasing, and what's been stopping you.</span></li>
+          <li><span class="ck">&rarr;</span><span>I tell you straight which way of working together fits you, if any. There is more than one, and they are not the same size. If none of them fit, I'll let you know.</span></li>
+          <li><span class="ck">&rarr;</span><span>We go through what working together looks like, and you and your family get to ask whatever you want.</span></li>
         </ul>
       </div>
 
@@ -149,15 +206,25 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <h2>What you'd actually be getting</h2>
         <p class="lead">So you walk in already knowing how I work with my students:</p>
         <ul class="checks">
-          <li><span class="ck">✓</span><span>The full <b style="color:var(--orange)">course library</b> + <b style="color:var(--blue-deep)">The RDM Playalongs</b> tool for as long as you're with me</span></li>
-          <li><span class="ck">✓</span><span>Private 1-on-1 lessons with me</span></li>
-          <li><span class="ck">✓</span><span>Group coaching calls and mock auditions</span></li>
-          <li><span class="ck">✓</span><span>A weekly video feedback cycle: you send your playing, I break it down, you send it back better</span></li>
-          <li><span class="ck">✓</span><span>One clear finish line: play the 5 etudes that cover the 5 core skills. That's how we both know you're ready.</span></li>
-          <li><span class="ck">✓</span><span>Structured months of real daily and weekly reps, then it runs until the work is done</span></li>
+          <li><span class="ck">&#10003;</span><span>The full <b style="color:var(--orange)">course library</b> + <b style="color:var(--blue-deep)">The RDM Playalongs</b> tool for as long as you're with me</span></li>
+          <li><span class="ck">&#10003;</span><span>Private 1-on-1 lessons with me</span></li>
+          <li><span class="ck">&#10003;</span><span>Group coaching calls and mock auditions</span></li>
+          <li><span class="ck">&#10003;</span><span>A weekly video feedback cycle: you send your playing, I break it down, you send it back better</span></li>
+          <li><span class="ck">&#10003;</span><span>One clear finish line: play the 5 etudes that cover the 5 core skills. That's how we both know you're ready.</span></li>
+          <li><span class="ck">&#10003;</span><span>Structured months of real daily and weekly reps, then it runs until the work is done</span></li>
         </ul>
         <div class="guar">
-          <b>The promise (this is real):</b> keep sending your work in and I keep working with you until the work we agreed on is done, however long that takes. Stop sending it in and it stops. That is the only way to lose it.</p>
+          <b>The promise (this is real):</b> keep sending your work in and I keep working with you until the work we agreed on is done, however long that takes. Stop sending it in and it stops. That is the only way to lose it.
+        </div>
+      </div>
+
+      <!-- The note for parents was on this page before the rebuild and Anthony did not ask for it to go,
+           so it stays. One clause was dropped: "there's no commitment to decide anything on the call" is
+           the same reassurance he just rejected ("you don't have to decide anything on the spot"), and it
+           pulls against Step 3, which exists to say plainly that there IS an investment. -->
+      <div class="parent-box">
+        <h3>A quick note for parents</h3>
+        <p>The goal of this call is to understand where your drummer is now, where they want to be, and which way of working together gets them there. Come with your questions and ask me anything.</p>
       </div>
 
       <p class="foot">Need to reschedule? Use the link in your confirmation email, or reach me at <a href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a>. See you soon. Anthony</p>
