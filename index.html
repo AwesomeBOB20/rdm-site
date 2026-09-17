@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDM: Where You Stand</title>
-<meta name="description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
+<meta name="description" content="Four quick questions about where your hands are and what you're chasing, then a straight answer on what to do first.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -15,9 +15,10 @@
 <style>
 /* ============================================================
    RDM: WHERE YOU STAND (the quiz)
-   Rebuilt 2026-09-16. Two destinations only: the practice tool, or
-   "send me a video". Coaching never shows a price here. Same brand
-   identity as start.html and academy-vsl.html.
+   Rebuilt 2026-09-16. Two destinations only: the practice tool (start), or the
+   free training (training.html), which carries the Apply button into the
+   application. Coaching never shows a price here. There is no way to reach a
+   result without answering: every visitor takes the questions.
 
    EVERY CUSTOMER-FACING STRING LIVES IN THE `COPY` OBJECT at the top
    of the script block. Edit words there, not in the markup.
@@ -97,9 +98,6 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
 .back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
 .back:hover{color:#fff;}
-.skip{color:rgba(255,255,255,.72);font-size:.95rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;background:none;border:none;font-family:inherit;margin-top:18px;display:inline-block;}
-.skip:hover{color:#fff;}
-.intro-or{margin-top:22px;font-size:.9rem;color:rgba(255,255,255,.62);}
 .foot-note{margin-top:34px;font-size:.88rem;color:rgba(255,255,255,.55);}
 .foot-note a{color:#f0d3ec;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
 
@@ -177,7 +175,7 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Rudimental Drumming Mastery">
 <meta property="og:title" content="RDM: Where You Stand">
-<meta property="og:description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
+<meta property="og:description" content="Four quick questions about where your hands are and what you're chasing, then a straight answer on what to do first.">
 <meta property="og:url" content="https://rudimentaldrummingmastery.com/index.html">
 <meta property="og:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 <meta property="og:image:width" content="1200">
@@ -185,7 +183,7 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 <meta property="og:image:alt" content="Rudimental Drumming Mastery">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="RDM: Where You Stand">
-<meta name="twitter:description" content="Six quick questions, then a straight answer. Send me a video and I'll tell you where you stand, or start with the practice tool.">
+<meta name="twitter:description" content="Four quick questions about where your hands are and what you're chasing, then a straight answer on what to do first.">
 <meta name="twitter:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
 </head>
 <body>
@@ -208,8 +206,11 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
         <h1 id="i-title"></h1>
         <p class="sub" id="i-sub"></p>
         <button class="btn full" id="i-start" onclick="start()"></button>
-        <p class="intro-or" id="i-or"></p>
-        <button class="btn full ghost" id="i-skip" onclick="skipToTraining()"></button>
+        <!-- ⚠️ NO SKIP DOOR HERE (Anthony, 2026-09-16: "skip the survey, watch the training is dumb,
+             people need to take the survey"). It used to offer a way straight to the video. Everyone
+             answers the four questions now, which is the whole reason the questions exist: they are what
+             he reads before messaging anyone. Because nothing can reach a result without answering, the
+             entire `skipped` branch was deleted rather than left unreachable. -->
         <p class="foot-note" id="i-foot"></p>
       </section>
 
@@ -275,8 +276,6 @@ const COPY = {
     title: "Where are you at, <span class='co'>really?</span>",
     sub: "Four quick questions about what you're going for and what's in the way. At the end I'll tell you what I'd do first.",
     start: "Start &rarr;",
-    or: "Already know you want to work with me?",
-    skip: "Skip the questions. Watch the training.",
     foot: ""
   },
 
@@ -348,14 +347,11 @@ const COPY = {
     eyebrow: "One last thing",
     quizTitle: "Last thing. <span class='co'>Who are you?</span>",
     quizSub: "Your result is on the next screen.",
-    skipTitle: "Last thing. <span class='co'>Who are you?</span>",
-    skipSub: "So I know who's watching.",
     fname: "First name",
     emailPh: "you@email.com",
     ig: "@yourusername",
     story: "Optional: in your own words, what are you working on and what's in the way?",
     quizSubmit: "Show my result &rarr;",
-    skipSubmit: "Take me to the training &rarr;",
     errName: "Put your first name in.",
     errEmail: "That email doesn't look right.",
     errIG: "Instagram username only: letters, numbers, dots and underscores."
@@ -379,7 +375,6 @@ const COPY = {
     flag: "Your next step",
     title: "First, <span class='co'>watch the training.</span>",
     toldMe: "What you told me",
-    skippedNote: "You skipped the questions, which is fine. Watch this first either way.",
     whatsIn: "What's in it",
     secrets: [
       "The practice system that lets you <span class='hl'>MASTER</span> any advanced snare part, and <span class='hl'>STOP</span> wasting time hacking, guessing, or repping mistakes",
@@ -451,7 +446,6 @@ function hotReason(answers){
    ENGINE
    ===================================================================== */
 let qi = 0;
-let skipped = false;
 const answers = [];
 
 function $(id){ return document.getElementById(id); }
@@ -466,8 +460,6 @@ function paintStatic(){
   $('i-title').innerHTML = COPY.intro.title;
   $('i-sub').innerHTML = COPY.intro.sub;
   $('i-start').innerHTML = COPY.intro.start;
-  $('i-or').innerHTML = COPY.intro.or;
-  $('i-skip').innerHTML = COPY.intro.skip;
   $('i-foot').innerHTML = COPY.intro.foot;
   $('e-eyebrow').innerHTML = COPY.email.eyebrow;
   $('fname-input').placeholder = COPY.email.fname;
@@ -477,17 +469,9 @@ function paintStatic(){
 }
 
 function start(){
-  skipped = false; qi = 0; answers.length = 0;
+  qi = 0; answers.length = 0;
   if(window.rdmTrack) rdmTrack('quiz_start', {});
   renderQ();
-}
-
-function skipToTraining(){
-  skipped = true; answers.length = 0;
-  if(window.rdmTrack) rdmTrack('quiz_skip_to_training', {});
-  $('progress').classList.add('hide');
-  paintEmail();
-  show('screen-email');
 }
 
 /* A multi-select question stores an ARRAY of indices; a single-select stores one number. Everything
@@ -549,14 +533,13 @@ function nextQ(){
 }
 function prevQ(){ if(qi>0){ qi--; renderQ(); } }
 function emailBack(){
-  if(skipped){ show('screen-intro'); }
-  else { qi = QUESTIONS.length-1; renderQ(); }
+  qi = QUESTIONS.length-1; renderQ();
 }
 
 function paintEmail(){
-  $('e-title').innerHTML = skipped ? COPY.email.skipTitle : COPY.email.quizTitle;
-  $('e-sub').innerHTML = skipped ? COPY.email.skipSub : COPY.email.quizSub;
-  $('e-submit').innerHTML = skipped ? COPY.email.skipSubmit : COPY.email.quizSubmit;
+  $('e-title').innerHTML = COPY.email.quizTitle;
+  $('e-sub').innerHTML = COPY.email.quizSub;
+  $('e-submit').innerHTML = COPY.email.quizSubmit;
   $('email-err').classList.remove('show');
 }
 
@@ -568,7 +551,7 @@ function paintEmail(){
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFpM3RUbM_b_61X-W_rCzN4A-qZYIhJbGCzkUEBFbynZe_8wcbJJ6ZzKyBLJ6nc9lI/exec";
 const PRODUCT_NAME = { T: 'Playalongs', C: 'Coaching' };
 
-function currentResult(){ return skipped ? 'C' : route(answers); }
+function currentResult(){ return route(answers); }
 
 function submitEmail(e){
   e.preventDefault();
@@ -583,7 +566,7 @@ function submitEmail(e){
      application is where those two questions live now. */
   saveLead(firstName, email, ig, '', '', story);
   const pn = PRODUCT_NAME[currentResult()];
-  if(window.rdmTrack){ rdmTrack('Lead',{product:pn}); rdmTrack('quiz_complete',{product:pn, skipped: skipped ? 1 : 0}); }
+  if(window.rdmTrack){ rdmTrack('Lead',{product:pn}); rdmTrack('quiz_complete',{product:pn}); }
   showResult(currentResult());
   return false;
 }
@@ -603,7 +586,6 @@ function saveLead(firstName, email, ig, age, payer, story){
   if(!email || SHEET_ENDPOINT.indexOf('PASTE_') === 0) return;
   const six = [];
   for(let i=0;i<6;i++){
-    if(skipped){ six.push(i===0 ? 'skipped the questions' : ''); continue; }
     /* A multi-select lands in its column as one cell, semicolons between the ticks. */
     const sel = picked(i);
     six.push(QUESTIONS[i] ? sel.map(x=>QUESTIONS[i].opts[x]).join('; ') : '');
@@ -632,7 +614,6 @@ function saveLead(firstName, email, ig, age, payer, story){
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function readbackHTML(){
-  if(skipped) return '<p>' + COPY.coaching.skippedNote + '</p>';
   const R = COPY.readback;
   /* The blocker row is multi-select, so it joins however many they ticked. */
   const blockers = picked(Q_BLOCKER).map(i=>R.blocker[i]);
