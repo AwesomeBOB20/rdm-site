@@ -10,8 +10,17 @@
      deletion because the URL is public, has been shared, and was linked from index.html, book.html and
      academy-application.html. A 404 would have broken all of that.
 
-     The Stripe products are deliberately still live and payable by link: the Method remains a $147
-     downsell Anthony can send by hand mid-call (see src/LevelUp.jsx, 2026-09-11). Nothing here sells it.
+     ⛔ UPDATED 2026-09-21: THE DOWNSELL IS DEAD TOO. This used to say the Stripe products were
+     deliberately still live and payable by hand mid-call. Anthony: "method should be erased completely."
+     `src/LevelUp.jsx` no longer holds METHOD_URL, BUNDLE_URL or the card, and the two post-purchase
+     pages (thank-you.html, thank-you-bundle.html) are redirects like this one.
+
+     ⚠️ ONE THING LEFT THAT ONLY ANTHONY CAN DO: deactivate the $147 Method and the $247 bundle in the
+     Stripe dashboard. A payment LINK keeps working until its product is archived, so until he does,
+     anyone holding an old link can still pay for a thing that no longer exists anywhere. Tracked in
+     0-DOCS/TODO.md.
+
+     ⚠️ The 8-module COURSE is unaffected: delivered inside the Intensive and the Academy, never priced.
 
      When the coaching page exists, point this at that instead. -->
 <meta http-equiv="refresh" content="0; url=index.html">

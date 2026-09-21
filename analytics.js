@@ -11,7 +11,7 @@
      • auto page_view (GA4) + PageView (Pixel)
      • window.rdmTrack(name, params)  → sends to BOTH GA4 and the Pixel
      • auto click tracking on any element with  data-track="EventName"
-       (optional data-track-params='{"value":147,"currency":"USD","product":"Method"}')
+       (optional data-track-params='{"value":27,"currency":"USD","product":"Gridding Handbook"}')
    ============================================================ */
 (function () {
   var GA4_ID   = "G-R3GJ1VENHY";       // <-- paste GA4 Measurement ID here
