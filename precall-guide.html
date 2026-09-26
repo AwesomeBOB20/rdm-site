@@ -96,14 +96,13 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
    crop cuts one of them. The box is 16:9 and so is the cover, but the 3px border makes the content
    box very slightly wider than 16:9, and cover was shaving the top and bottom. */
 .vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0c0810;}
-.vf-play{position:absolute;right:14px;bottom:14px;width:64px;height:64px;border-radius:50%;
+.vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:86px;height:86px;border-radius:50%;
   background:var(--orange);border:var(--b);box-shadow:var(--shadow);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;}
-.vf-play:hover{transform:scale(1.08);}
+.vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
 .vf-play span{display:block;width:0;height:0;margin-left:7px;
   border-left:26px solid #fff;border-top:16px solid transparent;border-bottom:16px solid transparent;}
-.vf-play span{border-left-width:20px !important;border-top-width:12px !important;border-bottom-width:12px !important;margin-left:5px !important;}
-@media (max-width:560px){ .vf-play{width:44px;height:44px;right:8px;bottom:8px;} .vf-play span{border-left-width:14px !important;border-top-width:9px !important;border-bottom-width:9px !important;} }
+@media (max-width:560px){ .vf-play{width:66px;height:66px;} .vf-play span{border-left-width:20px;border-top-width:12px;border-bottom-width:12px;} }
 .parent-box{background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:24px 24px;margin-bottom:22px;}
 .parent-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
