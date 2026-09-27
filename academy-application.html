@@ -299,7 +299,7 @@ function renderStep(){
   document.getElementById('s-title').innerHTML = step.title;
   document.getElementById('s-hint').innerHTML = step.hint || '';
   document.getElementById('s-err').classList.remove('show');
-  document.getElementById('s-back').style.visibility = si===0 ? 'hidden' : 'visible';
+  document.getElementById('s-back').style.display = si===0 ? 'none' : '';
   const body = document.getElementById('s-body');
   const next = document.getElementById('s-next');
   body.innerHTML = '';
