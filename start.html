@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RDM Playalongs: The Practice Tool That Gets Your Hands Clean</title>
+<link rel="stylesheet" href="assets/logos/badges.css">
 <meta name="description" content="500+ looping exercises, a sight-reading lab, and an advanced marching metronome in one web app. Stop guessing if you're clean. Start your $1 trial.">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -105,10 +106,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .proofband{border-top:var(--b);border-bottom:var(--b);background:rgba(0,0,0,.30);}
 .proof-title{text-align:center;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);margin-bottom:24px;}
 .logos{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(12px,1.6vw,20px);}
-.logo-badge{width:84px;height:84px;flex:0 0 auto;border-radius:50%;background:#fff;border:var(--b);box-shadow:var(--shadow);
-  display:flex;align-items:center;justify-content:center;padding:14px;transition:transform .2s;}
-.logo-badge:hover{transform:translateY(-3px) scale(1.04);}
-.logo-badge img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:none;}
+/* .logo-badge itself lives in assets/logos/badges.css (one definition for every RDM page). */
 .proof-note{text-align:center;color:rgba(255,255,255,.72);font-size:.95rem;max-width:640px;margin:24px auto 0;}
 .proof-sub{text-align:center;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);margin:32px 0 18px;}
 
@@ -333,6 +331,23 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   .card{padding:18px 16px;}
   .hero .btn.big{display:block;width:100%;padding-left:12px;padding-right:12px;}
 }
+/* TESTIMONIAL CARDS (2026-10-01, Anthony: the tan quote list looked "fake and meaningless"). Longer real
+   quotes from 4-BRAND/testimonials.md, brand-coloured panels with white text, a big quote mark, and the
+   corps badge ONLY where the quote itself says where it came from. */
+.qwall{grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px;}
+.qcard{position:relative;margin:0;display:flex;flex-direction:column;gap:10px;border:var(--b);border-radius:var(--rad);
+  box-shadow:var(--shadow);padding:20px 22px 20px;color:#fff;overflow:hidden;}
+.qc-purple{background:var(--purple);}
+.qc-teal{background:var(--blue-darker);}
+.qc-orange{background:var(--orange);}
+/* The quote mark sits IN the flow at the top of the card, so it can never hang over the edge. */
+.qmark{display:block;height:26px;font-size:3.6rem;line-height:.95;font-family:Georgia,serif;color:rgba(255,255,255,.45);}
+.qcard blockquote{margin:0;font-size:1.04rem;line-height:1.5;font-weight:600;text-shadow:0 1px 1px rgba(0,0,0,.25);}
+.qcard figcaption{margin-top:auto;display:flex;align-items:center;gap:10px;padding-top:12px;border-top:2px solid rgba(255,255,255,.25);}
+.qcard figcaption b{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;}
+.qcard figcaption em{display:block;font-style:normal;font-size:.85rem;opacity:.9;}
+@media (max-width:900px){.qwall{grid-template-columns:repeat(2,1fr);}}
+@media (max-width:680px){.qwall{grid-template-columns:1fr;gap:14px;}.qcard{padding:18px 18px 16px;}}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/start.html">
@@ -389,15 +404,15 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   <section class="proofband"><div class="wrap">
     <p class="proof-title">Drummers using the RDM Playalongs have made these lines</p>
     <div class="logos">
-      <span class="logo-badge" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
-      <span class="logo-badge" style="background:#410b0d"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
-      <span class="logo-badge" style="background:#0f1830"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
-      <span class="logo-badge" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
-      <span class="logo-badge" style="background:#20242c"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
-      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
-      <span class="logo-badge" style="background:#0b2e41"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
-      <span class="logo-badge" style="background:#16161c"><img src="assets/logos/logo-vip.png" alt="Vigilantes Percussion"></span>
-      <span class="logo-badge" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
+      <span class="logo-badge lb-scv"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
+      <span class="logo-badge lb-crossmen"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
+      <span class="logo-badge lb-blueknights"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
+      <span class="logo-badge lb-guardians"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
+      <span class="logo-badge lb-genesis"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
+      <span class="logo-badge lb-capcity"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
+      <span class="logo-badge lb-memphisblues"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
+      <span class="logo-badge lb-vip"><img src="assets/logos/logo-vip.png" alt="Vigilantes Percussion"></span>
+      <span class="logo-badge lb-lsc"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
     </div>
   </div></section>
 
@@ -455,12 +470,13 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
       <img src="assets/video/playalongs-testimonial.jpg" alt="Five drummers on what the RDM Playalongs did for their drumming" width="1280" height="720" loading="lazy">
       <button type="button" class="vf-play" aria-label="Play the video"><span></span></button>
     </div>
-    <div class="quotes" style="text-align:left">
-      <div class="quote reveal"><p>"It trained my ears out of so many bad habits I had."</p><span class="who">RDM Playalongs user</span></div>
-      <div class="quote reveal"><p>"The tempo randomizer makes you adapt much quicker. It lets me jump between tempos so I actually know it, instead of just playing it at one tempo."</p><span class="who">RDM Playalongs user</span></div>
-      <div class="quote reveal"><p>"At the Guardians camp, I felt internal tempo more than I ever had before."</p><span class="who">RDM student · Guardians camp</span></div>
-      <div class="quote reveal"><p>"Before the Playalongs I didn't know what to practice. It really helped me find what to work on."</p><span class="who">RDM Playalongs user</span></div>
-      <div class="quote reveal"><p>"It's a permanent fix to the problem of 'am I going to sound good?'"</p><span class="who">RDM Playalongs user</span></div>
+    <div class="quotes qwall" style="text-align:left">
+      <figure class="qcard qc-purple reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>Every step, I feel a difference in my hands. I just feel like I'm getting better every time I use it.</blockquote><figcaption><span><b>RDM Playalongs student</b></span></figcaption></figure>
+      <figure class="qcard qc-teal reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>My biggest challenge was timing and keeping consistent time. The Playalongs help me make sure everything I play is 100% in time.</blockquote><figcaption><span><b>RDM Playalongs student</b></span></figcaption></figure>
+      <figure class="qcard qc-orange reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>At the Guardians camp, I felt internal tempo more than I ever had before.</blockquote><figcaption><span class="logo-badge lb-sm lb-guardians"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span><span><b>RDM student</b><em>Guardians camp</em></span></figcaption></figure>
+      <figure class="qcard qc-purple reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>The tempo randomizer makes you adapt much quicker. It gets me in the zone and lets me jump between tempos so I actually know it, instead of just playing it at one tempo.</blockquote><figcaption><span><b>RDM Playalongs student</b></span></figcaption></figure>
+      <figure class="qcard qc-teal reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>If you're on the fence, it's a very good investment, and you're not going to regret trying it. It made me better, so you have my word.</blockquote><figcaption><span><b>RDM Playalongs student</b></span></figcaption></figure>
+      <figure class="qcard qc-orange reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>Before the Playalongs I didn't know what to practice. It really helped me find what to work on.</blockquote><figcaption><span><b>RDM Playalongs student</b></span></figcaption></figure>
     </div>
   </div></section>
 
