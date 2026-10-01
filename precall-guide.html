@@ -15,7 +15,7 @@
 <style>
 :root{
   --purple:#96318d; --purple-deep:#792671;
-  --blue:#06aeb9; --blue-deep:#058890;
+  --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
   --b:3px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
@@ -61,6 +61,9 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .guar b{color:var(--purple-deep);}
 /* Rebuilt 2026-09-16 on Anthony's own pre-call PDF plus the confirmation page that used to follow a
    booking. THREE numbered steps: the training, the investment framing in his words, then the students.
+   (2026-10-01: now FOUR, reordered by Anthony: training, clip, students, investment LAST. The program
+   walkthrough slots in as Step 2 once recorded. Head colours alternate so no two cards in a row match,
+   and each play button / button takes its own step's colour.)
    ⚠️ There WAS a Step 2, "an inside look at how it works", playing Program Walkthrough.mp4 off his
    Drive. He cut it 2026-09-17 as outdated. Do not put it back without a new recording: it described a
    program shape that no longer exists.
@@ -72,6 +75,16 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   line-height:1.5;text-align:left;box-shadow:var(--shadow);}
 .callout b{color:var(--purple-deep);}
 .card .video-frame{margin-top:16px;}
+/* ===== THE CLIP ASK (Anthony, 2026-10-01) =====
+   Step 2 asks for a short video, sent as an Instagram DM, so the call can start from what was seen.
+   OPTIONAL by design. ig.me/m/<handle> opens the DM thread directly in the app or on the web.
+   The button takes its STEP's colour (Anthony, 2026-10-01): a blue step gets a blue button, and white
+   text on blue is always --blue-darker (5.84:1), never --blue-deep. */
+.clip-btn{display:inline-block;margin-top:18px;background:var(--blue-darker);color:#fff;text-decoration:none;font-weight:700;
+  font-size:1.2rem;border:var(--b);border-radius:var(--rad);padding:13px 26px;box-shadow:var(--shadow);
+  text-shadow:0 1px 2px rgba(0,0,0,.35);transition:transform .14s,filter .2s;}
+.clip-btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+.clip-handle{display:block;margin-top:10px;font-size:.92rem;color:#555;}
 .sig{margin-top:10px;font-weight:700;color:var(--purple-deep);font-size:1.05rem;}
 /* ===== COLOURED PANEL HEADS (Anthony, 2026-09-17: "color each panel of the pre call guide") =====
    The FILL carries the heading only; paragraphs stay on tan. White measures 6.73:1 on purple, 4.26:1 on
@@ -97,11 +110,13 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
    box very slightly wider than 16:9, and cover was shaving the top and bottom. */
 .vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0c0810;}
 /* The play button scales WITH the cover, border and shadow included (cqw = % of the cover's width), so it looks
-   identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide. Orange, centred. */
+   identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide, centred.
+   Its colour MATCHES ITS STEP's header (Anthony, 2026-10-01): --purple / --teal modifiers below. */
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
   background:var(--orange);border:max(2px,.72cqw) solid #000;box-shadow:1.2cqw 1.2cqw 0 rgba(0,0,0,.30);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;padding:0;}
 .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
+.vf-play--purple{background:var(--purple);} .vf-play--teal{background:var(--blue-deep);} .vf-play--orange{background:var(--orange);}
 .vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
 .parent-box{background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:24px 24px;margin-bottom:22px;}
@@ -174,7 +189,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <b>Important:</b> please make sure anyone involved in the financial decision (parents, guardians, family) is on the call with you. Go through this guide with them too.
       </div>
 
-      <p class="sub" style="margin-top:22px;"><b>At minimum, finish the training below before your call.</b> Recommended: watch at 1.2x speed.</p>
+      <p class="sub" style="margin-top:22px;"><b>At minimum, finish the training below before your call.</b> It plays at 1.1x speed. You can change that in the player.</p>
 
       <div class="card">
         <div class="cardhead cardhead--purple">
@@ -183,17 +198,52 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         </div>
         <div class="cardbody">
         <p class="lead">Don't skim it. If a parent is joining you on the call, watch it together so you're both on the same page.</p>
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/frtsmNH29Lc?rel=0&amp;modestbranding=1"
-            title="RDM training" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          </div>
+        <!-- Self-hosted since 2026-10-01 (was YouTube frtsmNH29Lc) so it can START at 1.2x: YouTube's API only
+             takes its fixed speeds (1.25 nearest) and Bunny's embed has no default-speed setting at all.
+             Source: "Coaching Program VSL 1.1.mp4", encoded to 720p HLS in assets/video/coaching-vsl/. -->
+        <div class="video-frame vf-poster" data-hls="assets/video/coaching-vsl/index.m3u8" data-rate="1.1" data-name="training">
+          <img src="assets/video/coaching-vsl.jpg" alt="RDM coaching program training with Anthony Steller" width="1280" height="720">
+          <button type="button" class="vf-play vf-play--purple" aria-label="Play the training"><span></span></button>
+        </div>
       </div>
       </div>
 
-      <!-- STEP 3 IS ANTHONY'S OWN COPY, lifted from his pre-call PDF. Do not rewrite it. -->
+      <div class="card">
+        <div class="cardhead cardhead--teal">
+          <span class="steptag">Step 2</span>
+          <h2>Send me a quick clip</h2>
+        </div>
+        <div class="cardbody">
+        <p class="lead">Before we talk, send me a short video of you playing. It gives me a feel for where your playing is right now, so we can spend the call on what actually matters.</p>
+        <ul class="checks">
+          <li><span class="ck">&rarr;</span><span>30 to 60 seconds is plenty.</span></li>
+          <li><span class="ck">&rarr;</span><span>Play what you're working on right now, and the part that's giving you trouble.</span></li>
+          <li><span class="ck">&rarr;</span><span>Phone in front of you, both hands and sticks in the frame.</span></li>
+          <li><span class="ck">&rarr;</span><span>Send it to me on Instagram with your name, so I know who it's from.</span></li>
+        </ul>
+        <a class="clip-btn" id="clipBtn" href="https://ig.me/m/anthony.steller200" target="_blank" rel="noopener">Send it on Instagram</a>
+        <span class="clip-handle">@anthony.steller200 &middot; Not required, but it makes the call a lot more useful.</span>
+        </div>
+      </div>
+
       <div class="card">
         <div class="cardhead cardhead--orange">
-          <span class="steptag">Step 2</span>
+          <span class="steptag">Step 3</span>
+          <h2>Don't take my word for it. Let them tell you.</h2>
+        </div>
+        <div class="cardbody">
+        <p class="lead">This is what's possible for you.</p>
+        <div class="video-frame vf-poster" data-video="assets/video/academy-testimonial.mp4">
+          <img src="assets/video/academy-testimonial.jpg" alt="Five RDM Academy students on what working with Anthony did for their drumming" width="1280" height="720" loading="lazy">
+          <button type="button" class="vf-play vf-play--orange" aria-label="Play the video"><span></span></button>
+        </div>
+      </div>
+      </div>
+
+      <!-- STEP 4 IS ANTHONY'S OWN COPY, lifted from his pre-call PDF. Do not rewrite it. -->
+      <div class="card">
+        <div class="cardhead cardhead--teal">
+          <span class="steptag">Step 4</span>
           <h2>Understand that there is an investment</h2>
         </div>
         <div class="cardbody">
@@ -203,20 +253,6 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         <p class="lead">I look forward to speaking with you.</p>
         <p class="sig">Anthony</p>
         </div>
-      </div>
-
-      <div class="card">
-        <div class="cardhead cardhead--teal">
-          <span class="steptag">Step 3</span>
-          <h2>Don't take my word for it. Let them tell you.</h2>
-        </div>
-        <div class="cardbody">
-        <p class="lead">This is what's possible for you.</p>
-        <div class="video-frame vf-poster" data-video="assets/video/academy-testimonial.mp4">
-          <img src="assets/video/academy-testimonial.jpg" alt="Five RDM Academy students on what working with Anthony did for their drumming" width="1280" height="720" loading="lazy">
-          <button type="button" class="vf-play" aria-label="Play the video"><span></span></button>
-        </div>
-      </div>
       </div>
 
       <div class="card">
@@ -239,7 +275,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
         </div>
         <div class="cardbody">
         <ul class="checks">
-          <li><span class="ck">&rarr;</span><span>We talk about where your playing is now, the line you're chasing, and what's been stopping you.</span></li>
+          <li><span class="ck">&rarr;</span><span>We talk about where your playing is now, the line you're chasing, and what's been stopping you. If you sent me a clip, I'll tell you what I saw.</span></li>
           <li><span class="ck">&rarr;</span><span>I tell you straight which way of working together fits you, if any. There is more than one, and they are not the same size. If none of them fit, I'll let you know.</span></li>
           <li><span class="ck">&rarr;</span><span>We go through what working together looks like, and you and your family get to ask whatever you want.</span></li>
         </ul>
@@ -264,20 +300,50 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 /* Swap the poster for the real player on click. The video is never in the document until then, so a
    visitor who does not press play downloads none of it (2026-09-26: the five-student testimonial is
    self-hosted now, 720p ~17 MB, replacing the old Drive file). */
+/* data-hls (the training, 2026-10-01): an HLS stream, so a 21-minute video starts at once and only the
+   part being watched downloads. Safari plays HLS natively; everyone else gets hls.js, fetched only on
+   click. data-rate is the STARTING speed: set before play and re-asserted once on loadedmetadata,
+   because some browsers reset the rate when the source attaches. After that the viewer's own choice
+   in the player wins. */
+var HLS_JS = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.15/hls.min.js";
+function loadHls(cb) {
+  if (window.Hls) return cb();
+  var s = document.createElement("script");
+  s.src = HLS_JS; s.onload = cb; s.onerror = cb;
+  document.head.appendChild(s);
+}
 document.querySelectorAll(".vf-poster").forEach(function (box) {
   box.addEventListener("click", function () {
     var v = document.createElement("video");
-    v.src = box.dataset.video;
+    var hls = box.dataset.hls;
+    var rate = parseFloat(box.dataset.rate) || 1;
     v.controls = true; v.autoplay = true; v.playsInline = true;
     v.setAttribute("playsinline", "");
     v.poster = box.querySelector("img").src;
     v.style.cssText = "position:absolute;inset:0;width:100%;height:100%;background:#000;";
+    v.defaultPlaybackRate = rate; v.playbackRate = rate;
+    v.addEventListener("loadedmetadata", function () { v.playbackRate = rate; }, { once: true });
     box.innerHTML = "";
     box.classList.remove("vf-poster");
     box.appendChild(v);
-    v.play().catch(function () {});
-    if (window.rdmTrack) window.rdmTrack("testimonial_play", { page: "precall", video: "academy" });
-  });
+    var start = function () { v.play().catch(function () {}); };
+    if (!hls) { v.src = box.dataset.video; start(); }
+    else if (v.canPlayType("application/vnd.apple.mpegurl")) { v.src = hls; start(); }
+    else loadHls(function () {
+      if (window.Hls && window.Hls.isSupported()) {
+        var h = new window.Hls();
+        h.loadSource(hls); h.attachMedia(v);
+        h.on(window.Hls.Events.MANIFEST_PARSED, start);
+      } else { v.src = hls; start(); }
+    });
+    if (window.rdmTrack) window.rdmTrack(box.dataset.name === "training" ? "training_play" : "testimonial_play",
+      { page: "precall", video: box.dataset.name || "academy" });
+  }, { once: true });   // once: a later click lands on the real player (pause, seek) and must not re-run this
+});
+/* Count the clip-ask clicks, so it is measurable whether people actually send one. */
+var clipBtn = document.getElementById("clipBtn");
+if (clipBtn) clipBtn.addEventListener("click", function () {
+  if (window.rdmTrack) window.rdmTrack("clip_dm_click", { page: "precall" });
 });
 </script>
 </body>
