@@ -234,6 +234,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 /* sticky mobile CTA bar (copied from landing.html — persistent trial button on phones) */
 .mobile-buybar{display:none;text-decoration:none;transition:transform .25s ease;}
 .mobile-buybar.hide{transform:translateY(130%);}
+
 @media (max-width:680px){
   .mobile-buybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;
     align-items:center;justify-content:space-between;gap:12px;
@@ -285,6 +286,53 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .pp-badge{position:absolute;top:-17px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--purple);color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);border:var(--b);border-radius:999px;padding:4px 16px;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}
 @media (max-width:720px){.pp{grid-template-columns:1fr;gap:26px;max-width:420px;}.pp-y{order:1;}.pp-s{order:2;}.pp-m{order:3;}.pp-best{box-shadow:0 0 0 5px var(--purple),0 0 0 9px #fff0d3,var(--shadow);}}
+
+/* RESTRUCTURE PREVIEW (2026-10-01): hero > proof > demo > why > tools > words > coach > price > FAQ.
+   Cut: the second logo band, "Choose Your Path" (said the tools section twice), the closing CTA (the
+   sticky bar and the pricing section already close). On phones the tool cards drop their bullet lists. */
+.hero-plans{margin:14px 0 0;font-size:1rem;}
+.hero-video{margin:22px auto 26px;max-width:760px;}
+/* Desktop: the button has to be on the first screen too (Hormozi: above the fold), so the video gives way. */
+@media (min-width:721px){.hero{padding-top:34px;}.hero-video{max-width:520px;margin:16px auto 20px;}}
+@media (min-width:721px) and (max-height:820px){.hero{padding-top:20px;}.hero h1{font-size:clamp(2rem,4.2vw,3.2rem);}.hero-video{max-width:400px;margin:10px auto 14px;}.hero .lead{margin-bottom:6px;}}
+.hero-lead{max-width:640px;margin-left:auto;margin-right:auto;}
+.hero-plans a{color:#fff;font-weight:700;text-underline-offset:3px;}
+@media (max-width:720px){.toolcard ul{display:none;}}
+
+/* PHONES (Anthony, 2026-10-01): tighter than desktop, but not cramped. The first pass was too tight; these are the
+   middle ground he asked for ("a little more vertical spacing"). Same content, less air: every
+   section, card and label gap was sized for a desktop and read as empty space on a 390px screen. */
+@media (max-width:680px){
+  section{padding:30px 0;}
+  .hero{padding:24px 0 30px;}
+  .hero-eyebrow{margin-bottom:14px;}
+  .hero h1{margin-bottom:14px;}
+  .hero-video{margin:20px auto 22px;}
+  .hero .ticks{margin-top:14px;}
+  .eyebrow{margin-bottom:14px;}
+  h2{margin-bottom:12px;}
+  .sub{margin-bottom:20px;}
+  .card{padding:18px 18px;}
+  .card h3{margin-bottom:8px;}
+  .grid2,.grid3,.quotes{gap:16px;}
+  .bignote{margin-bottom:20px;}
+  .toolcard .toolshot{margin-bottom:10px;}
+  .pp{margin:22px auto 18px;gap:22px;}
+  /* The FAQ rows are .card too, and the card padding above was landing on them on top of their own
+     question padding (112px a row). They take no outer padding; the question row is slimmer. */
+  .faq-item.card{padding:0;}
+  .faq-q{padding:13px 16px;font-size:1rem;}
+  .faq-icon{width:26px;height:26px;}
+  .faq-a-in{padding:0 16px 14px;}
+  .faq-list{margin-top:18px;gap:12px;}
+  /* SIDE TO SIDE, not top to bottom (Anthony, 2026-10-01: the dead space was "left to right"). A 12px page
+     gutter instead of 20, cards that keep their inner padding, and a headline sized to span the screen. */
+  .wrap{padding:0 12px;}
+  .hero h1{font-size:clamp(2.6rem,13vw,3.6rem);line-height:1.02;}
+  .hero-lead{max-width:none;}
+  .card{padding:18px 16px;}
+  .hero .btn.big{display:block;width:100%;padding-left:12px;padding-right:12px;}
+}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/start.html">
@@ -311,7 +359,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <div class="nav-links">
       <a href="#why">Why It Works</a>
       <a href="#tools">The Tools</a>
-      <a href="#compare">Compare</a>
+      <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </div>
     <a href="#" data-trial class="nav-cta">Start $1 Trial</a>
@@ -320,10 +368,20 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   <!-- HERO -->
   <section class="hero center" id="top"><div class="wrap">
     <span class="hero-eyebrow">The RDM Playalongs</span>
-    <h1>The Ultimate Practice Tool for <span class="co">Rudimental Drummers</span></h1>
-    <p class="lead">Stop guessing if you're clean. Know it.</p>
-    <p class="sub">Most tools just keep time. The RDM Playalongs exposes your dirt. Get 500+ looping exercises, a sight-reading lab, and an advanced marching metronome in one place. Build noticeable consistency in your timing in just 7 days.</p>
+    <!-- Headline = the desire, for EVERY drummer (CLAUDE.md 14: Playalongs leads with "get clean hands, fast"; it
+         serves beginners and older players too, not only people auditioning). Line under it = their pain, then the fix.
+         Anthony picked this 2026-10-01. The VSL can still open on "practice makes permanent". -->
+    <h1>Get <span class="cb">Clean Hands</span>, Fast.</h1>
+    <p class="lead hero-lead">Practicing for hours and still not sure if you're clean? Play along with a perfect rep and hear every mistake the moment you make it.</p>
+    <!-- THE VSL GOES HERE (2026-10-01). Hormozi: the first screen does most of the selling, and a video
+         under the headline proves it. Until the Playalongs VSL is recorded (4-BRAND/playalongs-vsl-script.md)
+         this slot plays the existing walkthrough; swap data-video + the poster image for the VSL files. -->
+    <div class="vidframe vf-poster hero-video" data-video="assets/video/playalongs-walkthrough.mp4" data-name="hero-vsl">
+      <img src="assets/video/playalongs-walkthrough-cover.jpg" alt="Watch how the RDM Playalongs works" width="1920" height="1080">
+      <button type="button" class="vf-play" aria-label="Play the video"><span></span></button>
+    </div>
     <a class="btn big" href="#" data-trial>Start 7-Day Trial: Just $1</a>
+    <p class="hero-plans"><a href="#pricing">or see all plans, from $6.58 a month ↓</a></p>
     <ul class="ticks"><li>$1 for 7 full days</li><li>Cancel anytime</li><li>No contract, no catch</li></ul>
   </div></section>
 
@@ -342,6 +400,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
       <span class="logo-badge" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
     </div>
   </div></section>
+
 
   <!-- VALUE PROP -->
   <section class="center" id="why"><div class="wrap">
@@ -387,48 +446,16 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     </div>
   </div></section>
 
-  <!-- EXTENDED PROOF -->
-  <section class="proofband"><div class="wrap center">
-    <span class="eyebrow">Built by a coach who has done it</span>
-    <p class="proof-title">Drummers who train with the RDM Playalongs have made these lines</p>
-    <div class="logos">
-      <span class="logo-badge" style="background:#0b411a"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
-      <span class="logo-badge" style="background:#410b0d"><img src="assets/logos/logo-crossmen.png" alt="Crossmen"></span>
-      <span class="logo-badge" style="background:#0f1830"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
-      <span class="logo-badge" style="background:#19663f"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
-      <span class="logo-badge" style="background:#20242c"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
-      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
-      <span class="logo-badge" style="background:#0b2e41"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
-      <span class="logo-badge" style="background:#16161c"><img src="assets/logos/logo-vip.png" alt="Vigilantes Percussion"></span>
-      <span class="logo-badge" style="background:#23252b"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span>
-    </div>
-    <p class="proof-sub">Also coached, mentored &amp; teched by Anthony</p>
-    <div class="logos">
-      <span class="logo-badge" style="background:#372810"><img src="assets/logos/logo-carolinacrown.png" alt="Carolina Crown"></span>
-      <span class="logo-badge" style="background:#18613f"><img src="assets/logos/logo-cavaliers.png" alt="Cavaliers"></span>
-      <span class="logo-badge" style="background:#3d0f0f"><img src="assets/logos/logo-colts.png" alt="Colts"></span>
-      <span class="logo-badge" style="background:#2d376b"><img src="assets/logos/logo-troopers.png" alt="Troopers"></span>
-      <span class="logo-badge" style="background:#0b2a41"><img src="assets/logos/logo-pacificcrest.png" alt="Pacific Crest"></span>
-      <span class="logo-badge" style="background:#000000"><img src="assets/logos/logo-rhythmicforce.png" alt="Rhythmic Force"></span>
-      <span class="logo-badge" style="background:#383838"><img src="assets/logos/logo-zephyrus.png" alt="Zephyrus"></span>
-      <span class="logo-badge" style="background:#3d1a0f"><img src="assets/logos/logo-utaustin.png" alt="UT Austin Longhorn Band Drumline"></span>
-      <span class="logo-badge" style="background:#0b2941"><img src="assets/logos/logo-uta.png" alt="UTA Maverick Drumline"></span>
-      <span class="logo-badge" style="background:#271239"><img src="assets/logos/logo-monarch.webp" alt="Monarch"></span>
-    </div>
-    <p class="proof-note">Real placements from drummers training in the RDM system. The RDM Playalongs is the daily-reps engine behind that work.</p>
-  </div></section>
-
   <!-- TESTIMONIALS -->
   <section class="center"><div class="wrap">
     <span class="eyebrow blue">Real drummers, real words</span>
-    <h2>Don't take my word for it.</h2>
+    <h2>"My timing has improved <span class="cb">probably tenfold.</span>"</h2>
     <p class="sub">Hear what the RDM Playalongs did for their drumming.</p>
     <div class="vidframe vf-poster reveal" data-video="assets/video/playalongs-testimonial.mp4">
       <img src="assets/video/playalongs-testimonial.jpg" alt="Five drummers on what the RDM Playalongs did for their drumming" width="1280" height="720" loading="lazy">
       <button type="button" class="vf-play" aria-label="Play the video"><span></span></button>
     </div>
     <div class="quotes" style="text-align:left">
-      <div class="quote reveal"><p>"My timing has improved probably tenfold since I've been using the Playalongs."</p><span class="who">RDM Playalongs user</span></div>
       <div class="quote reveal"><p>"It trained my ears out of so many bad habits I had."</p><span class="who">RDM Playalongs user</span></div>
       <div class="quote reveal"><p>"The tempo randomizer makes you adapt much quicker. It lets me jump between tempos so I actually know it, instead of just playing it at one tempo."</p><span class="who">RDM Playalongs user</span></div>
       <div class="quote reveal"><p>"At the Guardians camp, I felt internal tempo more than I ever had before."</p><span class="who">RDM student · Guardians camp</span></div>
@@ -437,72 +464,13 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     </div>
   </div></section>
 
-  <!-- ABOUT THE COACH -->
-  <section class="center"><div class="wrap">
-    <div class="about-grid">
-      <div class="about-photo reveal"><img src="pic of me.jpg" alt="Anthony Steller"></div>
-      <div class="about-card card reveal">
-        <span class="eyebrow">Your coach</span>
-        <h2>Built by a working drummer, <span class="co">for serious ones.</span></h2>
-        <p>I'm Anthony Steller, a gigging drummer, snare instructor, and the founder of RDM. I built the Playalongs because I kept watching the same thing happen to every dedicated drummer I coached: hours of practice, no real way to hear whether they were actually clean.</p>
-        <ul class="creds">
-          <li><b>1st Chair</b>, TMEA All-State Percussionist (1st in the state)</li>
-          <li><b>1st Place</b>, Lone Star Drumline Solo Contest</li>
-          <li><b>1st Place</b>, Plano Drumline Solo Contest</li>
-          <li><b>2nd Place</b>, PASIC 2022 Snare Solo Contest</li>
-          <li>Made the <b>Troopers</b> drumline, plus top spots to make <b>SCV and Vigilantes</b></li>
-          <li>Gigging musician for <b>Dynamic Rhythm Entertainment</b>: FC Dallas, the San Antonio Spurs, Texas Live, and the Cutting Edge Haunted House drumlines</li>
-        </ul>
-        <p>This is the exact practice tool I put in front of my own students. It fills the silence a metronome leaves behind, so you finally hear every dirty note the moment you play it.</p>
-        <p class="creds-cap">Drummers training in the RDM system have gone on to make World Class DCI and WGI drumlines.</p>
-        <p>The tool does the exposing. The reps are up to you.</p>
-        <div class="about-sign">Anthony Steller<span>Founder &amp; Head Coach, RDM</span></div>
-      </div>
-    </div>
-  </div></section>
 
-  <!-- VIDEO -->
-  <section class="center"><div class="wrap">
-    <span class="eyebrow">See it in action</span>
-    <h2>Here is exactly how it works.</h2>
-    <p class="sub">A quick walkthrough of the Playalongs tool, the metronome, and the sight-reading lab, so you know what you are getting before you start.</p>
-    <div class="vidframe vf-poster reveal" data-video="assets/video/playalongs-walkthrough.mp4" data-name="walkthrough">
-      <img src="assets/video/playalongs-walkthrough-cover.jpg" alt="A walkthrough of the RDM Playalongs, Metronome and Sight-Reading Lab" width="1920" height="1080" loading="lazy">
-      <button type="button" class="vf-play" aria-label="Play the walkthrough"><span></span></button>
-    </div>
-  </div></section>
-
-  <!-- COMPARISON -->
-  <section class="center" id="compare"><div class="wrap">
-    <div class="cmp reveal" style="text-align:left">
-      <div class="cmp-top">
-        <h2 class="cmp-title">Choose Your Path to <span class="c-teal">Cleaner Hands</span></h2>
-        <p class="cmp-sub">Unlock every feature of <b class="c-purple">The RDM Playalongs</b>, <b class="c-orange">The RDM Metronome</b>, and <b class="c-teal">The RDM Sight-Reading Lab</b> for just $1 today.</p>
-      </div>
-      <div class="cmp-col">
-        <h3 class="cmp-h">Standard Metronome</h3>
-        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Empty Tool.</b> You waste practice time inventing drills or hunting for PDFs, leading to unstructured "noodling" that builds zero chops.</p></div>
-        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Random Reps.</b> Without a plan you replay what is comfortable and ignore your weaknesses, so you hit a skill plateau.</p></div>
-        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Basic Clicks.</b> Standard apps ignore modern rhythm, leaving you unprepared for the 5-lets, 7-lets, and 4:3s in audition packets.</p></div>
-        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>The "Silent Gap."</b> Guessing the spacing between clicks makes you reinforce rushing and dragging without knowing it.</p></div>
-        <div class="cmp-item"><span class="cmp-ic x">✕</span><p><b>Memorization Trap.</b> Repeating the same PDF means you memorize the pattern instead of reading it, so your reading skills atrophy.</p></div>
-      </div>
-      <div class="cmp-col">
-        <h3 class="cmp-h"><span class="c-teal">The</span> <span class="c-purple">RDM</span> <span class="c-orange">Playalongs</span></h3>
-        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>500+ Pre-Written Exercises.</b> Skip the prep. Get instant access to a massive library so you can spend 100% of your energy on execution.</p></div>
-        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Curated Playlists.</b> Follow targeted routines for skills like "Timing" or "Rolls" to make measurable progress every session.</p></div>
-        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Advanced Poly-Metronome.</b> Master modern vocabulary. Hear exactly how complex tuplets fit the beat so you never get cut for "bad interpretation."</p></div>
-        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Full Audio Reference.</b> A continuous, perfectly quantized track fills every gap, forcing your hands to lock in and match the spacing instantly.</p></div>
-        <div class="cmp-item"><span class="cmp-ic c">✓</span><p><b>Unlimited Generator.</b> Never run out of fresh material. Generate infinite new lines to prove you can read new music cleanly on the spot.</p></div>
-      </div>
-    </div>
-  </div></section>
 
   <!-- PRICING (2026-10-01, 0-DOCS/PRICING-PLANS.md). Replaced the "Try it for a dollar" block. Each plan
        button goes to sign-up WITH the plan (data-plan, wired at the bottom); after they confirm their
        email the app opens "One step left" on that plan. Phones show Yearly, Seasonal, Monthly. -->
   <section class="center" id="pricing"><div class="wrap">
-    <h2>Pick your <span class="cb">plan.</span></h2>
+    <h2>A whole year costs less than <span class="cb">two lessons.</span></h2>
     <p class="sub">All three tools, all 500+ exercises, every control unlocked.</p>
     <div class="pp">
       <div class="pp-card pp-m">
@@ -532,6 +500,30 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <p class="sub" style="margin-top:26px">Real talk: one private lesson costs $50. A whole year of this costs $79, for the tool that makes every rep count and gets your hands cleaner every single day.</p>
   </div></section>
 
+  <!-- ABOUT THE COACH -->
+  <section class="center"><div class="wrap">
+    <div class="about-grid">
+      <div class="about-photo reveal"><img src="pic of me.jpg" alt="Anthony Steller"></div>
+      <div class="about-card card reveal">
+        <span class="eyebrow">Your coach</span>
+        <h2>Built by a working drummer, <span class="co">for serious ones.</span></h2>
+        <p>I'm Anthony Steller, a gigging drummer, snare instructor, and the founder of RDM. I built the Playalongs because I kept watching the same thing happen to every dedicated drummer I coached: hours of practice, no real way to hear whether they were actually clean.</p>
+        <ul class="creds">
+          <li><b>1st Chair</b>, TMEA All-State Percussionist (1st in the state)</li>
+          <li><b>1st Place</b>, Lone Star Drumline Solo Contest</li>
+          <li><b>1st Place</b>, Plano Drumline Solo Contest</li>
+          <li><b>2nd Place</b>, PASIC 2022 Snare Solo Contest</li>
+          <li>Made the <b>Troopers</b> drumline, plus top spots to make <b>SCV and Vigilantes</b></li>
+          <li>Gigging musician for <b>Dynamic Rhythm Entertainment</b>: FC Dallas, the San Antonio Spurs, Texas Live, and the Cutting Edge Haunted House drumlines</li>
+        </ul>
+        <p>This is the exact practice tool I put in front of my own students. It fills the silence a metronome leaves behind, so you finally hear every dirty note the moment you play it.</p>
+        <p class="creds-cap">Drummers training in the RDM system have gone on to make World Class DCI and WGI drumlines.</p>
+        <p>The tool does the exposing. The reps are up to you.</p>
+        <div class="about-sign">Anthony Steller<span>Founder &amp; Head Coach, RDM</span></div>
+      </div>
+    </div>
+  </div></section>
+
   <!-- FAQ -->
   <section class="center" id="faq"><div class="wrap">
     <span class="eyebrow blue">Quick questions</span>
@@ -552,24 +544,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     </div>
   </div></section>
 
-  <!-- FINAL CTA -->
-  <section class="center"><div class="wrap">
-    <span class="eyebrow">Start today</span>
-    <h2>Get cleaner. <span class="cb">No matter what.</span></h2>
-    <p class="sub">Every tool you need to build clean, fast, confident hands, all in one place. Try it for a dollar and feel the difference inside a week.</p>
-    <div class="pricecard reveal">
-      <h3>The RDM Playalongs</h3>
-      <div class="price">$1 for 7 days</div>
-      <div class="small">Then $9.99/mo. Cancel anytime. No contracts.</div>
-      <a class="btn full big" style="display:block" href="#" data-trial>Start $1 Trial</a>
-    </div>
-    <!-- ⛔ THE METHOD CROSS-SELL IS DELETED, NOT COMMENTED OUT (Anthony, 2026-09-21: "method should be
-         erased completely"). It was hidden on 2026-09-11 and left in the markup "to uncomment"; there is
-         nothing to uncomment back to now. landing.html is a redirect, the Stripe links are gone from the
-         app, and the course is never priced. DO NOT RE-ADD A LINK OR A PRICE FOR IT HERE. -->
-  </div></section>
-
-  <a class="mobile-buybar" href="#" data-trial aria-label="Start your $1 seven-day trial">
+  <a class="mobile-buybar hide" href="#" data-trial aria-label="Start your $1 seven-day trial">
     <span class="mb-price"><b>Start for $1</b><span>7 days full access · cancel anytime</span></span>
     <span class="mb-btn">Start $1 Trial</span>
   </a>
@@ -634,16 +609,19 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     });
   });
 
-  /* Mobile buy bar: slide it away once the pricing card or footer is on screen (matches landing.html). */
+  /* THE PHONE'S BOTTOM BAR WAITS (Anthony, 2026-10-01: it showing "while the trial button is on the page
+     doesn't make sense"; the header button is fine and always shows). The bar stays hidden while the big
+     button under the video, the pricing section, or the footer is in view, and slides in once those have
+     scrolled away. It starts hidden in the markup; without IntersectionObserver it just shows. */
   (function(){
     var bar = document.querySelector('.mobile-buybar');
-    if (!bar || !('IntersectionObserver' in window)) return;
-    var watch = document.querySelectorAll('.pricecard, .site-footer');
-    if (!watch.length) return;
+    var show = function(on){ if (bar) bar.classList.toggle('hide', !on); };
+    var watch = document.querySelectorAll('.hero .btn.big, #pricing, .site-footer');
+    if (!('IntersectionObserver' in window) || !watch.length) { show(true); return; }
     var visible = new Set();
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){ en.isIntersecting ? visible.add(en.target) : visible.delete(en.target); });
-      bar.classList.toggle('hide', visible.size > 0);
+      show(visible.size === 0);
     }, { threshold: 0.05 });
     watch.forEach(function(w){ io.observe(w); });
   })();
