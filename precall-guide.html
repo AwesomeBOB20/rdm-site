@@ -12,6 +12,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- The signature face, subset to the one word it draws (text=Anthony), so it costs a few KB. -->
+<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&text=Anthony&display=swap" rel="stylesheet">
 <style>
 :root{
   --purple:#96318d; --purple-deep:#792671;
@@ -85,7 +87,8 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
   text-shadow:0 1px 2px rgba(0,0,0,.35);transition:transform .14s,filter .2s;}
 .clip-btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
 .clip-handle{display:block;margin-top:10px;font-size:.92rem;color:#555;}
-.sig{margin-top:10px;font-weight:700;color:var(--purple-deep);font-size:1.05rem;}
+/* Black and handwritten, like a real signature (Anthony, 2026-10-01). */
+.sig{margin-top:6px;font-family:"Mrs Saint Delafield",cursive;font-weight:400;color:#000;font-size:3rem;line-height:1.1;}
 /* ===== COLOURED PANEL HEADS (Anthony, 2026-09-17: "color each panel of the pre call guide") =====
    The FILL carries the heading only; paragraphs stay on tan. White measures 6.73:1 on purple, 4.26:1 on
    blue-deep and 4.17:1 on orange: all fine for a large heading, and the last two would fail the 4.5:1
