@@ -266,6 +266,25 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   .proofband .logos{max-width:320px;gap:12px;}
   .proofband .logo-badge{width:66px;height:66px;padding:11px;}
 }
+/* PRICING (2026-10-01) */
+.pp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;max-width:900px;margin:34px auto 30px;align-items:stretch;}
+.pp-card{position:relative;background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:28px 20px 24px;text-align:center;}
+.pp-name{font-size:1.25rem;font-weight:700;color:#000;margin-bottom:6px;}
+.pp-price{font-size:clamp(2.2rem,4vw,2.8rem);font-weight:700;line-height:1.05;color:#000;font-variant-numeric:tabular-nums;margin-bottom:10px;}
+.pp-price small{font-size:1rem;font-weight:500;color:#4a4350;margin-left:3px;}
+.pp-line{color:#4a4350;font-size:.98rem;margin:2px 0;}
+.pp-save{color:var(--purple);font-weight:700;font-size:1rem;margin:4px 0 0;}
+.pp-best{padding-top:40px;box-shadow:0 0 0 5px var(--purple),var(--shadow);}
+.pp-best .pp-name{color:var(--purple);}
+.pp-card{display:flex;flex-direction:column;}
+.pp-btn{display:block;margin-top:auto;padding:14px 18px;font-size:1.05rem;width:100%;}
+.pp-card > p:last-of-type{margin-bottom:18px;}
+.pp-btn--best{background:var(--purple);}
+.pp-free{color:rgba(255,255,255,.82);font-size:1rem;margin-top:4px;}
+.pp-free a{color:#fff;font-weight:700;text-underline-offset:3px;}
+.pp-badge{position:absolute;top:-17px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--purple);color:#fff;
+  text-shadow:0 1px 1px rgba(0,0,0,.35);border:var(--b);border-radius:999px;padding:4px 16px;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}
+@media (max-width:720px){.pp{grid-template-columns:1fr;gap:26px;max-width:420px;}.pp-y{order:1;}.pp-s{order:2;}.pp-m{order:3;}.pp-best{box-shadow:0 0 0 5px var(--purple),0 0 0 9px #fff0d3,var(--shadow);}}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/start.html">
@@ -479,21 +498,38 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     </div>
   </div></section>
 
-  <!-- CTA -->
-  <section class="center"><div class="wrap">
-    <h2>Try it for a dollar.</h2>
-    <p class="sub">Seven days of full access for $1. Run every tool through your hands. If you're not cleaner, walk away and owe nothing more.</p>
-    <a class="btn big" href="#" data-trial>Start 7-Day Trial: Just $1</a>
-    <p class="cta-note">Then $9.99/mo. Cancel anytime.</p>
-    <ul class="ticks"><li>$1 for 7 full days</li><li>Cancel anytime</li><li>No contract, no catch</li></ul>
-    <p class="sub" style="margin-top:26px">Real talk: after the 7 days it's $9.99/mo. That's less than one private lesson, for the tool that makes every rep count and gets your hands cleaner every single day. A small price for results you can actually hear.</p>
-    <!-- ⛔ THE METHOD CROSS-SELL IS DELETED, NOT COMMENTED OUT (Anthony, 2026-09-21: "method should be
-         erased completely"). It was hidden on 2026-09-11 and left in the markup "to uncomment"; there is
-         nothing to uncomment back to now. landing.html is a redirect, the Stripe links are gone from the
-         app, and the course is never priced. DO NOT RE-ADD A LINK OR A PRICE FOR IT HERE. -->
-    <!-- Nothing on the whole site linked to the book, so it only ever worked if Anthony pasted the link
-         himself. Here because a drummer looking at a practice tool is exactly who wants more reps. -->
-    <p class="altline" style="margin-top:10px"><a href="book.html">Want hundreds more grids on paper? The Drummer's Gridding Handbook, $27 →</a></p>
+  <!-- PRICING (2026-10-01, 0-DOCS/PRICING-PLANS.md). Replaced the "Try it for a dollar" block. Each plan
+       button goes to sign-up WITH the plan (data-plan, wired at the bottom); after they confirm their
+       email the app opens "One step left" on that plan. Phones show Yearly, Seasonal, Monthly. -->
+  <section class="center" id="pricing"><div class="wrap">
+    <h2>Pick your <span class="cb">plan.</span></h2>
+    <p class="sub">All three tools, all 500+ exercises, every control unlocked.</p>
+    <div class="pp">
+      <div class="pp-card pp-m">
+        <h3 class="pp-name">Monthly</h3>
+        <div class="pp-price">$9.99<small>/mo</small></div>
+        <p class="pp-line">$1 for your first 7 days</p>
+        <p class="pp-line">Cancel anytime</p>
+        <a class="btn pp-btn" href="#" data-plan="monthly">Start $1 trial</a>
+      </div>
+      <div class="pp-card pp-s">
+        <h3 class="pp-name">Seasonal</h3>
+        <div class="pp-price">$24.99<small>/3 mo</small></div>
+        <p class="pp-line">$8.33 a month</p>
+        <p class="pp-line">One audition season</p>
+        <a class="btn pp-btn" href="#" data-plan="seasonal">Get Seasonal</a>
+      </div>
+      <div class="pp-card pp-y pp-best">
+        <span class="pp-badge">Best deal</span>
+        <h3 class="pp-name">Yearly</h3>
+        <div class="pp-price">$79<small>/yr</small></div>
+        <p class="pp-line">$6.58 a month</p>
+        <p class="pp-save">Save $40 a year</p>
+        <a class="btn pp-btn pp-btn--best" href="#" data-plan="yearly">Get Yearly</a>
+      </div>
+    </div>
+    <p class="pp-free">Not ready yet? <a href="#" data-free>Start on the free version</a>, no card needed.</p>
+    <p class="sub" style="margin-top:26px">Real talk: one private lesson costs $50. A whole year of this costs $79, for the tool that makes every rep count and gets your hands cleaner every single day.</p>
   </div></section>
 
   <!-- FAQ -->
@@ -503,7 +539,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <div class="faq reveal" style="text-align:left">
       <div class="faq-list">
         <div class="faq-item card"><button class="faq-q">Is it really just $1? <span class="faq-icon">+</span></button>
-          <div class="faq-a"><div class="faq-a-in">Yes. One dollar gets you seven days of full access to every tool. After that it's $9.99 a month, and you can cancel anytime.</div></div></div>
+          <div class="faq-a"><div class="faq-a-in">Yes, on the Monthly plan. One dollar gets you seven days of full access to every tool. After that it's $9.99 a month, and you can cancel anytime. Or skip the trial: Seasonal is $24.99 every 3 months, and Yearly is $79 a year.</div></div></div>
         <div class="faq-item card"><button class="faq-q">What level is this for? <span class="faq-icon">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Every level. Total beginners building their first clean reps, all the way to advanced players chasing a world-class line.</div></div></div>
         <div class="faq-item card"><button class="faq-q">What do I need to use it? <span class="faq-icon">+</span></button>
@@ -552,10 +588,20 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 <script>
   /* The app's trial-signup URL. Change this ONE line at deploy time to point at the live app. */
   var TRIAL_URL = "https://app.rudimentaldrummingmastery.com/signup";
+  /* Every "$1 trial" button is the Monthly plan, so it carries plan=monthly into sign-up and the app
+     opens "One step left" on Monthly after they confirm (2026-10-01). Before this they landed on the
+     free version and had to find the trial themselves. */
   document.querySelectorAll('[data-trial]').forEach(function(a){
-    a.setAttribute('href', TRIAL_URL);
+    a.setAttribute('href', TRIAL_URL + '?plan=monthly');
     a.addEventListener('click', function(){ if(window.rdmTrack) rdmTrack('InitiateCheckout', {product:'Playalongs'}); });
   });
+
+  document.querySelectorAll('[data-plan]').forEach(function(a){
+    var plan = a.getAttribute('data-plan');
+    a.setAttribute('href', TRIAL_URL + '?plan=' + plan);
+    a.addEventListener('click', function(){ if(window.rdmTrack) rdmTrack('InitiateCheckout', {product:'Playalongs', plan:plan}); });
+  });
+  document.querySelectorAll('[data-free]').forEach(function(a){ a.setAttribute('href', TRIAL_URL); });
 
   /* Scroll reveal — staggers siblings; degrades to visible with no observer. */
   (function(){
