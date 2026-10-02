@@ -496,7 +496,18 @@ function saveApplication(){
       body: JSON.stringify(payload)
     });
   }catch(err){ /* never block the booking step */ }
+  /* SECOND COPY -> the admin panel's Applications tab, and an instant text + email to Anthony
+     (2026-10-01). The Sheet above stays as the backup. text/plain so there is no CORS preflight;
+     keepalive so it still lands if they tap through to booking straight away. */
+  try{
+    fetch(APPLY_ENDPOINT, {
+      method:'POST', keepalive:true,
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(Object.assign({ qualified: isQualified() }, payload))
+    });
+  }catch(err){ /* never block the booking step */ }
 }
+const APPLY_ENDPOINT = "https://sktkxtyiyvjwzucvpipw.supabase.co/functions/v1/academy-apply";
 
 /* Open straight into question 1 (no intro screen) — renders step 0 + shows the progress bar. */
 startApp();
