@@ -42,15 +42,20 @@ img{max-width:100%;height:auto;display:block;}
 .topbar img{height:38px;}
 
 /* sticky nav (unified with landing.html / academy-vsl) */
-nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between;align-items:center;gap:18px;
+/* THREE COLUMNS, NOT space-between (Anthony, 2026-10-01: "center the buttons on the header"). With
+   space-between the links sat halfway between a 40px logo and a 150px trial button, i.e. left of centre.
+   1fr | auto | 1fr puts them on the page's true centre whatever the two ends measure. The trial button
+   is pinned to column 3 so it stays right on phones, where the links are display:none. */
+nav{position:sticky;top:0;z-index:100;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px;
   padding:12px 22px;background:var(--purple);border-bottom:var(--b);}
+nav > a:first-child{justify-self:start;}
 .nav-logo{height:40px;display:block;}
 .nav-links{display:flex;gap:12px;align-items:center;}
 .nav-links a{background:var(--blue-darker);color:#fff;text-decoration:none;text-align:center;
   border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
 .nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
-.nav-cta{justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
+.nav-cta{grid-column:3;justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
   padding:10px 22px;font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);
   transition:transform .14s,filter .2s;}
 .nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
@@ -286,6 +291,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .pp-btn--best{background:var(--purple);}
 .pp-free{color:rgba(255,255,255,.82);font-size:1rem;margin-top:4px;}
 .pp-free a{color:#fff;font-weight:700;text-underline-offset:3px;}
+.pp-where{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin-top:14px;}
+.pp-plat{display:inline-flex;align-items:center;gap:7px;padding:5px 14px 5px 5px;border:2px solid #000;border-radius:999px;background:#1f343b;color:#fff;font-weight:700;font-size:.9rem;}
+.pp-plat svg{width:26px;height:26px;flex:none;box-sizing:border-box;padding:4px;background:#fff;color:#1c1a1f;border:1.5px solid #000;border-radius:999px;}
+.pp-wherenote{flex-basis:100%;color:rgba(255,255,255,.82);font-size:.92rem;}
 .pp-badge{position:absolute;top:-17px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--purple);color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);border:var(--b);border-radius:999px;padding:4px 16px;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}
 @media (max-width:720px){.pp{grid-template-columns:1fr;gap:26px;max-width:420px;}.pp-y{order:1;}.pp-s{order:2;}.pp-m{order:3;}.pp-best{box-shadow:0 0 0 5px var(--purple),0 0 0 9px #fff0d3,var(--shadow);}}
@@ -497,7 +506,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <div class="quotes qwall" style="text-align:left">
       <figure class="qcard qc-purple reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>It articulates every single detail I might not have noticed myself. In just a few weeks, I'd see my drumming change from not being able to play clean to being able to play robotically.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-capcity"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span></span><span><b>Cap City 2</b></span></figcaption></figure>
       <figure class="qcard qc-teal reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>Every time I play along with my drumline, I feel so much cleaner. I don't feel like I'm holding them back at all. If anything, I'm pushing them forward alongside me.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-blueknights"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span></span><span><b>Blue Knights Open Class</b></span></figcaption></figure>
-      <figure class="qcard qc-orange reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>It's a permanent fix to the problem of &lsquo;Am I going to sound good?&rsquo; You know from your preparation, and you trust that you will.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-pacificcrest"><img src="assets/logos/logo-pacificcrest.png" alt="Pacific Crest"></span><span class="logo-badge lb-sm lb-scv"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span></span><span><b>Pacific Crest / Santa Clara Vanguard</b></span></figcaption></figure>
+      <figure class="qcard qc-orange reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>It's a permanent fix to the problem of &lsquo;Am I going to sound good?&rsquo; You know from your preparation, and trust that you will.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-pacificcrest"><img src="assets/logos/logo-pacificcrest.png" alt="Pacific Crest"></span><span class="logo-badge lb-sm lb-scv"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span></span><span><b>Pacific Crest / Santa Clara Vanguard</b></span></figcaption></figure>
       <figure class="qcard qc-purple reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>The Playalongs really showed me what my tendencies were in playing clean. A big thing I struggled with was attacks for the longest time, and it was because of the Playalongs that I fixed that. Now, without even having as much time to work on it, I can confidently play clean with a drumline.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-capcity"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span></span><span><b>Cap City 2</b></span></figcaption></figure>
       <figure class="qcard qc-teal reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>The Playalongs have definitely helped me listen and make sure everything I play is 100% in time, because it's right more than I am.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-guardians"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span><span class="logo-badge lb-sm lb-memphisblues"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span></span><span><b>Guardians / Memphis Blues</b></span></figcaption></figure>
       <figure class="qcard qc-orange reveal"><span class="qmark" aria-hidden="true">&ldquo;</span><blockquote>The Playalongs definitely helped me with Lone Star. They helped me iron out the overall sense of pulse in my solo, and it was noticeably better than the solo I wrote last year.</blockquote><figcaption><span class="qbadges"><span class="logo-badge lb-sm lb-lsc"><img src="assets/logos/logo-lsc.png" alt="Lone Star Classic"></span></span><span><b>LSC 2024 Snare I&amp;E Champ</b></span></figcaption></figure>
@@ -537,6 +546,15 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
       </div>
     </div>
     <p class="pp-free">Not ready yet? <a href="#" data-free>Start on the free version</a>, no card needed.</p>
+    <!-- WHERE IT RUNS (2026-10-01). Reassurance, deliberately NOT links: a visitor sent to a store first
+         skips the $1 trial and the Yearly plan (iPhone sells one Apple monthly), so the store links live
+         after payment (the app's "you're in" banner, Settings, the welcome email). -->
+    <div class="pp-where">
+      <span class="pp-plat"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.5 2.1-3.6-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8s1.9.8 3.2.8c1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-.9-2.4-3.9zM14.1 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></svg>iPhone</span>
+      <span class="pp-plat"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M3.6 1.8L13.5 12 3.6 22.2c-.3-.3-.4-.7-.4-1.3V3.1c0-.6.1-1 .4-1.3z"/><path fill="#34A853" d="M3.6 1.8c.4-.4 1-.4 1.7 0l11.5 6.6L13.5 12z"/><path fill="#FBBC04" d="M16.8 8.4l3.6 2.1c1 .6 1 2.4 0 3l-3.6 2.1L13.5 12z"/><path fill="#EA4335" d="M13.5 12l3.3 3.6-11.5 6.6c-.7.4-1.3.4-1.7 0z"/></svg>Android</span>
+      <span class="pp-plat"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M3 5h18v11H3zM8 20h8M12 16v4"/></svg>Computer</span>
+      <span class="pp-wherenote">One account, every device.</span>
+    </div>
     <p class="sub" style="margin-top:26px">Real talk: one private lesson costs $50. A whole year of this costs $79, for the tool that makes every rep count and gets your hands cleaner every single day.</p>
   </div></section>
 
@@ -575,7 +593,9 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
         <div class="faq-item card"><button class="faq-q">What level is this for? <span class="faq-icon">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Every level. Total beginners building their first clean reps, all the way to advanced players chasing a world-class line.</div></div></div>
         <div class="faq-item card"><button class="faq-q">What do I need to use it? <span class="faq-icon">+</span></button>
-          <div class="faq-a"><div class="faq-a-in">Just your sticks and a pad or drum, plus a phone, tablet, or computer. Everything else is built into the tool.</div></div></div>
+          <div class="faq-a"><div class="faq-a-in">Just your sticks and a pad or drum, plus a phone, tablet, or computer. There's an app for iPhone and Android, or use it in your browser. Everything else is built into the tool.</div></div></div>
+        <div class="faq-item card"><button class="faq-q">Does my account work on all my devices? <span class="faq-icon">+</span></button>
+          <div class="faq-a"><div class="faq-a-in">Yes. One account works everywhere: the iPhone app, the Android app, and the browser on any Windows or Mac computer. Sign in with the same email and your favorites, playlists and progress come with you. It works on up to 3 devices at a time.</div></div></div>
         <div class="faq-item card"><button class="faq-q">How is this different from a free metronome app? <span class="faq-icon">+</span></button>
           <div class="faq-a"><div class="faq-a-in">A metronome only clicks. Playalongs loops real exercises with sheet music, randomizes and bumps your tempo, handles marching subdivisions, and generates endless sight-reading.</div></div></div>
         <div class="faq-item card"><button class="faq-q">Can I cancel? <span class="faq-icon">+</span></button>
