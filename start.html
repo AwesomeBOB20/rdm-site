@@ -194,10 +194,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
    wider than 16:9 and contain left a dark strip down each side that read as a thicker left/right border. */
 .vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0c0810;}
 .vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:cover;}
-/* The play button scales WITH the cover, border and shadow included (cqw = % of the cover's width), so it looks
+/* The play button scales WITH the cover (shadow included; the border is a flat 2px like every other border, 2026-10-01) (cqw = % of the cover's width), so it looks
    identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide. Orange, centred. */
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
-  background:var(--orange);border:max(2px,.72cqw) solid #000;box-shadow:1.2cqw 1.2cqw 0 rgba(0,0,0,.30);cursor:pointer;display:flex;align-items:center;
+  background:var(--orange);border:2px solid #000;box-shadow:1.2cqw 1.2cqw 0 rgba(0,0,0,.30);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;padding:0;}
 .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
 .vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
@@ -293,7 +293,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .pp-free a{color:#fff;font-weight:700;text-underline-offset:3px;}
 .pp-where{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;margin-top:14px;}
 .pp-plat{display:inline-flex;align-items:center;gap:7px;padding:5px 14px 5px 5px;border:2px solid #000;border-radius:999px;background:#1f343b;color:#fff;font-weight:700;font-size:.9rem;}
-.pp-plat svg{width:26px;height:26px;flex:none;box-sizing:border-box;padding:4px;background:#fff;color:#1c1a1f;border:1.5px solid #000;border-radius:999px;}
+.pp-plat svg{width:26px;height:26px;flex:none;box-sizing:border-box;padding:4px;background:#fff;color:#1c1a1f;border:2px solid #000;border-radius:999px;}
 .pp-wherenote{flex-basis:100%;color:rgba(255,255,255,.82);font-size:.92rem;}
 .pp-badge{position:absolute;top:-17px;left:50%;transform:translateX(-50%);white-space:nowrap;background:var(--purple);color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);border:var(--b);border-radius:999px;padding:4px 16px;font-weight:700;font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;}
