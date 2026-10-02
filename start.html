@@ -351,6 +351,19 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .qcard figcaption em{display:block;font-style:normal;font-size:.85rem;opacity:.9;}
 @media (max-width:900px){.qwall{grid-template-columns:repeat(2,1fr);}}
 @media (max-width:680px){.qwall{grid-template-columns:1fr;gap:14px;}.qcard{padding:18px 18px 16px;}}
+
+/* WHY CARDS (live 2026-10-01): a brand-colour band with an icon and the headline, the body on tan below,
+   so the four stop reading as one tan wall. Copy = Anthony's tagline + drafts he did not reject. */
+.wcard{padding:0;overflow:hidden;display:flex;flex-direction:column;}
+.wband{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:var(--b);}
+.wband h3{margin:0;color:#fff;font-size:1.12rem;line-height:1.25;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.wicon{flex:0 0 auto;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.22);border:2px solid rgba(0,0,0,.55);}
+.wcard p{padding:14px 18px 18px;margin:0;}
+.wc-purple .wband{background:var(--purple);}
+.wc-teal .wband{background:var(--blue-darker);}
+.wc-orange .wband{background:var(--orange);}
+@media (max-width:680px){.wband{padding:12px 14px;}.wcard p{padding:12px 14px 16px;}}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/start.html">
@@ -426,10 +439,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <h2>Use it and you'll get cleaner. <span class="cb">No matter what.</span></h2>
     <p class="sub">Most practice tools just keep time. The RDM Playalongs exposes exactly where your playing is dirty so you can clean it. Better ears. Better chops. Better time. More music under your control.</p>
     <div class="grid2" style="text-align:left;margin-top:14px">
-      <div class="card reveal"><h3>Hear your own dirt</h3><p>Train your ears to catch clean versus dirty. That one skill is what separates the drummers who make the line from the ones who get cut.</p></div>
-      <div class="card reveal"><h3>Build real speed</h3><p>Bump Tempo and Tempo Randomization push your top end and lock in every tempo range, so fast passages and rhythm changes stop falling apart.</p></div>
-      <div class="card reveal"><h3>Never run out of reps</h3><p>500+ looping exercises plus endless generated rhythm sight-reading. You always know exactly what to practice next.</p></div>
-      <div class="card reveal"><h3>Every level, every drummer</h3><p>Beginner just picking up sticks or an advanced drummer chasing a world-class line. The tool meets you where you are and pulls you up.</p></div>
+      <div class="card wcard wc-purple reveal"><div class="wband"><span class="wicon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 1 1 12 0c0 3-2 4-3 5.5S14 18 12 19.5c-1.2.9-3 .4-3.5-1"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.3-1.2 1.8-1.8 2.6"/></svg></span><h3>Stop guessing if you're clean.</h3></div><p>Your brain smooths over your own mistakes. Play against a perfect rep and you start hearing what you've been missing.</p></div>
+      <div class="card wcard wc-teal reveal"><div class="wband"><span class="wicon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17a8 8 0 1 1 16 0"/><path d="M12 17l4.5-6"/><circle cx="12" cy="17" r="1.3" fill="#fff"/></svg></span><h3>Find your real top speed. Then beat it.</h3></div><p>Bump Tempo starts where you're clean and climbs on its own every few reps. Tempo Randomization jumps the tempo around so you lock in at any speed, not just the one you warmed up at.</p></div>
+      <div class="card wcard wc-orange reveal"><div class="wband"><span class="wicon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 5.5l1.3 1.3L7.5 4.5M4 11.5l1.3 1.3L7.5 10.5M4 17.5l1.3 1.3L7.5 16.5"/></svg></span><h3>Never stand at the pad wondering what to practice.</h3></div><p>500+ exercises with the sheet music and the sound, plus playlists for warm-up, chops and conditioning. Hit play and go.</p></div>
+      <div class="card wcard wc-purple reveal"><div class="wband"><span class="wicon" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V14M10 20V9M16 20V5M21 20H3"/></svg></span><h3>Every level, every drummer.</h3></div><p>Beginners get clean reps from day one. Advanced players get the 7-lets, 9-lets and ratio rhythms a normal metronome can't touch.</p></div>
     </div>
   </div></section>
 
