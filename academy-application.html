@@ -26,7 +26,7 @@
   --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
-  --b:2px solid #000; --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+  --b:2px solid #000; --rad:20px; --shadow:0 6px 18px rgba(0,0,0,.35);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{overscroll-behavior:none;scroll-behavior:smooth;}
@@ -70,7 +70,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:inherit;
   background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:16px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
-.opt:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.opt:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .opt.sel{background:var(--blue-darker);color:#fff;}
 .opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
 .opt.sel .dot{background:var(--orange);}
@@ -83,7 +83,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .btn.blue{background:var(--blue-darker);} .btn.purple{background:var(--purple);}
 .btn.full{display:block;width:100%;}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}

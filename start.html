@@ -26,7 +26,7 @@
   --blue:#058890; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
-  --b:2px solid #000;   /* 2px everywhere, matching the app (Anthony, 2026-10-01) */ --rad:20px; --shadow:5px 5px 0 rgba(0,0,0,0.30);
+  --b:2px solid #000;   /* 2px everywhere, matching the app (Anthony, 2026-10-01) */ --rad:20px; --shadow:0 6px 18px rgba(0,0,0,.35);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{overscroll-behavior:none;scroll-behavior:smooth;scroll-padding-top:88px;}
@@ -99,7 +99,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:17px 34px;font-size:1.12rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 rgba(0,0,0,.30);}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .btn.big{padding:20px 42px;font-size:1.22rem;}
 .cta-note{margin-top:14px;font-size:.95rem;color:rgba(255,255,255,.75);}
 .ticks{list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:18px 0 0;padding:0;}
@@ -149,7 +149,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .cmp-ic{flex:0 0 auto;width:30px;height:30px;border-radius:999px;display:flex;align-items:center;justify-content:center;
   font-size:1rem;font-weight:800;line-height:1;margin-top:1px;}
 .cmp-ic.x{background:transparent;border:2px solid #1a1320;color:#1a1320;}
-.cmp-ic.c{background:var(--blue-darker);border:2px solid #000;color:#fff;box-shadow:2px 2px 0 rgba(0,0,0,.22);}
+.cmp-ic.c{background:var(--blue-darker);border:2px solid #000;color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .cmp-top{grid-column:1/-1;text-align:center;margin-bottom:8px;}
 .cmp-title{font-size:clamp(1.7rem,3.6vw,2.7rem);font-weight:700;color:#000;line-height:1.1;margin-bottom:12px;text-shadow:none;text-wrap:balance;}
 .cmp-sub{color:#4a4350;font-size:clamp(1rem,1.6vw,1.15rem);max-width:700px;margin:0 auto;line-height:1.5;}
@@ -165,7 +165,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   display:flex;justify-content:space-between;align-items:center;gap:16px;}
 .faq-icon{flex:0 0 auto;width:30px;height:30px;border-radius:999px;background:var(--blue-darker);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
-  box-shadow:2px 2px 0 rgba(0,0,0,.25);transition:transform .25s,background .2s;}
+  box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}
 .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
 .faq-a-in{padding:0 24px 22px;color:#333;font-size:.98rem;}
@@ -197,7 +197,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 /* The play button scales WITH the cover (shadow included; the border is a flat 2px like every other border, 2026-10-01) (cqw = % of the cover's width), so it looks
    identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide. Orange, centred. */
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
-  background:var(--orange);border:2px solid #000;box-shadow:1.2cqw 1.2cqw 0 rgba(0,0,0,.30);cursor:pointer;display:flex;align-items:center;
+  background:var(--orange);border:2px solid #000;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;padding:0;}
 .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
 .vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
@@ -229,12 +229,12 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .site-footer{background:var(--purple-deep);border-top:var(--b);padding:48px 22px;text-align:center;}
 .foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;
   border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;
-  overflow-wrap:anywhere;box-shadow:3px 3px 0 rgba(0,0,0,.3);}
+  overflow-wrap:anywhere;box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .foot-pill b{font-weight:700;}
 .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
 .foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
-  border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:3px 3px 0 rgba(0,0,0,.3);
+  border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
 .foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
@@ -246,13 +246,13 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 @media (max-width:680px){
   .mobile-buybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;
     align-items:center;justify-content:space-between;gap:12px;
-    padding:10px 14px;background:var(--purple);border-top:var(--b);box-shadow:0 -6px 18px rgba(0,0,0,.4);}
+    padding:10px 14px;background:var(--purple);border-top:var(--b);box-shadow:0 -6px 18px rgba(0,0,0,.35);}
   .mb-price{display:flex;flex-direction:column;line-height:1.15;}
   .mb-price b{font-size:1rem;color:var(--tan);font-weight:700;}
   .mb-price>span{font-size:.7rem;color:rgba(255,255,255,.65);}
   .mb-btn{background:var(--orange);color:#fff;border:var(--b);border-radius:14px;
     padding:11px 18px;font-weight:700;font-size:.95rem;white-space:nowrap;
-    text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:3px 3px 0 rgba(0,0,0,.3);}
+    text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 }
 
 /* scroll reveal (matches landing.html) */
