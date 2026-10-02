@@ -185,8 +185,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
    cover. The player is only created on click, so nobody downloads the video without pressing play.
    Play button: orange, centred (his call, 2026-09-26). contain, never cover: the cover is captioned. */
 .vf-poster{cursor:pointer;container-type:inline-size;}
-.vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0c0810;}
-.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000;}
+/* cover, not contain (2026-10-01): the frame is 16:9 INCLUDING its 3px border, so the space inside is a hair
+   wider than 16:9 and contain left a dark strip down each side that read as a thicker left/right border. */
+.vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0c0810;}
+.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:cover;}
 /* The play button scales WITH the cover, border and shadow included (cqw = % of the cover's width), so it looks
    identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide. Orange, centred. */
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
