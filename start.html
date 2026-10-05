@@ -193,7 +193,20 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 /* cover, not contain (2026-10-01): the frame is 16:9 INCLUDING its border, so the space inside is a hair
    wider than 16:9 and contain left a dark strip down each side that read as a thicker left/right border. */
 .vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#0c0810;}
-.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:cover;}
+.vidframe video{position:absolute;inset:0;width:100%;height:100%;background:#000;object-fit:cover;
+  /* ROUNDED WHILE PLAYING (Anthony, 2026-10-05: "why the corners of the video are not rounded like the frame
+     is"). The frame's overflow:hidden + border-radius clips the poster, but a PLAYING video on Android Chrome
+     is handed to the phone's video layer, which ignores an ancestor's rounded clip and paints square corners
+     past the border. A clip on the video ITSELF is honoured by that layer. Radius = the frame's minus its
+     2px border, so the curve sits exactly inside the border. */
+  border-radius:calc(var(--rad) - 2px);clip-path:inset(0 round calc(var(--rad) - 2px));}
+/* FULL SCREEN SHOWS THE WHOLE PICTURE (same report: "when I full screen the video on my phone some of the
+   video gets cropped out like the tops and the bottoms"). cover is right INSIDE the frame (it hides a hair
+   of dark strip down each side, see above), but in full screen the video is the whole screen, a 20:9 phone,
+   and cover then cuts the top and bottom off a 16:9 picture. contain letterboxes instead, and the rounded
+   clip comes off so the corners of the screen are not cut. */
+.vidframe video:fullscreen{object-fit:contain;border-radius:0;clip-path:none;}
+.vidframe video:-webkit-full-screen{object-fit:contain;border-radius:0;clip-path:none;}
 /* The play button scales WITH the cover (shadow included; the border is a flat 2px like every other border, 2026-10-01) (cqw = % of the cover's width), so it looks
    identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide. Orange, centred. */
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
