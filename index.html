@@ -133,21 +133,25 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
    value instead of beside it (so nothing can wrap into a hanging indent), and the sections are separated
    by rules rather than by guesswork spacing. */
 .result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);text-align:left;overflow:hidden;}
-/* The band stays purple (Anthony, 2026-10-14: a near-black band was tried for audit F1 and he did not like
-   it). Orange or teal TEXT on this purple measured ~1.6:1 and vanished on a phone, so the key words are
-   white on a brand-colored highlight instead: white on #d35400 is ~4:1 and on #047078 ~5.8:1, both past
-   the 3:1 large-text bar at this size and weight. */
-.result-head{background:var(--purple);padding:22px 26px 20px;border-bottom:var(--b);}
-.result-head .co,.result-head .cb{color:#fff;padding:0 .22em;border-radius:8px;
-  -webkit-box-decoration-break:clone;box-decoration-break:clone;}
-.result-head .co{background:var(--orange);}
-.result-head .cb{background:var(--blue-darker);}
+/* ⚠️ ONE COLOR PER RESULT CARD (Anthony, 2026-10-14: "the panel needs to follow one theme color. Too many
+   colors in the panel"). The tool result is Playalongs BLUE and the coaching result is Academy PURPLE,
+   per the product-color convention; showResult() sets data-theme. Band, section labels, chip labels,
+   ticks, button, price and links all take --accent, and the title is plain white. Tried and rejected the
+   same day: a near-black band, and orange/teal highlight boxes behind the key words.
+   Blue is --blue-darker because it carries white text AND sits as text on tan (~5.2:1); #96318d on tan
+   is ~6:1. Orange or teal TEXT on the band measured ~1.6:1, which is why the title is all white. */
+.result-card{--accent:var(--purple);}
+.result-card[data-theme="blue"]{--accent:var(--blue-darker);}
+.result-head{background:var(--accent);padding:22px 26px 20px;border-bottom:var(--b);}
+.result-head .co,.result-head .cb{color:#fff;}
+.result-body .co,.result-body .cb{color:var(--accent);}
+.result-card .btn,.result-card .btn.blue{background:var(--accent);}
 .result-flag{display:inline-block;background:rgba(0,0,0,.28);color:#fff;border:2px solid rgba(0,0,0,.5);border-radius:999px;font-size:.68rem;
   font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:11px;}
 .result-card h2{font-size:clamp(1.5rem,3.7vw,2.05rem);font-weight:700;line-height:1.14;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
 .result-body{padding:22px 26px 26px;}
 .result-block + .result-block{margin-top:20px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
-.result-block h3{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:10px;}
+.result-block h3{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
 .result-block p{color:#222;font-size:1.02rem;}
 .result-block p + p{margin-top:9px;}
 /* What they told me: compact chips BELOW the CTA (2026-10-14 audit F4). As a full inset panel above
@@ -156,13 +160,13 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 .readback li{font-size:.86rem;color:#111;line-height:1.35;background:rgba(0,0,0,.045);
   border:2px solid rgba(0,0,0,.12);border-radius:12px;padding:6px 11px;}
 .readback li .k{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--purple-deep);margin-right:6px;}
+  color:var(--accent);margin-right:6px;}
 /* what's in the training. Same tick list as the coaching landing page, so the two doors match. */
 .secrets{list-style:none;display:flex;flex-direction:column;gap:9px;}
 .secrets li{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;line-height:1.42;color:#222;}
-.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-darker);color:#fff;border:2px solid #000;
+.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;border:2px solid #000;
   font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
-.secrets li .hl{color:var(--purple-deep);font-weight:700;}
+.secrets li .hl{color:var(--accent);font-weight:700;}
 /* The three tools, on the tool result only. Each image is one composite: the desktop layout beside the
    phone layout, both whole. Stacked full width rather than three across, because three columns inside a
    card on a phone leaves about 100px per tool, at which point nothing in them can be read. */
@@ -176,11 +180,11 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 .result-cta{margin-top:22px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
 .result-cta + .result-block{margin-top:22px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
 .result-card .btn{margin-top:0;}
-.result-price{font-weight:700;color:var(--blue-darker);font-size:.98rem;margin-top:11px;text-align:center;}
+.result-price{font-weight:700;color:var(--accent);font-size:.98rem;margin-top:11px;text-align:center;}
 .result-small{font-size:.86rem;color:#555;margin-top:11px;text-align:center;line-height:1.45;}
-.result-small a{color:var(--blue-darker);font-weight:700;}
+.result-small a{color:var(--accent);font-weight:700;}
 .result-alt{margin-top:16px;padding:13px 15px;border:2px dashed rgba(0,0,0,.28);border-radius:14px;font-size:.93rem;color:#222;background:rgba(255,255,255,.45);line-height:1.45;}
-.result-alt a{color:var(--purple-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
+.result-alt a{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot{text-align:center;margin-top:22px;}
 .result-foot a{color:rgba(255,255,255,.7);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot a:hover{color:#fff;}
@@ -745,6 +749,7 @@ function toolHTML(){
 function showResult(kind, switched){
   $('progress').classList.add('hide');
   const card = $('result-card');
+  card.dataset.theme = kind === 'C' ? 'purple' : 'blue'; // one color per card, see .result-card in the CSS
   card.innerHTML = kind === 'C' ? coachingHTML(switched) : toolHTML();
   $('result-foot').innerHTML = kind === 'C' ? COPY.coaching.foot : COPY.tool.foot;
   const pn = PRODUCT_NAME[kind];
