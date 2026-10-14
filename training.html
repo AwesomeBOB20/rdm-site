@@ -33,6 +33,8 @@ img{max-width:100%;height:auto;display:block;}
 main{flex:1;display:flex;align-items:center;justify-content:center;padding:22px 18px 26px;}
 .wrap{width:100%;max-width:960px;text-align:center;}
 .eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:16px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.t-title{font-size:clamp(1.6rem,4.4vw,2.6rem);font-weight:700;line-height:1.12;margin-bottom:8px;text-wrap:balance;text-shadow:0 3px 14px rgba(0,0,0,.45);}
+.t-sub{font-size:.95rem;color:rgba(255,255,255,.8);margin-bottom:18px;}
 .video{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 .btn{display:inline-block;margin-top:22px;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);
@@ -58,6 +60,10 @@ footer a{color:#fff;}
   <main>
     <div class="wrap">
       <span class="eyebrow">Free training</span>
+      <!-- Headline repeats the quiz button they just tapped, so the page they land on is the one they
+           asked for (2026-10-14 audit F7). 21 minutes = the video's real length (1262s). -->
+      <h1 class="t-title">First, watch the training.</h1>
+      <p class="t-sub">21 minutes, from Anthony.</p>
       <div class="video">
         <iframe src="https://www.youtube.com/embed/frtsmNH29Lc?rel=0&modestbranding=1" title="RDM free training"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

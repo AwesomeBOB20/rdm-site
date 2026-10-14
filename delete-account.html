@@ -28,6 +28,8 @@ body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);colo
 .doc li{margin-bottom:7px;color:#2b2431;}
 .doc a{color:#047078;font-weight:600;overflow-wrap:anywhere;} /* a long email breaks onto the next line instead of running past the card (2026-10-08). #047078, not --blue-deep: 3.78:1 on tan failed at body size (2026-10-14 audit X1) */
 .doc strong{color:#000;}
+.back{display:inline-block;margin-top:8px;text-decoration:underline;}
+.back:hover{color:#000;}
 .foot{text-align:center;padding:8px 20px 40px;color:rgba(255,255,255,.7);font-size:.9rem;}
 /* Keyboard focus: black on the tan card, white on the purple topbar and the dark page. */
 a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
@@ -66,6 +68,9 @@ a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
     <p>Email <a href="mailto:anthony@rudimentaldrummingmastery.com">anthony@<wbr>rudimentaldrummingmastery.com</a>
     from the address on the account and ask for it to be deleted. We verify the request came from the
     account's own email and complete it within 30 days, usually much sooner.</p>
+
+    <!-- Same back link as the privacy policy and terms (2026-10-14 audit A12): readers arrive from the app. -->
+    <a class="back" href="https://app.rudimentaldrummingmastery.com">← Back to the app</a>
   </div>
 </div>
 <div class="foot">Rudimental Drumming Mastery</div>
