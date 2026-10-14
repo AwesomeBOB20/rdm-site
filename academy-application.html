@@ -121,6 +121,13 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 .iti__country-list{color:#000;}
 .err{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
 .err.show{display:block;}
+/* A field that failed the check: orange border, so on a phone you can see WHICH of the five to fix. */
+.field.bad,.iti:has(.field.bad) .field{border-color:var(--orange);box-shadow:0 0 0 2px var(--orange);}
+/* While a picked answer is advancing (220ms), a second tap cannot land on the next question. */
+#s-body.busy{pointer-events:none;}
+.send-fail{display:none;margin:14px 0 0;font-size:.95rem;color:#222;}
+.send-fail.show{display:block;}
+.send-fail button{font:inherit;font-weight:700;color:var(--purple-deep);background:none;border:none;text-decoration:underline;cursor:pointer;padding:4px 2px;}
 
 /* booking / final card */
 .result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:34px 30px;text-align:left;}
@@ -184,7 +191,8 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
           <h2>Last step: <span style="color:var(--purple-deep)">book your call.</span></h2>
           <p>Thanks, <span id="book-name">drummer</span>. I've got your application. Now grab a time for your 1-on-1 call below.</p>
           <p style="font-size:.95rem;color:#444;"><b>Important:</b> if a parent or guardian helps with the decision, have them on the call with you. Buyers are often the parent, and I want everyone's questions answered.</p>
-          <a href="#" class="btn full" data-cal-namespace="rdm-strategy" data-cal-link="anthony-steller-zy5ahs/rdm-strategy" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>Book My Call &rarr;</a>
+          <a href="#" class="btn full" id="book-btn" data-cal-namespace="rdm-strategy" data-cal-link="anthony-steller-zy5ahs/rdm-strategy" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'>Book My Call &rarr;</a>
+          <p class="send-fail" id="send-fail">Your answers didn't send. <button type="button" onclick="retrySend()">Tap to try again</button></p>
         </div>
       </section>
 
@@ -198,6 +206,7 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
           <a href="start" class="btn full">Start with the practice tool &rarr;</a>
           <p style="text-align:center;margin:14px 0 0;font-size:.96rem;color:#444;">$1 for 7 days, then $9.99/mo. Cancel anytime.</p>
           <p style="margin-top:16px;font-size:.9rem;color:#555;">When you're ready for me to work with you directly, I'll be here.</p>
+          <p class="send-fail" id="send-fail-ds">Your answers didn't send. <button type="button" onclick="retrySend()">Tap to try again</button></p>
         </div>
       </section>
 
@@ -277,13 +286,40 @@ const STEPS = [
 let si = 0;
 const data = {};
 let questionCount = STEPS.length;
+/* Double-tap guard (2026-10-14 audit A1). Two taps inside the 220ms auto-advance used to run advance()
+   twice and skip a question, and on the last step post the application twice. `advancing` covers the
+   220ms; `lockUntil` swallows the ghost tap that lands on the NEXT question right after it renders. */
+let advancing = false, lockUntil = 0, submitted = false;
+const locked = () => advancing || performance.now() < lockUntil;
+
+/* Keep their place (audit A2). Each question gets its own history entry, so a phone back-swipe goes to
+   the previous question instead of leaving the page, and the answers are mirrored into sessionStorage,
+   so a reload (routine in Instagram's in-app browser) picks up where they were. */
+const SAVE_KEY = 'rdm-apply-progress';
+function saveProgress(){ try{ sessionStorage.setItem(SAVE_KEY, JSON.stringify({si, data})); }catch(e){} }
+function clearProgress(){ try{ sessionStorage.removeItem(SAVE_KEY); }catch(e){} }
+function loadProgress(){
+  try{
+    const s = JSON.parse(sessionStorage.getItem(SAVE_KEY) || 'null');
+    if(s && s.data && typeof s.si === 'number'){ Object.assign(data, s.data); si = Math.min(Math.max(0, s.si), STEPS.length-1); return true; }
+  }catch(e){}
+  return false;
+}
+window.addEventListener('popstate', e=>{
+  const st = e.state;
+  if(!st || typeof st.si !== 'number') return;
+  // Already sent: back leaves the application rather than reopening the questions.
+  if(submitted){ history.go(-(st.si + 1)); return; }
+  si = Math.min(Math.max(0, st.si), STEPS.length-1);
+  renderStep('none');
+});
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function startApp(){ si=0; renderStep(); }
+function startApp(){ if(!loadProgress()) si=0; renderStep('replace'); }
 
 function setProgress(){
   document.getElementById('progress').classList.remove('hide');
@@ -293,8 +329,13 @@ function setProgress(){
   document.getElementById('pfill').style.width = pct + '%';
 }
 
-function renderStep(){
+function renderStep(nav){
   const step = STEPS[si];
+  if(nav === 'replace') history.replaceState({si}, '', si ? '#q'+(si+1) : location.pathname + location.search);
+  else if(nav !== 'none') history.pushState({si}, '', '#q'+(si+1));
+  advancing = false; lockUntil = performance.now() + 350;
+  document.getElementById('s-body').classList.remove('busy');
+  saveProgress();
   setProgress();
   document.getElementById('s-title').innerHTML = step.title;
   document.getElementById('s-hint').innerHTML = step.hint || '';
@@ -309,6 +350,7 @@ function renderStep(){
     step.fields.forEach(f=>{
       const lab = document.createElement('label');
       lab.className = 'field-label';
+      lab.htmlFor = 'f-'+f.k;
       lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
       body.appendChild(lab);
       if(f.k === 'phone'){
@@ -332,8 +374,21 @@ function renderStep(){
         if(f.k==='firstName') inp.autocomplete='given-name';
         if(f.k==='lastName') inp.autocomplete='family-name';
         if(f.k==='email') inp.autocomplete='email';
+        if(f.k==='instagram'){ inp.autocapitalize='none'; inp.setAttribute('autocorrect','off'); inp.spellcheck=false; }
         body.appendChild(inp);
       }
+    });
+    /* The keyboard's Next key walks the fields and Go on the last one continues (audit A4). Typing in a
+       field clears its red mark. */
+    const inputs = Array.from(body.querySelectorAll('input.field'));
+    inputs.forEach((inp, i)=>{
+      inp.enterKeyHint = i === inputs.length-1 ? 'go' : 'next';
+      inp.addEventListener('keydown', e=>{
+        if(e.key !== 'Enter') return;
+        e.preventDefault();
+        if(i === inputs.length-1) nextStep(); else inputs[i+1].focus();
+      });
+      inp.addEventListener('input', ()=>{ inp.classList.remove('bad'); inp.removeAttribute('aria-invalid'); });
     });
     next.style.display = 'inline-block';
   }
@@ -355,7 +410,7 @@ function renderStep(){
       const b = document.createElement('button');
       b.className = 'opt' + (chosen.includes(o) ? ' sel' : '');
       b.innerHTML = '<span class="box"></span> <span>'+o+'</span>';
-      b.onclick = ()=>{ b.classList.toggle('sel'); };
+      b.onclick = ()=>{ if(!locked()) b.classList.toggle('sel'); };
       b.dataset.val = o;
       wrap.appendChild(b);
     });
@@ -372,21 +427,26 @@ function renderStep(){
 }
 
 function pickSingle(key, val, idx){
+  if(locked()) return;
+  advancing = true;
   data[key] = val;
   const btns = document.querySelectorAll('#s-body .opt');
   btns.forEach((b,i)=>b.classList.toggle('sel', i===idx));
+  document.getElementById('s-body').classList.add('busy');
   setTimeout(advance, 220);
 }
 
 function nextStep(){
+  if(locked()) return;
   const step = STEPS[si];
   if(step.type === 'fields'){
-    let problems = [];
+    let problems = [], bad = [];
+    const flag = k => bad.push('f-'+k);
     step.fields.forEach(f=>{
       const v = document.getElementById('f-'+f.k).value.trim();
       if(f.k === 'phone'){
         const iti = window._itiPhone;
-        if(f.req && v === ''){ problems.push('a valid phone number'); data.phone = ''; }
+        if(f.req && v === ''){ problems.push('a valid phone number'); flag(f.k); data.phone = ''; }
         else if(v === ''){ data.phone = ''; }
         else {
           let num = (iti && iti.getNumber()) ? iti.getNumber() : '';
@@ -394,18 +454,22 @@ function nextStep(){
           data.phone = num || v;
         }
       } else if(f.k === 'email'){
-        if(f.req && !isEmail(v)){ problems.push('a valid email address'); }
+        if(f.req && !isEmail(v)){ problems.push('a valid email address'); flag(f.k); }
         data.email = v;
       } else if(f.k === 'instagram'){
         const h = cleanIG(v);
-        if(f.req && !isIG(h)){ problems.push('a valid Instagram username'); }
+        if(f.req && !isIG(h)){ problems.push('a valid Instagram username'); flag(f.k); }
         data.instagram = h ? '@'+h : '';
       } else {
         data[f.k] = v;
-        if(f.req && !v) problems.push(f.label.toLowerCase());
+        if(f.req && !v){ problems.push(f.label.toLowerCase()); flag(f.k); }
       }
     });
-    if(problems.length){ return showErr("Please enter " + problems.join(', ') + "."); }
+    document.querySelectorAll('#s-body .field').forEach(i=>{ i.classList.remove('bad'); i.removeAttribute('aria-invalid'); });
+    if(problems.length){
+      bad.forEach(id=>{ const i = document.getElementById(id); i.classList.add('bad'); i.setAttribute('aria-invalid','true'); });
+      return showErr("Please enter " + problems.join(', ') + ".", bad[0]);
+    }
   }
   else if(step.type === 'multi'){
     const sel = Array.from(document.querySelectorAll('#s-body .opt.sel')).map(b=>b.dataset.val);
@@ -419,10 +483,12 @@ function nextStep(){
   advance();
 }
 
-function showErr(msg){
+function showErr(msg, focusId){
   const e = document.getElementById('s-err');
   e.textContent = msg; e.classList.add('show');
-  window.scrollTo({top:0,behavior:'smooth'});
+  // Put them straight into the first field that needs fixing; otherwise bring the message into view.
+  if(focusId) document.getElementById(focusId).focus();
+  else window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function advance(){
@@ -431,11 +497,19 @@ function advance(){
 }
 
 function prevStep(){
-  if(si>0){ si--; renderStep(); }
+  if(si <= 0) return;
+  // Our own Back walks the same history entries as the phone's back gesture, so the two never disagree.
+  if(history.state && history.state.si === si) history.back();
+  else { si--; renderStep('replace'); }
 }
 
 function finishApp(){
+  if(submitted) return;
+  submitted = true;
+  clearProgress();
+  history.replaceState({si, done:true}, '', '#done');
   document.getElementById('progress').classList.add('hide');
+  prefillBooking();
   saveApplication(); // always save the lead, qualified or not
   if(isQualified()){
     document.getElementById('book-name').textContent = (data.firstName || 'drummer');
@@ -497,17 +571,66 @@ function saveApplication(){
     });
   }catch(err){ /* never block the booking step */ }
   /* SECOND COPY -> the admin panel's Applications tab, and an instant text + email to Anthony
-     (2026-10-01). The Sheet above stays as the backup. text/plain so there is no CORS preflight;
-     keepalive so it still lands if they tap through to booking straight away. */
-  try{
-    fetch(APPLY_ENDPOINT, {
-      method:'POST', keepalive:true,
-      headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(Object.assign({ qualified: isQualified() }, payload))
-    });
-  }catch(err){ /* never block the booking step */ }
+     (2026-10-01). The Sheet above stays as the backup. */
+  lastPayload = Object.assign({ qualified: isQualified() }, payload);
+  sendApply(lastPayload);
 }
 const APPLY_ENDPOINT = "https://sktkxtyiyvjwzucvpipw.supabase.co/functions/v1/academy-apply";
+
+/* Know whether it actually sent (audit A7). It used to fire and forget, so on a bad connection a lead
+   who never books (the downsell screen) was lost without anyone knowing. Now: if it has not landed in
+   10s, or it fails, the lead sees "didn't send, tap to try again" and the answers are queued in
+   localStorage and resent on their next visit. The request is never aborted, so a slow success still
+   counts, and academy-apply merges a repeat from the same email into one row, so a retry cannot
+   duplicate. text/plain so there is no CORS preflight; keepalive so it lands if they tap away. */
+const PENDING_KEY = 'rdm-apply-pending';
+let lastPayload = null;
+function postApply(body){
+  return fetch(APPLY_ENDPOINT, {
+    method:'POST', keepalive:true,
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(body)
+  }).then(r=>{ if(!r.ok){ const e = new Error('academy-apply ' + r.status); e.status = r.status; throw e; } });
+}
+const queueApply = body => { try{ localStorage.setItem(PENDING_KEY, JSON.stringify(body)); }catch(e){} };
+const unqueueApply = () => { try{ localStorage.removeItem(PENDING_KEY); }catch(e){} };
+const isRejected = e => e && e.status >= 400 && e.status < 500; // the server said no; resending will not help
+function setSendFail(on){ ['send-fail','send-fail-ds'].forEach(id=>document.getElementById(id).classList.toggle('show', on)); }
+function sendApply(body){
+  let settled = false;
+  setSendFail(false);
+  const slow = setTimeout(()=>{ if(!settled){ queueApply(body); setSendFail(true); } }, 10000);
+  try{
+    postApply(body).then(
+      ()=>{ settled = true; clearTimeout(slow); unqueueApply(); setSendFail(false); },
+      e=>{ settled = true; clearTimeout(slow); if(isRejected(e)){ unqueueApply(); return; } queueApply(body); setSendFail(true); }
+    );
+  }catch(err){ /* never block the booking step */ }
+}
+function retrySend(){ if(lastPayload) sendApply(lastPayload); }
+// A queued application from an earlier visit that never landed: send it quietly now.
+(function(){
+  let p = null;
+  try{ p = JSON.parse(localStorage.getItem(PENDING_KEY) || 'null'); }catch(e){}
+  if(!p) return;
+  try{ postApply(p).then(unqueueApply, e=>{ if(isRejected(e)) unqueueApply(); }); }catch(e){}
+})();
+
+/* Hand the booker what they already typed (audit A3), so cal.com opens with name and email filled in.
+   ⚠️ The phone is deliberately NOT passed. The only visible phone box on the cal.com form is
+   smsReminderNumber ("number for text notifications"), which sits beside the SMS consent box, and a
+   lead opts into texts there themselves (CLAUDE.md §9: consent is measured, not assumed). The
+   application already has their phone. */
+function prefillBooking(){
+  const btn = document.getElementById('book-btn');
+  try{
+    const cfg = JSON.parse(btn.getAttribute('data-cal-config') || '{}');
+    const name = [data.firstName, data.lastName].filter(Boolean).join(' ');
+    if(name) cfg.name = name;
+    if(data.email) cfg.email = data.email;
+    btn.setAttribute('data-cal-config', JSON.stringify(cfg));
+  }catch(e){ /* the booker still opens, just empty */ }
+}
 
 /* Open straight into question 1 (no intro screen) — renders step 0 + shows the progress bar. */
 startApp();
@@ -520,10 +643,16 @@ Cal("init","rdm-strategy",{origin:"https://app.cal.com"});
 Cal.config = Cal.config || {};
 Cal.config.forwardQueryParams = true;
 Cal.ns["rdm-strategy"]("ui",{"cssVarsPerTheme":{"light":{"cal-brand":"#96318d"},"dark":{"cal-brand":"#96318d"}},"hideEventTypeDetails":false,"layout":"month_view"});
-/* After a successful booking, send them to the pre-call guide. */
+/* After a successful booking, send them to the pre-call guide, carrying the call's start time so the
+   guide can say when it is (audit A5). The guide falls back to its old wording without it. */
 Cal.ns["rdm-strategy"]("on",{
   action:"bookingSuccessful",
-  callback:function(){ if(window.rdmTrack) rdmTrack('Schedule',{product:'Academy'}); window.location.href = "precall-guide.html"; }
+  callback:function(e){
+    if(window.rdmTrack) rdmTrack('Schedule',{product:'Academy'});
+    var d = (e && e.detail && e.detail.data) || {};
+    var t = d.startTime || d.date || (d.booking && d.booking.startTime) || '';
+    window.location.href = "precall-guide.html" + (t ? "?t=" + encodeURIComponent(t) : "");
+  }
 });
 </script>
 </body>

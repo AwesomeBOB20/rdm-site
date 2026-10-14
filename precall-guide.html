@@ -186,6 +186,7 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 
       <span class="eyebrow">Your call is confirmed</span>
       <h1>You're booked. <span class="co">Now do this before we talk.</span></h1>
+      <p class="sub" id="when" style="margin-bottom:10px;" hidden></p>
       <p class="sub">You'll get text and email reminders before the meeting, and the Google Calendar invite is on its way to your inbox.</p>
 
       <div class="callout">
@@ -348,6 +349,24 @@ var clipBtn = document.getElementById("clipBtn");
 if (clipBtn) clipBtn.addEventListener("click", function () {
   if (window.rdmTrack) window.rdmTrack("clip_dm_click", { page: "precall" });
 });
+/* Say WHEN the call is (2026-10-14 audit A5). The application passes cal.com's start time as ?t=, and
+   it is shown in the visitor's own timezone so a parent can put it straight into the family calendar.
+   No ?t (an old link, a booking from somewhere else) and the line simply stays hidden. */
+(function () {
+  try {
+    var t = new URLSearchParams(location.search).get("t");
+    var d = t ? new Date(t) : null;
+    if (!d || isNaN(d.getTime())) return;
+    var when = new Intl.DateTimeFormat(undefined, {
+      weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"
+    }).format(d);
+    var p = document.getElementById("when");
+    p.textContent = "Your call: ";
+    var b = document.createElement("b"); b.textContent = when + ".";
+    p.appendChild(b);
+    p.hidden = false;
+  } catch (e) { /* keep the page as it was */ }
+})();
 </script>
 </body>
 </html>
