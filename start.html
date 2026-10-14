@@ -54,11 +54,9 @@ nav > a:first-child{justify-self:start;}
 .nav-links a{background:var(--blue-darker);color:#fff;text-decoration:none;text-align:center;
   border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
 .nav-cta{grid-column:3;justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
   padding:10px 22px;font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);
   transition:transform .14s,filter .2s;}
-.nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
 
 /* about the coach (unified with landing.html) */
 .about-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px;align-items:stretch;margin-top:10px;text-align:left;}
@@ -99,7 +97,6 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:17px 34px;font-size:1.12rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .btn.big{padding:20px 42px;font-size:1.22rem;}
 .cta-note{margin-top:14px;font-size:.95rem;color:rgba(255,255,255,.75);}
 .ticks{list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:center;margin:18px 0 0;padding:0;}
@@ -167,7 +164,10 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
   display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
   box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+/* Closed answers are visibility:hidden so screen readers skip them (audit F10). On close the visibility
+   change waits .3s, until the max-height collapse has finished, so the animation is unchanged. */
+.faq-a{max-height:0;overflow:hidden;visibility:hidden;transition:max-height .3s ease,visibility 0s linear .3s;}
+.faq-item.open .faq-a{visibility:visible;transition:max-height .3s ease,visibility 0s;}
 .faq-a-in{padding:0 24px 22px;color:#333;font-size:.98rem;}
 
 /* alt / method link */
@@ -212,7 +212,6 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
   background:var(--orange);border:2px solid #000;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;padding:0;}
-.vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
 .vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
 .videobox{max-width:820px;margin:0 auto;aspect-ratio:16/9;background:rgba(0,0,0,.35);border:var(--b);border-radius:var(--rad);
   box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;text-align:center;color:rgba(255,255,255,.7);font-weight:600;}
@@ -249,7 +248,6 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;
   border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 
 /* sticky mobile CTA bar (copied from landing.html — persistent trial button on phones) */
@@ -261,7 +259,7 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     align-items:center;justify-content:space-between;gap:12px;
     padding:10px 14px;background:var(--purple);border-top:var(--b);box-shadow:0 -6px 18px rgba(0,0,0,.35);}
   .mb-price{display:flex;flex-direction:column;line-height:1.15;}
-  .mb-price b{font-size:1rem;color:var(--tan);font-weight:700;}
+  .mb-price b{font-size:1rem;color:#fff;font-weight:700;}   /* never tan text (audit X11); the 700 carries it */
   .mb-price>span{font-size:.7rem;color:rgba(255,255,255,.65);}
   .mb-btn{background:var(--orange);color:#fff;border:var(--b);border-radius:14px;
     padding:11px 18px;font-weight:700;font-size:.95rem;white-space:nowrap;
@@ -391,6 +389,33 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
 .wc-teal .wband{background:var(--blue-darker);}
 .wc-orange .wband{background:var(--orange);}
 @media (max-width:680px){.wband{padding:12px 14px;}.wcard p{padding:12px 14px 16px;}}
+
+/* HOVER, PRESS, FOCUS, REDUCED MOTION (audit X3, 2026-10-14). Hover lifts only where a real pointer can
+   hover, so a tapped button never stays lifted on a phone, and straight up 1px (the old diagonal lift was
+   left over from the retired hard shadows). 1px down on press. */
+@media (hover:hover){
+  .btn:hover{transform:translateY(-1px);}
+  .nav-cta:hover,.nav-links a:hover,.foot-btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+  .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
+}
+.btn:active,.nav-cta:active,.nav-links a:active,.foot-btn:active,.mobile-buybar:active .mb-btn{transform:translateY(1px);}
+.vf-play:active{transform:translate(-50%,calc(-50% + 1px));}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+/* on tan, the ring is black */
+.pp-card a:focus-visible,.foot-pill a:focus-visible{outline-color:#000;}
+/* The FAQ row clips its overflow (rounded corners), so an outside ring would be cut off. The ring sits
+   just inside the tan row instead, in black. */
+.faq-q:focus-visible{outline:2px solid #000;outline-offset:-4px;border-radius:18px;}
+/* The bar is flush with the screen edges, so its ring sits inside it. */
+.mobile-buybar:focus-visible{outline-offset:-4px;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important;}
+  .btn:hover,.nav-cta:hover,.nav-links a:hover,.foot-btn:hover,
+  .btn:active,.nav-cta:active,.nav-links a:active,.foot-btn:active,.mobile-buybar:active .mb-btn{transform:none;}
+  .vf-play:hover,.vf-play:active{transform:translate(-50%,-50%);}
+}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/start.html">
@@ -601,17 +626,17 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     <h2>Before you start.</h2>
     <div class="faq reveal" style="text-align:left">
       <div class="faq-list">
-        <div class="faq-item card"><button class="faq-q">Is it really just $1? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">Is it really just $1? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Yes, on the Monthly plan. One dollar gets you seven days of full access to every tool. After that it's $9.99 a month, and you can cancel anytime. Or skip the trial: Seasonal is $24.99 every 3 months, and Yearly is $79 a year.</div></div></div>
-        <div class="faq-item card"><button class="faq-q">What level is this for? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">What level is this for? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Every level. Total beginners building their first clean reps, all the way to advanced players chasing a world-class line.</div></div></div>
-        <div class="faq-item card"><button class="faq-q">What do I need to use it? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">What do I need to use it? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Just your sticks and a pad or drum, plus a phone, tablet, or computer. There's an app for iPhone and Android, or use it in your browser. Everything else is built into the tool.</div></div></div>
-        <div class="faq-item card"><button class="faq-q">Does my account work on all my devices? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">Does my account work on all my devices? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Yes. One account works everywhere: the iPhone app, the Android app, and the browser on any Windows or Mac computer. Sign in with the same email and your favorites, playlists and progress come with you. It works on up to 3 devices at a time.</div></div></div>
-        <div class="faq-item card"><button class="faq-q">How is this different from a free metronome app? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">How is this different from a free metronome app? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">A metronome only clicks. Playalongs loops real exercises with sheet music, randomizes and bumps your tempo, handles marching subdivisions, and generates endless sight-reading.</div></div></div>
-        <div class="faq-item card"><button class="faq-q">Can I cancel? <span class="faq-icon">+</span></button>
+        <div class="faq-item card"><button class="faq-q" aria-expanded="false">Can I cancel? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Anytime, in a couple of clicks. No contracts and no phone calls.</div></div></div>
       </div>
     </div>
@@ -669,16 +694,19 @@ h3{font-size:1.25rem;font-weight:700;line-height:1.2;margin-bottom:8px;}
     els.forEach(function(e){ io.observe(e); });
   })();
 
-  /* FAQ accordion — smooth max-height open, one at a time (matches landing.html). */
+  /* FAQ accordion — smooth max-height open, one at a time (matches landing.html).
+     aria-expanded follows the open state so a screen reader hears open or closed (audit F10). */
   document.querySelectorAll('.faq-q').forEach(function(btn){
+    btn.setAttribute('aria-expanded', 'false');
     btn.addEventListener('click', function(){
       var item = btn.closest('.faq-item');
       var ans = item.querySelector('.faq-a');
       var isOpen = item.classList.contains('open');
       document.querySelectorAll('.faq-item.open').forEach(function(o){
         o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null;
+        o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
       });
-      if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+      if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; btn.setAttribute('aria-expanded', 'true'); }
     });
   });
 

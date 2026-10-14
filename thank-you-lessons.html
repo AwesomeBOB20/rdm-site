@@ -50,10 +50,12 @@ h1 .o{color:var(--orange);}
   border:var(--b); border-radius:var(--r); padding:15px 34px; font-weight:700; font-size:1.05rem;
   text-shadow:0 1px 1px rgba(0,0,0,.3); transition:transform .14s ease, filter .2s ease;
 }
-.btn:hover{transform:translateY(-2px); filter:brightness(1.05);}
+@media (hover:hover){ .btn:hover{transform:translateY(-1px); filter:brightness(1.05);} }
+.btn:active{transform:translateY(1px);}
 .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
 .btns .btn{flex:0 1 auto;}
-.btn.blue{background:#058890;}
+/* White text on blue is always --blue-darker (5.84:1). #058890 measured 4.26:1 (2026-10-14 audit X1). */
+.btn.blue{background:var(--blue-darker);}
 .note{margin-top:18px; font-size:.86rem; color:#555;}
 .foot{text-align:center; color:rgba(255,255,255,.7); font-size:.82rem; margin-top:20px;}
 a.link{color:var(--purple); font-weight:700;}
@@ -74,8 +76,16 @@ a.link{color:var(--purple); font-weight:700;}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
 .foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
+@media (hover:hover){ .foot-btn:hover{transform:translateY(-1px);filter:brightness(1.06);} }
+.foot-btn:active{transform:translateY(1px);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
+/* Keyboard focus: white on the dark page and purple footer, black on the tan card and white pills. */
+a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.card a:focus-visible,.foot-pill a:focus-visible{outline-color:#000;}
+@media (prefers-reduced-motion:reduce){
+  .btn,.foot-btn{transition:none;}
+  .btn:hover,.btn:active,.foot-btn:hover,.foot-btn:active{transform:none;}
+}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/thank-you-lessons.html">

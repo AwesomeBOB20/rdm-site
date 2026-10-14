@@ -40,8 +40,8 @@ img{max-width:100%;height:auto;}
 .topbar{display:flex;align-items:center;justify-content:center;min-height:76px;padding:16px;border-bottom:var(--b);background:var(--blue-deep);}
 .topbar img{height:38px;display:block;}
 
-/* Fills the space under the header and centres the step in it. With no footer below there's nothing left
-   to push down, so this reads as centred rather than as a gap. */
+/* Fills the space under the header and centres the step in it. The only thing below is the one-line
+   Privacy/Terms row, so this still reads as centred rather than as a gap. */
 .shell{flex:1;display:flex;align-items:center;justify-content:center;padding:28px 18px 32px;}
 @media (max-width:760px){ .shell{padding:20px 16px 24px;} }
 .stage{width:100%;max-width:680px;}
@@ -53,9 +53,10 @@ img{max-width:100%;height:auto;}
 .progress-fill{height:100%;width:0;background:var(--orange);transition:width .35s cubic-bezier(.2,.7,.2,1);}
 .progress-wrap.hide{display:none;}
 
-.screen{display:none;animation:fade .4s ease;}
+/* Replays on every one of the 9 steps, so it stays short (audit X3): 200ms, 8px of travel. */
+.screen{display:none;animation:fade .2s ease;}
 .screen.active{display:block;}
-@keyframes fade{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
 .eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
@@ -70,7 +71,6 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:inherit;
   background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:16px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
-.opt:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .opt.sel{background:var(--blue-darker);color:#fff;}
 .opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
 .opt.sel .dot{background:var(--orange);}
@@ -83,12 +83,18 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
 .btn.blue{background:var(--blue-darker);} .btn.purple{background:var(--purple);}
 .btn.full{display:block;width:100%;}
+/* Hover, press and focus (audit X3). The lift is behind (hover:hover) so a tapped card on a phone does not
+   stay lifted, and it goes straight up 1px; the old diagonal lift was left over from the retired hard
+   shadows. These sit ABOVE .btn[disabled] so a disabled button never moves. */
+@media (hover:hover){ .btn:hover,.opt:hover{transform:translateY(-1px);} }
+.btn:active,.opt:active{transform:translateY(1px);}
+.btn:focus-visible,.opt:focus-visible,.back:focus-visible,.site-footer a:focus-visible,.consent a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.result-card .btn:focus-visible,.result-card button:focus-visible,.result-card a:focus-visible{outline-color:#000;}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
 .row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
-.back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
+.back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;min-height:44px;}
 .back:hover{color:#fff;}
 
 .intro-note{margin-top:18px;font-size:.9rem;color:rgba(255,255,255,.62);}
@@ -97,6 +103,8 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 /* fields */
 .field-label{display:block;font-weight:700;font-size:.95rem;margin:0 0 6px 2px;}
 .field-label .opt-tag{font-weight:400;color:rgba(255,255,255,.6);font-size:.85rem;}
+/* A line under a label saying why we ask (the phone). Pulled up under its label, same muted tone as .opt-tag. */
+.field-hint{font-size:.85rem;color:rgba(255,255,255,.7);margin:-4px 0 6px 2px;line-height:1.4;}
 .field{width:100%;font-family:inherit;font-size:1.05rem;padding:14px 16px;border:var(--b);border-radius:var(--rad);
   background:#fff;color:#000;margin-bottom:16px;}
 .field::placeholder{color:#999;}
@@ -141,6 +149,23 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
   .result-card,.shell{padding-left:16px;padding-right:16px;}
   .result-card{padding:26px 22px;}
 }
+
+/* "By continuing you agree to the Privacy Policy", under Continue on the contact step only (audit X2). */
+.consent{display:none;margin-top:12px;font-size:.82rem;color:rgba(255,255,255,.65);}
+.consent.show{display:block;}
+.consent a{color:#fff;text-decoration:underline;}
+
+/* Privacy / Terms row (audit X2): this page collects a minor's details. Same --purple-deep band as the
+   start.html / book.html footers, but one slim line so it does not pull the centered step off center. */
+.site-footer{background:var(--purple-deep);border-top:var(--b);padding:10px 12px;text-align:center;
+  font-size:.8rem;color:rgba(255,255,255,.75);}
+.site-footer a{color:#fff;text-decoration:underline;}
+
+@media (prefers-reduced-motion:reduce){
+  .screen{animation:none;}
+  html{scroll-behavior:auto;}
+  .progress-fill{transition:none;}
+}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/academy-application.html">
@@ -182,6 +207,7 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
           <button class="back" id="s-back" onclick="prevStep()">&larr; Back</button>
           <button class="btn blue" id="s-next" onclick="nextStep()" style="display:none;">Continue &rarr;</button>
         </div>
+        <p class="consent" id="s-consent">By continuing you agree to the <a href="privacy-policy.html">Privacy Policy</a>.</p>
       </section>
 
       <!-- ===== FINAL: BOOK THE CALL ===== -->
@@ -212,6 +238,8 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 
     </div>
   </div>
+
+  <footer class="site-footer"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></footer>
 </div>
 
 <script>
@@ -227,7 +255,8 @@ const STEPS = [
       {k:'firstName', label:'First name', ph:'First name', type:'text', req:true},
       {k:'lastName',  label:'Last name',  ph:'Last name',  type:'text', req:true},
       {k:'email',     label:'Email',      ph:'you@email.com', type:'email', req:true},
-      {k:'phone',     label:'Phone (for call reminders)', ph:'(555) 555-5555', type:'tel', req:true},
+      /* Not "for call reminders": reminder texts are opt-in, on the cal.com form (audit X2). */
+      {k:'phone',     label:'Phone', hint:'So I can reach you about your call', ph:'(555) 555-5555', type:'tel', req:true},
       {k:'instagram', label:'Instagram username', ph:'@username', type:'text', req:true},
     ]
   },
@@ -314,10 +343,12 @@ window.addEventListener('popstate', e=>{
   renderStep('none');
 });
 
+/* Smooth scroll unless the device asks for reduced motion (audit X3). */
+const scrollBehavior = () => (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'auto' : 'smooth';
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  window.scrollTo({top:0,behavior:scrollBehavior()});
 }
 function startApp(){ if(!loadProgress()) si=0; renderStep('replace'); }
 
@@ -341,6 +372,7 @@ function renderStep(nav){
   document.getElementById('s-hint').innerHTML = step.hint || '';
   document.getElementById('s-err').classList.remove('show');
   document.getElementById('s-back').style.display = si===0 ? 'none' : '';
+  document.getElementById('s-consent').classList.toggle('show', step.type === 'fields');
   const body = document.getElementById('s-body');
   const next = document.getElementById('s-next');
   body.innerHTML = '';
@@ -353,9 +385,16 @@ function renderStep(nav){
       lab.htmlFor = 'f-'+f.k;
       lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
       body.appendChild(lab);
+      let hintId = '';
+      if(f.hint){
+        const h = document.createElement('p');
+        h.className = 'field-hint'; h.id = hintId = 'h-'+f.k; h.textContent = f.hint;
+        body.appendChild(h);
+      }
       if(f.k === 'phone'){
         const inp = document.createElement('input');
         inp.className = 'field'; inp.type = 'tel'; inp.id = 'f-'+f.k; inp.autocomplete = 'tel';
+        if(hintId) inp.setAttribute('aria-describedby', hintId);
         body.appendChild(inp);
         const iti = window.intlTelInput(inp, {
           initialCountry: 'us',
@@ -488,7 +527,7 @@ function showErr(msg, focusId){
   e.textContent = msg; e.classList.add('show');
   // Put them straight into the first field that needs fixing; otherwise bring the message into view.
   if(focusId) document.getElementById(focusId).focus();
-  else window.scrollTo({top:0,behavior:'smooth'});
+  else window.scrollTo({top:0,behavior:scrollBehavior()});
 }
 
 function advance(){

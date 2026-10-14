@@ -37,11 +37,15 @@ main{flex:1;display:flex;align-items:center;justify-content:center;padding:22px 
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 .btn{display:inline-block;margin-top:22px;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.35);
   background:var(--orange);border:var(--b);border-radius:var(--rad);padding:16px 44px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
+/* Hover, press and focus (audit X3): the lift is behind (hover:hover) so it never sticks on a phone, and
+   goes straight up 1px instead of the old diagonal left over from the retired hard shadows. */
+@media (hover:hover){ .btn:hover{transform:translateY(-1px);} }
+.btn:active{transform:translateY(1px);}
+.btn:focus-visible,footer a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
 .btn small{display:block;font-size:.82rem;font-weight:400;opacity:.92;margin-top:3px;}
 @media (max-width:560px){ .btn{display:block;padding:15px 20px;} }
 /* Purple band, matching the top bar and coaching.html (Anthony, 2026-09-16). */
-footer{text-align:center;padding:10px 12px;font-size:.74rem;color:rgba(255,255,255,.72);
+footer{text-align:center;padding:10px 12px;font-size:.8rem;color:rgba(255,255,255,.72);
   background:var(--purple);border-top:var(--b);}
 footer a{color:#fff;}
 </style>
@@ -61,7 +65,7 @@ footer a{color:#fff;}
       <a class="btn" href="academy-application.html" data-track="academy_apply_click">Apply for coaching &rarr;<small>Application, then a call with Anthony</small></a>
     </div>
   </main>
-  <footer>&copy; 2026 RDM: Rudimental Drumming Mastery</footer>
+  <footer>&copy; 2026 RDM: Rudimental Drumming Mastery | <a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></footer>
 </div>
 </body>
 </html>

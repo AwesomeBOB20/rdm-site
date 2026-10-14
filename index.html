@@ -25,7 +25,7 @@
    ============================================================ */
 :root{
   --purple:#96318d; --purple-deep:#792671;
-  --blue:#06aeb9; --blue-deep:#058890;
+  --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
   --orange:#d35400; --orange-deep:#d35400;
   --tan:#fff0d3; --ink:#000; --dark:#0c0810;
   --b:2px solid #000; --rad:20px; --shadow:0 6px 18px rgba(0,0,0,.35);
@@ -69,16 +69,17 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .co{color:var(--orange);} .cb{color:var(--blue);} .cp{color:#e9b8e4;}
 /* ⚠️ INSIDE THE TAN CARD THE BRAND BLUE IS UNREADABLE. #06aeb9 on #fff0d3 measures 2.40:1, which fails
    every contrast threshold there is; it only works as a FILL under white text (CLAUDE.md section 8).
-   --blue-deep #058890 measures 3.78:1, which passes for large bold text, which is all this is used for. */
-.result-card .cb{color:var(--blue-deep);}
+   Scoped to the tan BODY only (2026-10-14 audit F1): as `.result-card .cb` it also caught the title in
+   the dark header band, where the plain brand blue is the one that reads. --blue-darker is ~5.2:1 on tan. */
+.result-body .cb{color:var(--blue-darker);}
 
 /* option cards */
 .opts{display:flex;flex-direction:column;gap:12px;}
 .opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;font-family:inherit;
   background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:18px 20px;font-size:1.02rem;font-weight:500;transition:transform .14s ease,box-shadow .14s ease,background .14s;}
-.opt:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
-.opt.sel{background:var(--blue-deep);color:#fff;}
+/* White text on blue is always --blue-darker (CLAUDE.md section 8): --blue-deep is 4.26:1 and fails here. */
+.opt.sel{background:var(--blue-darker);color:#fff;}
 .opt .dot{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:2px solid #000;background:#fff;}
 .opt.sel .dot{background:var(--orange);}
 /* A multi-select reads as a checkbox, not a radio, so the shape tells them they can tick several. */
@@ -90,10 +91,14 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .btn{display:inline-block;text-align:center;text-decoration:none;cursor:pointer;font-family:inherit;color:#fff;
   text-shadow:0 1px 1px rgba(0,0,0,.35);background:var(--orange);border:var(--b);border-radius:var(--rad);
   padding:16px 36px;font-size:1.15rem;font-weight:700;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s;}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:0 6px 18px rgba(0,0,0,.35);}
-.btn.blue{background:var(--blue-deep);} .btn.purple{background:var(--purple);}
+.btn.blue{background:var(--blue-darker);} .btn.purple{background:var(--purple);}
 .btn.full{display:block;width:100%;}
 .btn.ghost{background:rgba(0,0,0,.28);}
+/* Lift straight up, and only where there is a real hover: ungated, a tapped card stayed lifted on a
+   phone. A press nudges down. (2026-10-14 audit X3; the old diagonal lift was left from the hard shadows.)
+   These sit BEFORE .btn[disabled] so a disabled button never moves. */
+@media (hover:hover){ .btn:hover, .opt:hover{transform:translateY(-1px);} }
+.btn:active, .opt:active{transform:translateY(1px);}
 .btn[disabled]{opacity:.45;cursor:not-allowed;transform:none;box-shadow:var(--shadow);}
 .row{display:flex;gap:12px;align-items:center;margin-top:26px;flex-wrap:wrap;}
 .back{background:none;border:none;color:rgba(255,255,255,.7);font-family:inherit;font-size:.95rem;cursor:pointer;font-weight:500;padding:8px 4px;}
@@ -101,7 +106,13 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .foot-note{margin-top:34px;font-size:.88rem;color:rgba(255,255,255,.55);}
 .foot-note a{color:#f0d3ec;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
 
-/* email capture */
+/* Keyboard focus: white on the dark page, black on the tan card (2026-10-14 audit X3). */
+a:focus-visible, button:focus-visible, .field:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.result-card a:focus-visible, .result-card button:focus-visible{outline-color:#000;}
+
+/* email capture. A visible label over every field (audit F3): a placeholder disappears the moment they
+   type, and "@yourusername" alone never said which app. */
+.flabel{display:block;font-size:.85rem;font-weight:700;color:#fff;margin-bottom:6px;}
 .field{width:100%;font-family:inherit;font-size:1.05rem;padding:15px 18px;border:var(--b);border-radius:var(--rad);
   background:#fff;color:#000;margin-bottom:16px;}
 .field::placeholder{color:#888;}
@@ -110,7 +121,8 @@ select.field{-webkit-appearance:none;appearance:none;cursor:pointer;padding-righ
   background-repeat:no-repeat;background-position:right 18px center;background-size:12px 8px;}
 select.field:invalid{color:#888;}
 textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inherit;}
-.qerr{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin-bottom:14px;display:none;}
+/* The error box is moved under whichever field it is about (showEmailErr), hence the pull-up. */
+.qerr{color:#ffd9c9;background:rgba(0,0,0,.28);border-radius:10px;padding:8px 12px;font-size:.9rem;margin:-6px 0 16px;display:none;}
 .qerr.show{display:block;}
 
 /* ===== RESULT =====
@@ -121,8 +133,10 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
    value instead of beside it (so nothing can wrap into a hanging indent), and the sections are separated
    by rules rather than by guesswork spacing. */
 .result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);text-align:left;overflow:hidden;}
-.result-head{background:var(--purple);padding:22px 26px 20px;border-bottom:var(--b);}
-.result-flag{display:inline-block;background:rgba(0,0,0,.28);color:#fff;border:2px solid rgba(0,0,0,.5);border-radius:999px;font-size:.68rem;
+/* ⚠️ The band is near-black, NOT purple (2026-10-14 audit F1). On purple the orange and teal key words in
+   the title measured ~1.6:1 and vanished on a phone; on --dark they are ~4.7:1 and ~7:1. */
+.result-head{background:var(--dark);padding:22px 26px 20px;border-bottom:var(--b);}
+.result-flag{display:inline-block;background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);border-radius:999px;font-size:.68rem;
   font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:11px;}
 .result-card h2{font-size:clamp(1.5rem,3.7vw,2.05rem);font-weight:700;line-height:1.14;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
 .result-body{padding:22px 26px 26px;}
@@ -130,18 +144,17 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 .result-block h3{font-size:.74rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--orange-deep);margin-bottom:10px;}
 .result-block p{color:#222;font-size:1.02rem;}
 .result-block p + p{margin-top:9px;}
-/* What they told me: an inset panel, label over value, so a long answer wraps as a paragraph. */
-.readback{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px;
-  background:rgba(0,0,0,.045);border:2px solid rgba(0,0,0,.12);border-radius:14px;padding:14px 16px;}
-.readback li{display:block;font-size:.97rem;color:#111;line-height:1.4;}
-.readback li .k{display:block;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--purple-deep);margin-bottom:2px;}
-.readback li.wide{grid-column:1 / -1;}
-@media (max-width:430px){ .readback{grid-template-columns:1fr;gap:11px;} }
+/* What they told me: compact chips BELOW the CTA (2026-10-14 audit F4). As a full inset panel above
+   everything it pushed the button about two screens down on a phone. */
+.readback{list-style:none;display:flex;flex-wrap:wrap;gap:8px;}
+.readback li{font-size:.86rem;color:#111;line-height:1.35;background:rgba(0,0,0,.045);
+  border:2px solid rgba(0,0,0,.12);border-radius:12px;padding:6px 11px;}
+.readback li .k{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--purple-deep);margin-right:6px;}
 /* what's in the training. Same tick list as the coaching landing page, so the two doors match. */
 .secrets{list-style:none;display:flex;flex-direction:column;gap:9px;}
 .secrets li{display:flex;gap:10px;align-items:flex-start;font-size:.97rem;line-height:1.42;color:#222;}
-.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-deep);color:#fff;border:2px solid #000;
+.secrets li .ck{flex:0 0 22px;height:22px;border-radius:50%;background:var(--blue-darker);color:#fff;border:2px solid #000;
   font-size:.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 .secrets li .hl{color:var(--purple-deep);font-weight:700;}
 /* The three tools, on the tool result only. Each image is one composite: the desktop layout beside the
@@ -152,22 +165,40 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 .shots img{width:100%;display:block;}
 .shots figcaption{margin-top:5px;font-size:.82rem;font-weight:700;text-align:center;color:#444;line-height:1.3;}
 .shots figcaption span{display:block;font-weight:400;font-size:.78rem;color:#666;}
-/* The CTA gets its own band at the foot of the card, so the button is never just another paragraph. */
+/* The CTA gets its own band, so the button is never just another paragraph. It sits right under the
+   read now, with the told-me chips and the screenshots after it (audit F4). */
 .result-cta{margin-top:22px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
+.result-cta + .result-block{margin-top:22px;padding-top:20px;border-top:2px solid rgba(0,0,0,.12);}
 .result-card .btn{margin-top:0;}
-.result-price{font-weight:700;color:var(--blue-deep);font-size:.98rem;margin-top:11px;text-align:center;}
+.result-price{font-weight:700;color:var(--blue-darker);font-size:.98rem;margin-top:11px;text-align:center;}
 .result-small{font-size:.86rem;color:#555;margin-top:11px;text-align:center;line-height:1.45;}
-.result-small a{color:var(--blue-deep);font-weight:700;}
+.result-small a{color:var(--blue-darker);font-weight:700;}
 .result-alt{margin-top:16px;padding:13px 15px;border:2px dashed rgba(0,0,0,.28);border-radius:14px;font-size:.93rem;color:#222;background:rgba(255,255,255,.45);line-height:1.45;}
 .result-alt a{color:var(--purple-deep);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot{text-align:center;margin-top:22px;}
 .result-foot a{color:rgba(255,255,255,.7);font-size:.9rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;}
 .result-foot a:hover{color:#fff;}
 
+/* Privacy + Terms. The quiz takes a minor's details and runs the Meta Pixel, so the links have to be on
+   the page (2026-10-14 audit X2). Same --purple-deep row as start.html, kept small. */
+.site-footer{background:var(--purple-deep);border-top:var(--b);padding:14px 16px;text-align:center;
+  font-size:.8rem;color:rgba(255,255,255,.75);}
+.site-footer a{color:#fff;font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+
 @media (max-width:560px){
   .shell{padding-left:16px;padding-right:16px;}
   .result-head{padding:18px 18px 16px;}
   .result-body{padding:18px 18px 22px;}
+  /* One screenshot on a phone, not three (audit F4). The other two keep their captions, so the
+     "three tools" heading still names all three. A hidden lazy image is never fetched. */
+  .shots figure + figure img{display:none;}
+  .shots figure + figure figcaption{margin-top:0;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation:none !important;transition:none !important;}
+  .btn:hover, .opt:hover, .btn:active, .opt:active{transform:none;}
 }
 </style>
   <script src="analytics.js"></script>
@@ -230,9 +261,12 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
         <h2 class="q-title" id="e-title"></h2>
         <p class="sub" id="e-sub"></p>
         <form id="email-form" novalidate onsubmit="return submitEmail(event)">
-          <input class="field" id="fname-input" type="text" autocomplete="given-name">
-          <input class="field" id="email-input" type="email" autocomplete="email">
-          <input class="field" id="ig-input" type="text" autocomplete="off" required>
+          <label class="flabel" for="fname-input" id="fname-label"></label>
+          <input class="field" id="fname-input" type="text" autocomplete="given-name" required>
+          <label class="flabel" for="email-input" id="email-label"></label>
+          <input class="field" id="email-input" type="email" inputmode="email" autocomplete="email" required>
+          <label class="flabel" for="ig-input" id="ig-label"></label>
+          <input class="field" id="ig-input" type="text" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" required>
           <!-- ⚠️ AGE AND "WHO WOULD BE PAYING" BOTH LIVE ON THE APPLICATION NOW, NOT HERE (Anthony,
                2026-09-16). The application already asks both, and they are strange things to ask somebody
                who has not been offered anything yet. What is left is the smallest set that lets him reach
@@ -240,8 +274,9 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
                ⚠️ The Quiz Leads tab still has an Age column and a Who Pays column, so saveLead keeps
                sending both as empty strings. Dropping the fields from the payload would slide every
                column after them one cell left. -->
+          <label class="flabel" for="story-input" id="story-label"></label>
           <textarea class="field" id="story-input" rows="4"></textarea>
-          <div class="qerr" id="email-err"></div>
+          <div class="qerr" id="email-err" role="alert"></div>
           <button class="btn full" type="submit" id="e-submit"></button>
         </form>
         <div class="row"><button class="back" id="e-back" onclick="emailBack()">&larr; Back</button></div>
@@ -255,6 +290,8 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
 
     </div>
   </div>
+
+  <footer class="site-footer"><a href="privacy-policy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></footer>
 </div>
 
 <script>
@@ -351,6 +388,8 @@ const COPY = {
     emailPh: "you@email.com",
     ig: "@yourusername",
     story: "Optional: in your own words, what are you working on and what's in the way?",
+    /* The labels over each field (2026-10-14 audit F3). The placeholders above stay as the examples. */
+    labels: { fname: "First name", email: "Email", ig: "Instagram username", story: "Anything else? (optional)" },
     quizSubmit: "Show my result &rarr;",
     errName: "Put your first name in.",
     errEmail: "That email doesn't look right.",
@@ -452,7 +491,9 @@ function $(id){ return document.getElementById(id); }
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   $(id).classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
+  /* An explicit 'smooth' here overrides the CSS reduced-motion rule, so it is asked for by hand. */
+  const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  window.scrollTo({top:0,behavior: still ? 'auto' : 'smooth'});
 }
 
 function paintStatic(){
@@ -466,6 +507,11 @@ function paintStatic(){
   $('email-input').placeholder = COPY.email.emailPh;
   $('ig-input').placeholder = COPY.email.ig;
   $('story-input').placeholder = COPY.email.story;
+  const L = COPY.email.labels;
+  $('fname-label').textContent = L.fname;
+  $('email-label').textContent = L.email;
+  $('ig-label').textContent = L.ig;
+  $('story-label').textContent = L.story;
 }
 
 function start(){
@@ -540,7 +586,7 @@ function paintEmail(){
   $('e-title').innerHTML = COPY.email.quizTitle;
   $('e-sub').innerHTML = COPY.email.quizSub;
   $('e-submit').innerHTML = COPY.email.quizSubmit;
-  $('email-err').classList.remove('show');
+  clearEmailErr();
 }
 
 /* ===== LEAD CAPTURE: Google Sheet, "Quiz Leads" tab =====
@@ -557,10 +603,11 @@ function submitEmail(e){
   e.preventDefault();
   const firstName = $('fname-input').value.trim();
   const email = $('email-input').value.trim();
-  if(!firstName){ return showEmailErr(COPY.email.errName); }
-  if(!isEmail(email)){ return showEmailErr(COPY.email.errEmail); }
+  if(!firstName){ return showEmailErr(COPY.email.errName, 'fname-input'); }
+  if(!isEmail(email)){ return showEmailErr(COPY.email.errEmail, 'email-input'); }
   const ig = $('ig-input').value;
-  if(!isIG(cleanIG(ig))){ return showEmailErr(COPY.email.errIG); }
+  if(!isIG(cleanIG(ig))){ return showEmailErr(COPY.email.errIG, 'ig-input'); }
+  clearEmailErr();
   const story = $('story-input').value.trim();
   /* age and payer go out EMPTY, not dropped: the Quiz Leads tab still has both columns, and the
      application is where those two questions live now. */
@@ -571,7 +618,25 @@ function submitEmail(e){
   return false;
 }
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
-function showEmailErr(msg){ const el = $('email-err'); el.textContent = msg; el.classList.add('show'); return false; }
+/* The error is tied to its field (2026-10-14 audit F3): the box moves under it, the field is marked
+   aria-invalid and described by the box, and focus goes there. The box is role="alert", so it is read
+   out as it appears. */
+const EMAIL_FIELDS = ['fname-input','email-input','ig-input'];
+function clearEmailErr(){
+  $('email-err').classList.remove('show');
+  EMAIL_FIELDS.forEach(id=>{ $(id).removeAttribute('aria-invalid'); $(id).removeAttribute('aria-describedby'); });
+}
+function showEmailErr(msg, fieldId){
+  clearEmailErr();
+  const el = $('email-err');
+  const f = $(fieldId);
+  f.after(el);
+  el.textContent = msg; el.classList.add('show');
+  f.setAttribute('aria-invalid','true');
+  f.setAttribute('aria-describedby','email-err');
+  f.focus();
+  return false;
+}
 
 /* Instagram helpers: strip a pasted URL or @ down to a bare handle, then check the format only.
    A static page cannot confirm the account exists. The DM is the real check. */
@@ -613,61 +678,68 @@ function saveLead(firstName, email, ig, age, payer, story){
 /* ===== RESULT ===== */
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function readbackHTML(){
+/* omitWant: after "watch the free training instead" the card is the coaching one, and reading back
+   "You want: a tool to practice with on your own" on it contradicts the button they just tapped
+   (2026-10-14 audit F8). The other rows already carry the reason coaching fits. */
+function readbackHTML(omitWant){
   const R = COPY.readback;
   /* The blocker row is multi-select, so it joins however many they ticked. */
   const blockers = picked(Q_BLOCKER).map(i=>R.blocker[i]);
   const blockerText = blockers.length > 1
     ? blockers.slice(0,-1).join(', ') + ' and ' + blockers[blockers.length-1]
     : (blockers[0] || '');
-  /* "In the way" can hold several ticks, so it spans both columns and never squeezes into a half. */
   const rows = [
-    ['Going for', R.goal[answers[Q_GOAL]], true],
-    ['Next audition', R.when[answers[Q_WHEN]], false],
-    ['You want', R.want[answers[Q_WANT]], false],
-    ['In the way', blockerText, true]
-  ];
-  return '<ul class="readback">' + rows.map(r=>'<li' + (r[2] ? ' class="wide"' : '') + '><span class="k">' + esc(r[0]) + '</span>' + esc(r[1]) + '</li>').join('') + '</ul>';
+    ['Going for', R.goal[answers[Q_GOAL]]],
+    ['Next audition', R.when[answers[Q_WHEN]]],
+    ['You want', R.want[answers[Q_WANT]]],
+    ['In the way', blockerText]
+  ].filter(r=>!(omitWant && r[0] === 'You want'));
+  return '<ul class="readback">' + rows.map(r=>'<li><span class="k">' + esc(r[0]) + '</span>' + esc(r[1]) + '</li>').join('') + '</ul>';
 }
 
-/* One shell for both results: a purple header band, then the blocks, then a CTA band. */
-function card(flag, title, blocks, cta){
+/* One shell for both results: a dark header band, the blocks, a CTA band, then whatever comes after
+   the CTA (the told-me chips, the screenshots). */
+function card(flag, title, blocks, cta, after){
   return '<div class="result-head"><span class="result-flag">' + flag + '</span><h2>' + title + '</h2></div>'
-       + '<div class="result-body">' + blocks + '<div class="result-cta">' + cta + '</div></div>';
+       + '<div class="result-body">' + blocks + '<div class="result-cta">' + cta + '</div>' + (after || '') + '</div>';
 }
 const block = (h3, inner) => '<div class="result-block"><h3>' + h3 + '</h3>' + inner + '</div>';
 
-function coachingHTML(){
+/* ORDER (2026-10-14 audit F4): the pitch, then the button, then the read-back. With "What you told me"
+   first, the button sat around y=1080 on a 390x760 phone. */
+function coachingHTML(switched){
   const C = COPY.coaching;
   return card(C.flag, C.title,
-      block(C.toldMe, readbackHTML())
-    + block(C.whatsIn, '<ul class="secrets">'
+      block(C.whatsIn, '<ul class="secrets">'
         /* NOT escaped: these are Anthony's landing-page lines carried over verbatim, markup and all. */
         + C.secrets.map(s=>'<li><span class="ck">&#10003;</span><span>' + s + '</span></li>').join('')
         + '</ul>'),
       '<a class="btn full" id="r-cta" href="' + TRAINING_URL + '">' + C.cta + '</a>'
-    + '<p class="result-small">' + C.after + '</p>');
+    + '<p class="result-small">' + C.after + '</p>',
+      block(C.toldMe, readbackHTML(switched)));
 }
 
+/* Head, my read, the button and price, THEN what they told me and the screenshots. The button used to
+   be about two screens down on a phone, under the read-back and three tall images. */
 function toolHTML(){
   const C = COPY.tool;
   const hot = hotReason(answers);
   return card(C.flag, C.title,
+      block(C.myRead, '<p>' + C.readIntro + '</p>'),
+      '<a class="btn full blue" id="r-cta" href="' + TOOL_URL + '">' + C.cta + '</a>'
+    + '<p class="result-price">' + C.price + '</p>'
+    + (hot ? '<div class="result-alt">' + C.altLead + esc(hot) + C.altTail + '</div>' : ''),
       block(C.toldMe, readbackHTML())
-    + block(C.myRead, '<p>' + C.readIntro + '</p>')
     + block(C.shotsTitle, '<div class="shots">'
         /* width/height are each composite's REAL pixel size, so the card does not jump as they load. */
         + C.shots.map(s=>'<figure><img src="' + s.img + '" alt="" loading="lazy" width="1000" height="' + s.h + '"><figcaption>' + s.cap + '</figcaption></figure>').join('')
-        + '</div>'),
-      '<a class="btn full blue" id="r-cta" href="' + TOOL_URL + '">' + C.cta + '</a>'
-    + '<p class="result-price">' + C.price + '</p>'
-    + (hot ? '<div class="result-alt">' + C.altLead + esc(hot) + C.altTail + '</div>' : ''));
+        + '</div>'));
 }
 
-function showResult(kind){
+function showResult(kind, switched){
   $('progress').classList.add('hide');
   const card = $('result-card');
-  card.innerHTML = kind === 'C' ? coachingHTML() : toolHTML();
+  card.innerHTML = kind === 'C' ? coachingHTML(switched) : toolHTML();
   $('result-foot').innerHTML = kind === 'C' ? COPY.coaching.foot : COPY.tool.foot;
   const pn = PRODUCT_NAME[kind];
   $('r-cta').onclick = function(){
@@ -678,7 +750,7 @@ function showResult(kind){
 }
 function switchToCoaching(){
   if(window.rdmTrack) rdmTrack('quiz_switch_to_coaching', {});
-  showResult('C');
+  showResult('C', true);
 }
 
 paintStatic();

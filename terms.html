@@ -27,11 +27,15 @@ body{font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--purple);colo
 .doc p{margin-bottom:12px;color:#2b2431;}
 .doc ul{margin:0 0 14px;padding-left:22px;}
 .doc li{margin-bottom:7px;color:#2b2431;}
-.doc a{color:var(--blue-deep);font-weight:600;overflow-wrap:anywhere;} /* a long email breaks onto the next line instead of running past the card (2026-10-08) */
+.doc a{color:#047078;font-weight:600;overflow-wrap:anywhere;} /* a long email breaks onto the next line instead of running past the card (2026-10-08). #047078, not --blue-deep: 3.78:1 on tan failed at body size (2026-10-14 audit X1) */
 .doc strong{color:#000;}
 .back{display:inline-block;margin-top:8px;color:rgba(255,255,255,.85);text-decoration:underline;font-weight:600;}
-.back:hover{color:#fff;}
+.back:hover{color:#000;} /* was #fff: .back sits on the tan card, so hover made it vanish */
 .foot{text-align:center;padding:8px 20px 40px;color:rgba(255,255,255,.7);font-size:.9rem;}
+/* Keyboard focus: black on the tan card, white on the purple topbar and the dark page. */
+a:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.doc a:focus-visible{outline-color:#000;}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/terms.html">

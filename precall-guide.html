@@ -85,19 +85,21 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .clip-btn{display:inline-block;margin-top:18px;background:var(--blue-darker);color:#fff;text-decoration:none;font-weight:700;
   font-size:1.2rem;border:var(--b);border-radius:var(--rad);padding:13px 26px;box-shadow:var(--shadow);
   text-shadow:0 1px 2px rgba(0,0,0,.35);transition:transform .14s,filter .2s;}
-.clip-btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+@media (hover:hover){ .clip-btn:hover{transform:translateY(-1px);filter:brightness(1.06);} }
+.clip-btn:active{transform:translateY(1px);}
 .clip-handle{display:block;margin-top:10px;font-size:.92rem;color:#555;}
 /* Black and handwritten, like a real signature (Anthony, 2026-10-01). */
 .sig{margin-top:6px;font-family:"Mrs Saint Delafield",cursive;font-weight:400;color:#000;font-size:3rem;line-height:1.1;}
 /* ===== COLOURED PANEL HEADS (Anthony, 2026-09-17: "color each panel of the pre call guide") =====
-   The FILL carries the heading only; paragraphs stay on tan. White measures 6.73:1 on purple, 4.26:1 on
-   blue-deep and 4.17:1 on orange: all fine for a large heading, and the last two would fail the 4.5:1
-   body-text bar, which is why the body was not filled. Same shape as the quiz result card. */
+   The FILL carries the heading only; paragraphs stay on tan. White measures 6.73:1 on purple, 5.84:1 on
+   blue-darker and 4.17:1 on orange: all fine for a large heading, and orange would fail the 4.5:1
+   body-text bar, which is why the body was not filled. Same shape as the quiz result card.
+   (2026-10-14 audit X1: teal moved from --blue-deep 4.26:1 to --blue-darker so it matches the Step 2 button.) */
 .card{padding:0;overflow:hidden;}
 .cardhead{padding:20px 26px 18px;border-bottom:var(--b);}
 .cardhead--purple{background:var(--purple);}
 .cardhead--orange{background:var(--orange);}
-.cardhead--teal{background:var(--blue-deep);}
+.cardhead--teal{background:var(--blue-darker);}
 .cardhead h2{color:#fff;margin-bottom:0;text-shadow:0 2px 10px rgba(0,0,0,.35);}
 .cardhead .steptag{background:rgba(0,0,0,.28);border-color:rgba(0,0,0,.5);}
 .cardbody{padding:24px 26px 26px;}
@@ -118,10 +120,11 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
   background:var(--orange);border:2px solid #000;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;
   justify-content:center;transition:transform .14s;padding:0;}
-.vf-play:hover{transform:translate(-50%,-50%) scale(1.06);}
-.vf-play--purple{background:var(--purple);} .vf-play--teal{background:var(--blue-deep);} .vf-play--orange{background:var(--orange);}
+@media (hover:hover){ .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);} }
+.vf-play:active{transform:translate(-50%,calc(-50% + 1px));}
+.vf-play--purple{background:var(--purple);} .vf-play--teal{background:var(--blue-darker);} .vf-play--orange{background:var(--orange);}
 .vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
-.parent-box{background:var(--blue-deep);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+.parent-box{background:var(--blue-darker);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
   padding:24px 24px;margin-bottom:22px;}
 .parent-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
 .parent-box p{color:#fff;font-size:1rem;}
@@ -159,8 +162,18 @@ h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
 .foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
+@media (hover:hover){ .foot-btn:hover{transform:translateY(-1px);filter:brightness(1.06);} }
+.foot-btn:active{transform:translateY(1px);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
+/* Keyboard focus: white on the dark page and over the video covers, black on the tan cards and pills. */
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.cardbody a:focus-visible,.foot a:focus-visible,.foot-pill a:focus-visible{outline-color:#000;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .clip-btn,.vf-play,.foot-btn{transition:none;}
+  .clip-btn:hover,.clip-btn:active,.foot-btn:hover,.foot-btn:active{transform:none;}
+  .vf-play:hover,.vf-play:active{transform:translate(-50%,-50%);}
+}
 </style>
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/precall-guide.html">

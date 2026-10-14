@@ -19,7 +19,9 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{overscroll-behavior:none;font-family:'Ubuntu',sans-serif;color:#fff;background:#241022;}
+/* overflow-x: the hero book image used to push a 390px phone out to 398px and the page drifted sideways
+   (design audit F6, 2026-10-14). hidden first for older Safari, clip where supported. */
+body{overscroll-behavior:none;font-family:'Ubuntu',sans-serif;color:#fff;background:#241022;overflow-x:hidden;overflow-x:clip;}
 .bg{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
   background:linear-gradient(rgba(18,4,18,.5),rgba(18,4,18,.68)),url('Background%203.png') center/cover no-repeat;}
 main{position:relative;z-index:1;}
@@ -35,16 +37,14 @@ nav{position:sticky;top:0;z-index:100;display:flex;justify-content:space-between
 .nav-links a{background:var(--blue-darker);color:#fff;text-decoration:none;text-align:center;
   border:var(--b);border-radius:20px;padding:9px 18px;font-size:.86rem;font-weight:700;
   text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.nav-links a:hover{transform:translateY(-2px);filter:brightness(1.08);}
 .nav-cta{justify-self:end;background:var(--orange);color:#fff;border:var(--b);border-radius:20px;text-align:center;
   padding:10px 22px;font-weight:700;font-size:.9rem;text-decoration:none;text-shadow:0 1px 1px rgba(0,0,0,.3);
   white-space:nowrap;transition:transform .14s,filter .2s;}
-.nav-cta:hover{transform:translateY(-2px);filter:brightness(1.06);}
 @media (max-width:680px){ .nav-links{display:none;} .nav-logo{height:34px;} .nav-cta{font-size:.8rem;padding:8px 14px;} }
 
 /* hero */
 .hero{padding:56px 0 34px;display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center;}
-.eyebrow{display:inline-block;background:var(--blue-deep);color:#fff;border:2px solid #000;border-radius:999px;
+.eyebrow{display:inline-block;background:var(--blue-darker);color:#fff;border:2px solid #000;border-radius:999px;
   font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 16px;margin-bottom:16px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
 h1{font-size:clamp(2.1rem,4.6vw,3.4rem);line-height:1.08;margin-bottom:14px;text-shadow:0 2px 8px rgba(0,0,0,.4);}
 h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
@@ -55,7 +55,6 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .btn{display:inline-block;background:var(--orange);color:#fff;text-decoration:none;border:var(--b);border-radius:var(--r);
   padding:16px 36px;font-weight:700;font-size:1.12rem;text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:0 6px 18px rgba(0,0,0,.35);
   transition:transform .14s ease,filter .2s ease;}
-.btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
 .microtrust{font-size:.85rem;color:rgba(255,255,255,.7);margin-top:10px;}
 /* risk-reversal badges under the CTA (Hormozi: reduce risk right at the button) */
 .trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;}
@@ -82,21 +81,25 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .sec{margin-bottom:34px;}
 .panel{border:var(--b);border-radius:var(--r);box-shadow:var(--shadow);padding:36px 34px;}
 .panel--tan{background:var(--tan);color:#1a1a1a;}
-.panel--blue{background:var(--blue-deep);color:#fff;}
+/* --blue-darker, not --blue-deep: white text on blue is always #047078 (CLAUDE.md 8; audit X1, 2026-10-14) */
+.panel--blue{background:var(--blue-darker);color:#fff;}
 .panel--purple{background:var(--purple);color:#fff;}
 .panel h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:14px;}
 .panel--tan h2 .o{color:var(--orange);} .panel--tan h2 .p{color:var(--purple);} .panel--tan h2 .t{color:var(--blue-deep);}
-.panel--blue h2 .hl,.panel--purple h2 .hl{color:var(--tan);}
+/* Tan is never a text color (audit X11, 2026-10-14). The highlight words stay white and carry the
+   emphasis with weight instead: the rest of the heading drops to 500 so the 700 words still stand out. */
+.panel--blue h2,.panel--purple h2{font-weight:500;}
+.panel--blue h2 .hl,.panel--purple h2 .hl{color:#fff;font-weight:700;}
 .panel p{font-size:1rem;line-height:1.65;margin-bottom:12px;}
 .panel--tan p{color:#333;} .panel--blue p,.panel--purple p{color:rgba(255,255,255,.92);}
 .tagline{font-weight:700;}
-.panel--tan .tagline{color:var(--purple);} .panel--blue .tagline,.panel--purple .tagline{color:var(--tan);}
+.panel--tan .tagline{color:var(--purple);} .panel--blue .tagline,.panel--purple .tagline{color:#fff;}
 .perks{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0 6px;}
 .perks li{position:relative;padding-left:30px;font-weight:500;font-size:1rem;line-height:1.5;}
 .perks li::before{content:"✓";position:absolute;left:2px;top:0;font-weight:700;font-size:1.05rem;}
 .panel--tan .perks li{color:#222;} .panel--tan .perks li::before{color:var(--blue-deep);}
 .panel--blue .perks li,.panel--purple .perks li{color:#fff;}
-.panel--blue .perks li::before,.panel--purple .perks li::before{color:var(--tan);}
+.panel--blue .perks li::before,.panel--purple .perks li::before{color:#fff;font-weight:700;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:center;}
 /* the open-book mockup gets a tinted frame, not raw white (Anthony, 2026-07-23) */
 .bookframe{width:100%;border:var(--b);border-radius:14px;overflow:hidden;
@@ -132,7 +135,10 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
   display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:400;line-height:1;
   box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .25s,background .2s;}
 .faq-item.open .faq-icon{transform:rotate(45deg);}
-.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+/* Closed answers are visibility:hidden so screen readers skip them (audit F10). On close the visibility
+   change waits .3s, until the max-height collapse has finished, so the animation is unchanged. */
+.faq-a{max-height:0;overflow:hidden;visibility:hidden;transition:max-height .3s ease,visibility 0s linear .3s;}
+.faq-item.open .faq-a{visibility:visible;transition:max-height .3s ease,visibility 0s;}
 .faq-a-in{padding:0 24px 22px;color:#333;font-size:.98rem;line-height:1.6;}
 .faq h2{text-align:center;color:#fff;font-size:clamp(1.6rem,3.4vw,2.2rem);text-shadow:0 2px 8px rgba(0,0,0,.4);}
 
@@ -147,16 +153,59 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 .foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
 .foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
 .foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
-.foot-btn:hover{transform:translateY(-2px);filter:brightness(1.06);}
 .foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
 
 @media (max-width:820px){
   .hero{grid-template-columns:1fr;padding-top:34px;gap:20px;}
   .hero-art{order:-1;max-width:420px;margin:0 auto;}
+  /* THE BUY BUTTON ON THE FIRST SCREEN (audit F6 + F9, 2026-10-14). The book is capped at 200px tall and
+     loses its 1.16x scale, which was what pushed the page wider than the phone. The price and the button
+     move up above the lede, with the trust ticks still right under the button; the lede copy is unchanged. */
+  .hero-art img{transform:none;width:auto;max-width:100%;max-height:200px;margin:0 auto;}
+  .hero-copy{display:flex;flex-direction:column;}
+  .hero-copy .eyebrow{align-self:flex-start;}
+  .hero-copy p.lede{order:1;margin:18px 0 0;}
   .stats{grid-template-columns:repeat(2,1fr);}
   .grid2{grid-template-columns:1fr;}
   .steps{grid-template-columns:1fr;}
   .panel{padding:26px 20px;}
+}
+
+/* sticky phone buy bar (a copy of start.html's .mobile-buybar): hidden while the hero button, the final
+   CTA or the footer is in view, slides in once they have scrolled away. */
+.mobile-buybar{display:none;text-decoration:none;transition:transform .25s ease;}
+.mobile-buybar.hide{transform:translateY(130%);}
+@media (max-width:680px){
+  .mobile-buybar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:200;
+    align-items:center;justify-content:space-between;gap:12px;
+    padding:10px 14px;background:var(--purple);border-top:var(--b);box-shadow:0 -6px 18px rgba(0,0,0,.35);}
+  .mb-price{display:flex;flex-direction:column;line-height:1.15;}
+  .mb-price b{font-size:1rem;color:#fff;font-weight:700;}
+  .mb-price>span{font-size:.7rem;color:rgba(255,255,255,.65);}
+  .mb-btn{background:var(--orange);color:#fff;border:var(--b);border-radius:14px;
+    padding:11px 18px;font-weight:700;font-size:.95rem;white-space:nowrap;
+    text-shadow:0 1px 1px rgba(0,0,0,.3);box-shadow:0 6px 18px rgba(0,0,0,.35);}
+}
+
+/* HOVER, PRESS, FOCUS, REDUCED MOTION (audit X3, 2026-10-14). Hover lifts only where a real pointer can
+   hover, so a tapped button never stays lifted on a phone. 1px up on hover, 1px down on press. */
+@media (hover:hover){
+  .btn:hover,.nav-cta:hover,.nav-links a:hover,.foot-btn:hover{transform:translateY(-1px);filter:brightness(1.06);}
+}
+.btn:active,.nav-cta:active,.nav-links a:active,.foot-btn:active,.mobile-buybar:active .mb-btn{transform:translateY(1px);}
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.foot-pill a:focus-visible{outline-color:#000;}
+/* The FAQ row clips its overflow (rounded corners), so an outside ring would be cut off. The ring sits
+   just inside the tan row instead, in black. */
+.faq-q:focus-visible{outline:2px solid #000;outline-offset:-4px;border-radius:18px;}
+/* The bar is flush with the screen edges, so its ring sits inside it. */
+.mobile-buybar:focus-visible{outline-offset:-4px;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;
+    transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important;}
+  .btn:hover,.nav-cta:hover,.nav-links a:hover,.foot-btn:hover,
+  .btn:active,.nav-cta:active,.nav-links a:active,.foot-btn:active,.mobile-buybar:active .mb-btn{transform:none;}
 }
 </style>
 <script src="analytics.js"></script>
@@ -194,7 +243,7 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
   <div class="container">
 
     <section class="hero">
-      <div>
+      <div class="hero-copy">
         <span class="eyebrow">The Drummer's Gridding Handbook</span>
         <h1>Never Wonder What To <span class="o">Practice</span> Again</h1>
         <p class="lede">
@@ -325,15 +374,15 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
     <section class="sec faq" id="faq">
       <h2>Questions</h2>
       <div class="faq-list">
-        <div class="faq-item"><button class="faq-q">What skill level do I need? <span class="faq-icon">+</span></button>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">What skill level do I need? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">You should already play basic rhythms and know your rudiments. From there the book scales with you: early variations are approachable, combination grids at the end of each chapter will humble anyone.</div></div></div>
-        <div class="faq-item"><button class="faq-q">What format is it? <span class="faq-icon">+</span></button>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">What format is it? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">A 150-page PDF. Read it on your phone at the pad, a tablet on a stand, or print the pages you are working on.</div></div></div>
-        <div class="faq-item"><button class="faq-q">How do I get it after paying? <span class="faq-icon">+</span></button>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">How do I get it after paying? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">The download link is emailed to you automatically right after checkout. If anything goes wrong, reply to that email and Anthony will personally send you a fresh link.</div></div></div>
-        <div class="faq-item"><button class="faq-q">Is there a refund? <span class="faq-icon">+</span></button>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">Is there a refund? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">No. It is a digital book with instant lifetime access, so all sales are final.</div></div></div>
-        <div class="faq-item"><button class="faq-q">Who wrote it? <span class="faq-icon">+</span></button>
+        <div class="faq-item"><button class="faq-q" aria-expanded="false">Who wrote it? <span class="faq-icon" aria-hidden="true">+</span></button>
           <div class="faq-a"><div class="faq-a-in">Anthony Steller: TMEA 6A All-State percussionist, Lone Star and Plano Drumline snare solo gold medalist, drumline arranger, and the coach behind Rudimental Drumming Mastery.</div></div></div>
       </div>
     </section>
@@ -354,6 +403,11 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
   </div>
 </main>
 
+<a class="mobile-buybar hide" href="https://buy.stripe.com/28E9AS2NRcvY6O0baM1Jm0a" data-track="InitiateCheckout" data-track-params='{"product":"GriddingHandbook","value":27}' aria-label="Get the Gridding Handbook, $27">
+  <span class="mb-price"><b>$27</b><span>one time, yours for life</span></span>
+  <span class="mb-btn">Get the book →</span>
+</a>
+
 <footer class="site-footer">
   <div class="foot-pill"><b>Contact Info:</b> anthony@rudimentaldrummingmastery.com | @anthony.steller200</div>
   <div class="foot-social">
@@ -365,18 +419,36 @@ h1 .o{color:var(--orange);} h1 .t{color:var(--blue);}
 </footer>
 
 <script>
-/* FAQ accordion — smooth max-height open, one at a time (matches landing.html / start.html exactly). */
+/* FAQ accordion — smooth max-height open, one at a time (matches landing.html / start.html exactly).
+   aria-expanded follows the open state so a screen reader hears open or closed (audit F10). */
 document.querySelectorAll('.faq-q').forEach(function(btn){
+  btn.setAttribute('aria-expanded', 'false');
   btn.addEventListener('click', function(){
     var item = btn.closest('.faq-item');
     var ans = item.querySelector('.faq-a');
     var isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item.open').forEach(function(o){
       o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = null;
+      o.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
     });
-    if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; }
+    if (!isOpen){ item.classList.add('open'); ans.style.maxHeight = ans.scrollHeight + 'px'; btn.setAttribute('aria-expanded', 'true'); }
   });
 });
+
+/* The phone buy bar waits, same as start.html: hidden while the hero button, the final CTA or the footer
+   is in view, and it slides in once those have scrolled away. Without IntersectionObserver it just shows. */
+(function(){
+  var bar = document.querySelector('.mobile-buybar');
+  var show = function(on){ if (bar) bar.classList.toggle('hide', !on); };
+  var watch = document.querySelectorAll('.hero .price-row, .final, .site-footer');
+  if (!('IntersectionObserver' in window) || !watch.length) { show(true); return; }
+  var visible = new Set();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ en.isIntersecting ? visible.add(en.target) : visible.delete(en.target); });
+    show(visible.size === 0);
+  }, { threshold: 0.05 });
+  watch.forEach(function(w){ io.observe(w); });
+})();
 </script>
 </body>
 </html>
