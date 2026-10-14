@@ -133,10 +133,16 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
    value instead of beside it (so nothing can wrap into a hanging indent), and the sections are separated
    by rules rather than by guesswork spacing. */
 .result-card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);text-align:left;overflow:hidden;}
-/* ⚠️ The band is near-black, NOT purple (2026-10-14 audit F1). On purple the orange and teal key words in
-   the title measured ~1.6:1 and vanished on a phone; on --dark they are ~4.7:1 and ~7:1. */
-.result-head{background:var(--dark);padding:22px 26px 20px;border-bottom:var(--b);}
-.result-flag{display:inline-block;background:rgba(255,255,255,.1);color:#fff;border:2px solid rgba(255,255,255,.3);border-radius:999px;font-size:.68rem;
+/* The band stays purple (Anthony, 2026-10-14: a near-black band was tried for audit F1 and he did not like
+   it). Orange or teal TEXT on this purple measured ~1.6:1 and vanished on a phone, so the key words are
+   white on a brand-colored highlight instead: white on #d35400 is ~4:1 and on #047078 ~5.8:1, both past
+   the 3:1 large-text bar at this size and weight. */
+.result-head{background:var(--purple);padding:22px 26px 20px;border-bottom:var(--b);}
+.result-head .co,.result-head .cb{color:#fff;padding:0 .22em;border-radius:8px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;}
+.result-head .co{background:var(--orange);}
+.result-head .cb{background:var(--blue-darker);}
+.result-flag{display:inline-block;background:rgba(0,0,0,.28);color:#fff;border:2px solid rgba(0,0,0,.5);border-radius:999px;font-size:.68rem;
   font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:11px;}
 .result-card h2{font-size:clamp(1.5rem,3.7vw,2.05rem);font-weight:700;line-height:1.14;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35);}
 .result-body{padding:22px 26px 26px;}
