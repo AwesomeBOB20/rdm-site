@@ -210,7 +210,19 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
   *,*::before,*::after{animation:none !important;transition:none !important;}
   .btn:hover, .opt:hover, .btn:active, .opt:active{transform:none;}
 }
+/* Who is asking (2026-10-14 audit F2). The front door from Instagram showed no face, no name and no
+   proof before asking for a name, email and Instagram handle. His photo, his own line (Anthony picked
+   option A: his approved "I've had students make world class drumlines"), and six corps his students made
+   THROUGH the system (CLAUDE.md section 7, the "made" list, never the mentored one). Kept under ~120px so
+   Start stays on the first screen. */
+.intro-proof{margin-top:22px;display:grid;gap:12px;justify-items:center;}
+.ip-me{display:flex;align-items:center;gap:10px;max-width:340px;}
+.ip-me img{width:44px;height:44px;flex:0 0 44px;border-radius:50%;border:2px solid #000;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,.35);}
+.ip-me p{font-size:.95rem;line-height:1.35;color:rgba(255,255,255,.92);font-weight:500;text-align:left;}
+.ip-logos{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;}
+.ip-logos .logo-badge.lb-sm{width:40px;height:40px;padding:6px;}
 </style>
+<link rel="stylesheet" href="assets/logos/badges.css">
   <script src="analytics.js"></script>
 <link rel="canonical" href="https://rudimentaldrummingmastery.com/index.html">
 <meta property="og:type" content="website">
@@ -247,6 +259,17 @@ textarea.field{min-height:104px;resize:vertical;line-height:1.45;font-family:inh
         <h1 id="i-title"></h1>
         <p class="sub" id="i-sub"></p>
         <button class="btn full" id="i-start" onclick="start()"></button>
+        <div class="intro-proof">
+          <div class="ip-me"><img src="pic%20of%20me.jpg" alt="Anthony Steller" width="44" height="44"><p>I'm Anthony. I've had students make world class drumlines.</p></div>
+          <div class="ip-logos" role="list" aria-label="Corps my students have made">
+            <span class="logo-badge lb-sm lb-scv" role="listitem"><img src="assets/logos/logo-scv.png" alt="Santa Clara Vanguard"></span>
+            <span class="logo-badge lb-sm lb-blueknights" role="listitem"><img src="assets/logos/logo-blueknights.png" alt="Blue Knights"></span>
+            <span class="logo-badge lb-sm lb-genesis" role="listitem"><img src="assets/logos/logo-genesis.png" alt="Genesis"></span>
+            <span class="logo-badge lb-sm lb-guardians" role="listitem"><img src="assets/logos/logo-guardians.png" alt="Guardians"></span>
+            <span class="logo-badge lb-sm lb-capcity" role="listitem"><img src="assets/logos/logo-capcity.png" alt="Cap City"></span>
+            <span class="logo-badge lb-sm lb-memphisblues" role="listitem"><img src="assets/logos/logo-memphisblues.png" alt="Memphis Blues"></span>
+          </div>
+        </div>
         <!-- ⚠️ NO SKIP DOOR HERE (Anthony, 2026-09-16: "skip the survey, watch the training is dumb,
              people need to take the survey"). It used to offer a way straight to the video. Everyone
              answers the four questions now, which is the whole reason the questions exist: they are what
