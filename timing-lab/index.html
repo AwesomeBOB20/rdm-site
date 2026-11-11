@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Timing Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#96318d; --blue:#06aeb9; --blue-darker:#047078; --orange:#d35400; --tan:#fff0d3;
+    --bg:#15161a; --card:#1f2126; --line:#34373f; --text:#f4f1ea; --muted:#a9a59c;
+    --good:#2e9d57; --early:#d35400; --late:#96318d; --miss:#c0392b; --extra:#b8860b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 Ubuntu,Arial,sans-serif;padding:16px;padding-bottom:48px}
+  main{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  h1{margin:4px 0 0;font-size:1.5rem}
+  h1 span{color:var(--blue)}
+  .sub{color:var(--muted);margin:0 0 4px;font-size:.92rem}
+  section{background:var(--card);border:2px solid #000;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  h2{margin:0;font-size:1.05rem;display:flex;gap:8px;align-items:center}
+  h2 .n{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--blue-darker);color:#fff;font-size:.85rem;border:2px solid #000}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  button{font:700 .95rem Ubuntu,Arial,sans-serif;color:#fff;background:var(--blue-darker);border:2px solid #000;border-radius:10px;padding:10px 14px;cursor:pointer;text-shadow:0 1px 1px rgba(0,0,0,.5)}
+  button.orange{background:var(--orange)} button.purple{background:var(--purple)}
+  button:disabled{opacity:.4;cursor:default}
+  select,input[type=number]{font:inherit;background:#101114;color:var(--text);border:2px solid var(--line);border-radius:10px;padding:8px}
+  input[type=number]{width:88px}
+  label{color:var(--muted);font-size:.9rem;display:flex;gap:6px;align-items:center}
+  .meter{height:10px;background:#101114;border-radius:6px;overflow:hidden;border:1px solid var(--line);flex:1;min-width:120px}
+  .meter i{display:block;height:100%;width:0;background:var(--blue);transition:width .05s linear}
+  .msg{font-size:.92rem;color:var(--muted)} .msg b{color:var(--text)}
+  .bad{color:#ff8a7a} .ok{color:#7fe0a0}
+  .score{font-size:2.2rem;font-weight:700}
+  .bars{display:flex;flex-direction:column;gap:6px}
+  .bar{display:flex;gap:4px;flex-wrap:wrap}
+  .note{min-width:52px;padding:6px 4px;border-radius:8px;border:2px solid #000;text-align:center;font-size:.8rem;font-weight:700;color:#fff}
+  .note small{display:block;font-weight:400;opacity:.9}
+  .note.on{background:var(--good)} .note.early{background:var(--early)} .note.late{background:var(--late)}
+  .note.missed{background:#3a3d45;color:#ff8a7a;border-style:dashed} .note.extra{background:var(--extra)}
+  .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;color:var(--muted)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:-1px}
+  pre{white-space:pre-wrap;font-size:.78rem;color:var(--muted);margin:0;max-height:180px;overflow:auto}
+  input[type=range]{flex:1;min-width:140px;accent-color:var(--blue)}
+  /* the sheet: black notation on white, like the tools */
+  .sheet{position:relative;background:#fff;border:2px solid #000;border-radius:14px;padding:6px 4px;min-height:120px;overflow:hidden}
+  .sheet svg{display:block}
+  .cursor{position:absolute;width:26px;margin-left:-13px;border-radius:6px;background:rgba(6,174,185,.28);pointer-events:none;display:none}
+  .mark{position:absolute;margin-left:-13px;width:26px;border-radius:6px;pointer-events:none;opacity:.34}
+  /* live: green = clean; red = dirty (the label says early or late); grey = unsure */
+  .mark.on{background:var(--good)} .mark.early,.mark.late,.mark.missed{background:#c0392b} .mark.unsure{background:#7a7f8a;opacity:.3}
+  .mlabel{position:absolute;transform:translateX(-50%);font:700 10px Ubuntu,Arial,sans-serif;color:#fff;border-radius:5px;padding:1px 3px;white-space:nowrap;pointer-events:none}
+  .mlabel.on{background:var(--good)} .mlabel.early,.mlabel.late,.mlabel.missed{background:#c0392b} .mlabel.unsure{background:#7a7f8a}
+</style>
+</head>
+<body>
+<main>
+  <div>
+    <h1>RDM <span>Timing Lab</span></h1>
+    <p class="sub">Prototype v12. Listens to you play and marks every note on time, early, late, missed or extra.</p>
+  </div>
+
+  <section id="s-mic">
+    <h2><span class="n">1</span> Microphone</h2>
+    <div class="row">
+      <button id="micBtn">Allow microphone</button>
+      <select id="micSel" hidden></select>
+      <div class="meter"><i id="meter"></i></div>
+    </div>
+    <p class="msg" id="micMsg">Quiet room. Put the phone or mic about an arm's length from the drum, or closer.</p>
+  </section>
+
+  <section id="s-cal">
+    <h2><span class="n">2</span> Calibrate</h2>
+    <div class="row">
+      <label><input type="radio" name="out" value="speaker" checked> Speaker</label>
+      <label><input type="radio" name="out" value="headphones"> Wired headphones</label>
+      <label><input type="radio" name="out" value="bluetooth"> Bluetooth</label>
+    </div>
+    <p class="msg" id="calHow">Turn the volume up. The page plays clicks and listens for them to measure this device's delay. Stay quiet for 6 seconds.</p>
+    <div class="row"><button id="calBtn" disabled>Calibrate</button></div>
+    <p class="msg" id="calMsg"></p>
+  </section>
+
+  <section id="s-play">
+    <h2><span class="n">3</span> Play along</h2>
+    <div class="row">
+      <label>Exercise <select id="ex"></select></label>
+      <label>Tempo <input type="number" id="bpm" value="90" min="40" max="240"></label>
+      <label>Bars <input type="number" id="bars" value="2" min="1" max="8"></label>
+    </div>
+    <div class="sheet" id="sheet"><div class="cursor" id="cursor"></div></div>
+    <div class="row">
+      <label><input type="radio" name="click" value="along" checked> Play along: the phone plays the click and the notes</label>
+      <label><input type="radio" name="click" value="countin"> Click for the count-in only</label>
+      <label><input type="radio" name="click" value="all"> Click the whole time</label>
+    </div>
+    <p class="msg" id="clickNote"></p>
+    <div class="row"><button id="hearBtn" class="purple" disabled>Hear it</button><button id="playBtn" class="orange" disabled>Start</button><span class="msg" id="playMsg"></span></div>
+  </section>
+
+  <section id="s-res" hidden>
+    <h2><span class="n">4</span> Results</h2>
+    <div class="row"><span class="score" id="score" style="font-size:1.6rem">-</span><span class="msg" id="scoreMsg"></span></div>
+    <div class="row"><label>Strictness</label><input type="range" id="strict" min="1" max="30" step="0.5" value="15"><b id="strictVal">15 ms</b></div>
+    <div class="legend"><span><i style="background:var(--good)"></i>Clean</span><span><i style="background:#c0392b"></i>Dirty: ◂ early, late ▸, or miss</span><span><i style="background:#7a7f8a"></i>? not sure (buried in the ring before it)</span></div>
+    <div class="bars" id="barsOut"></div>
+    <div class="row"><button id="dlBtn" class="purple">Download this take</button></div>
+  </section>
+
+  <section id="s-robot">
+    <h2><span class="n">5</span> Robot drummer (device test)</h2>
+    <p class="msg">The page plays 48 pad hits through the speaker, each pushed early or late by an amount only it knows, then checks what it measured. This tests the whole chain on this device. Calibrate with Speaker first.</p>
+    <div class="row"><button id="robotBtn" class="purple" disabled>Run robot test</button></div>
+    <p class="msg" id="robotMsg"></p>
+    <pre id="robotLog"></pre>
+  </section>
+
+  <section>
+    <h2>Device</h2>
+    <pre id="devInfo"></pre>
+  </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.3/build/cjs/vexflow.js"></script>
+<script src="mini-render.js?v=1"></script>
+<script src="detector.js?v=10"></script>
+<script src="app.js?v=12"></script>
+</body>
+</html>
