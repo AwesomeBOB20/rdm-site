@@ -11,7 +11,7 @@
   var $ = function (id) { return document.getElementById(id); };
   /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
      the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
-  var VERSION = 15;
+  var VERSION = 16;
   document.querySelectorAll(".sub").forEach(function (el) { el.textContent = el.textContent.replace(/Prototype v\d+/, "Prototype v" + VERSION); });
   var S = { ctx: null, stream: null, node: null, analyser: null, offset: null, accMs: null, calOut: null, take: null, pads: null };
 
@@ -436,6 +436,11 @@
       L.off = 0; L.selfTimed = false; L.lockMsg = "Listening to the phone. Stay quiet the first time through.";
       L.own = null; L.learnRep = 0; L.onsets = []; L.heardPk = []; L.margins = [];
       L.accs = S.pads.filter(function (p) { return !p.tap; }); L.taps = S.pads.filter(function (p) { return p.tap; });
+      /* THE PHONE IS REMEMBERED (2026-11-12, Anthony: "then I press stop and then I press start again then I start playing with it and
+         nothing happens"). Learned once, it is kept for this exercise, tempo and bars on this page, so a new Start judges from the
+         first note. "Listen to the phone again" (by the Start button) forgets it, for a changed volume. */
+      L.key = [built.ex.id, bpm, built.bars].join("|");
+      if (S.phone && S.phone.key === L.key) { L.own = S.phone.own; L.learnRep = -1; L.next = 0; L.knownAtStart = true; L.lockMsg = ""; }
     }
     // count-in: 4 beeps, the first one louder
     for (var k = 0; k < 4; k++) play(beep(), t0 + k * beat, (k === 0 ? 1 : 0.6) * (L.along ? ALONG_VOL : 1));
@@ -448,8 +453,11 @@
     };
     port.postMessage("start");
     $("playBtn").textContent = "Stop"; $("playBtn").className = "purple"; $("hearBtn").disabled = true;
-    $("playMsg").textContent = L.along ? "Count-in, then LISTEN once through (stay quiet). Play from the second time through. Press Stop when done."
+    if (L.along && L.knownAtStart) $("playMsg").innerHTML = "<b>I already know your phone at this tempo. Play from the first note after the count-in.</b> " +
+      '<button type="button" id="relearnBtn" class="link">Changed the volume? Listen to the phone again</button>';
+    else $("playMsg").textContent = L.along ? "Count-in, then LISTEN once through (stay quiet). Play from the second time through. Press Stop when done."
       : "Count-in: 4 beeps, then play the sheet over and over. Press Stop when done.";
+    if ($("relearnBtn")) $("relearnBtn").onclick = function () { S.phone = null; stopLive(); startLive(); };
     L.timer = setInterval(liveTick, 50);
     var run = ++cursorRun;
     (function tick() {
@@ -629,38 +637,12 @@
   function learnPhone(cur) {
     var sr = L.sr, n = L.built.times.length, r0 = L.learnRep, a = schedFrame(r0, 0), b = schedFrame(r0 + 1, 0);
     if (cur < b + 0.75 * sr) return;
-    var hits = L.onsets.filter(function (o) { return o.f >= a && o.f < b + 0.7 * sr; }), ds = [];
-    for (var i = 0; i < n; i++) hits.forEach(function (o) { var d = o.f - schedFrame(r0, i); if (d > 0 && d < 0.7 * sr) ds.push({ i: i, d: d }); });
-    ds.sort(function (x, y) { return x.d - y.d; });
-    var best = null, W = 0.003 * sr;
-    for (var p = 0; p < ds.length; p++) {
-      var seen = {}, m = 0;
-      for (var q = p; q < ds.length && ds[q].d - ds[p].d <= W; q++) if (!seen[ds[q].i]) { seen[ds[q].i] = 1; m++; }
-      if (!best || m > best.n) best = { n: m, d: ds[p].d + W / 2 };
-    }
-    /* no steady line of the phone's notes: with plenty of hits that is someone playing over it (his v14 take: he played every pass
-       and was told to turn the volume UP), with few it is the phone being too quiet */
-    if (!best || best.n < Math.max(3, Math.ceil(n * 0.5))) { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay(hits.length >= n ? HEARD_PLAYING : "I could not hear the phone's own notes. Turn the volume up a little. Listening again..."); return; }
-    var d = [], pk = [];
-    for (i = 0; i < n; i++) {
-      var want = schedFrame(r0, i) + best.d, near = null;
-      hits.forEach(function (o) { if (Math.abs(o.f - want) <= 0.004 * sr && (!near || o.pk > near.pk)) near = o; });
-      d.push(near ? near.f - schedFrame(r0, i) : best.d); pk.push(near ? near.pk : -200);
-    }
-    var heard = pk.filter(function (v) { return v > -199; }), floor = median(heard);
-    // someone playing in the listening pass: hits as loud as the phone's own that sit on none of its notes
-    var stray = hits.filter(function (o) {
-      if (o.f >= b + best.d - 0.004 * sr) return false;
-      for (var j = 0; j < n; j++) if (Math.abs(o.f - (schedFrame(r0, j) + d[j])) <= 0.004 * sr) return false;
-      return o.pk >= floor - 3;
-    }).length;
-    /* ...and a person playing right on top of the phone's notes. The phone's own notes land within 0.12 to 0.29 ms of their middle
-       for 3 notes in 4 (his two takes of 2026-11-12); nobody plays that steadily, so over 0.7 ms is someone playing. Not the median:
-       where the player is late the phone's own hit is the one found, so half the notes look exact even with someone playing. */
-    var dMid = median(d), res = d.filter(function (v, k) { return pk[k] > -199; }).map(function (v) { return Math.abs(v - dMid); }).sort(function (x, y) { return x - y; });
-    var spreadMs = (res.length ? res[Math.floor(res.length * 0.75)] : 0) / sr * 1000;
-    if (LOOP != null) { window.__tlLearnSpreadMs = +spreadMs.toFixed(2); (window.__tlLearnLog = window.__tlLearnLog || []).push({ rep: r0, spread: +spreadMs.toFixed(2), stray: stray, found: best.n }); }
-    if (stray > 1 || spreadMs > 0.7) { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay(HEARD_PLAYING); return; }
+    /* the rule is RDMOnsets.learnPass (detector.js), the same one dev/learn-takes.cjs holds to his real recordings */
+    var hits = L.onsets.filter(function (o) { return o.f >= a && o.f < b + 0.7 * sr; }), sched = [];
+    for (var i = 0; i < n; i++) sched.push(schedFrame(r0, i));
+    var lp = RDMOnsets.learnPass(hits, sched, b, sr), best = { n: lp.found, d: lp.delay }, d = lp.d, pk = lp.pk;
+    if (LOOP != null) { window.__tlLearnSpreadMs = +lp.spreadMs.toFixed(2); (window.__tlLearnLog = window.__tlLearnLog || []).push({ rep: r0, verdict: lp.verdict, spread: +lp.spreadMs.toFixed(2), stray: lp.strays, found: lp.found }); }
+    if (lp.verdict !== "phone") { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay(lp.verdict === "playing" ? HEARD_PLAYING : "I could not hear the phone's own notes. Turn the volume up a little. Listening again..."); return; }
     /* THE PHONE TOO LOUD FOR ITS OWN MIC (Anthony's take, 2026-11-12). The phone alone peaked at -0.5 dBFS: his hits clipped the
        mic, stood only 5 to 13 dB over the phone, and a third of them could be read. The half-volume take that read 40 of 40 had the
        phone alone at about -6 dBFS. So a phone over -3 dBFS in the quiet pass leaves no room above it for the player: say so now,
@@ -679,7 +661,7 @@
       lv.push(mx);
       t.push(env.base + crossBack(env, at, mx - 10) * env.hop + env.win - env.hop - schedFrame(r0, i));
     }
-    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; learnSay("Got the phone. Play now, and leave the volume where it is.");
+    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; S.phone = { key: L.key, own: L.own }; learnSay("Got the phone. Play now, and leave the volume where it is.");
   }
   function alongAdvice(rp) {
     var read = rp.notes.filter(function (v) { return v && v.found; }).length, m = median(L.margins);
@@ -734,7 +716,7 @@
   function testDrummer(b) {
     if (!S.pads || b < 0) return;
     var n = L.built.times.length, rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
-    if (L.along && rep === 0 && !TEST_DRUMMER_ALL) return;  // the pass where the phone plays alone (?drummerall: a player who does not wait)
+    if (L.along && rep === 0 && !L.knownAtStart && !TEST_DRUMMER_ALL) return;  // the pass where the phone plays alone (?drummerall: a player who does not wait)
     L.built.times.forEach(function (t, i) {
       if (t < inRep || t >= inRep + 1) return;
       var g = 0; for (var z = 0; z < 6; z++) g += Math.random(); g = (g - 3) * Math.sqrt(2);   // ~N(0,1)

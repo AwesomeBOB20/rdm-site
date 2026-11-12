@@ -421,5 +421,54 @@
     return { notes: notes, extras: extras };
   }
 
-  return { detect: detect, detectBands: detectBands, listen: listen, notchAll: notchAll, highpass: highpass, aicPick: aicPick, DEFAULTS: DEFAULTS, DEFAULTS2: DEFAULTS2 };
+  /* THE LISTENING PASS OF PLAY ALONG, as one rule both the page and the tests use (2026-11-12, after three tries on his phone went
+     wrong in three different ways). The phone plays the exercise alone; from what the mic heard in that pass, this finds the phone's
+     own notes and says whether the pass can be learned from.
+       hits:  every hit heard from the start of the pass to 0.7 s past its end, { f: frame, pk: dB }
+       sched: the frame each of the pass's n notes was scheduled at;  next: the frame the NEXT pass's first note was scheduled at
+     Returns { verdict: "phone" | "playing" | "quiet", d[], pk[], delay, found, strays, spreadMs }:
+       "quiet"   - no steady line of the phone's notes and few hits: the phone is too quiet to hear
+       "playing" - someone is playing over it (each rule below came from one of his takes)
+       "phone"   - learned: d[i] is where note i's own sound is heard, after its schedule */
+  function learnPass(hits, sched, next, sr) {
+    var n = sched.length, ds = [], i, p, q;
+    for (i = 0; i < n; i++) hits.forEach(function (o) { var d = o.f - sched[i]; if (d > 0 && d < 0.7 * sr) ds.push({ i: i, d: d }); });
+    ds.sort(function (x, y) { return x.d - y.d; });
+    var best = null, W = 0.003 * sr;
+    for (p = 0; p < ds.length; p++) {
+      var seen = {}, m = 0;
+      for (q = p; q < ds.length && ds[q].d - ds[p].d <= W; q++) if (!seen[ds[q].i]) { seen[ds[q].i] = 1; m++; }
+      if (!best || m > best.n) best = { n: m, d: ds[p].d + W / 2 };
+    }
+    var out = { verdict: "quiet", d: [], pk: [], delay: best ? best.d : null, found: best ? best.n : 0, strays: 0, spreadMs: 0 };
+    /* no steady line of the phone's notes: with plenty of hits that is someone playing over it (his v14 take: he played every pass
+       and was told to turn the volume UP), with few it is the phone being too quiet */
+    if (!best || best.n < Math.max(3, Math.ceil(n * 0.5))) { out.verdict = hits.length >= n ? "playing" : "quiet"; return out; }
+    for (i = 0; i < n; i++) {
+      var want = sched[i] + best.d, near = null;
+      hits.forEach(function (o) { if (Math.abs(o.f - want) <= 0.004 * sr && (!near || o.pk > near.pk)) near = o; });
+      out.d.push(near ? near.f - sched[i] : best.d); out.pk.push(near ? near.pk : -200);
+    }
+    /* STRAY HITS: off every one of the phone's notes AND louder than the loudest of them by 3 dB, at least 3 of them, and none from
+       within 20 ms of the next pass's first note. His v15 take, quiet, was called "playing" by the old rule (2 hits about as loud as
+       the phone's taps): a room echo 48 ms after a tap (-20 dB, under its accents' -19), one of the phone's own notes heard 5 ms off
+       its place, and his first hit of the NEXT pass, 8 ms early. A player loud enough to be judged at all is 10 dB over the phone. */
+    var loudest = -200; out.pk.forEach(function (v) { if (v > loudest) loudest = v; });
+    out.strays = hits.filter(function (o) {
+      if (o.f >= next + best.d - 0.02 * sr) return false;
+      for (var j = 0; j < n; j++) if (Math.abs(o.f - (sched[j] + out.d[j])) <= 0.006 * sr) return false;
+      return o.pk >= loudest + 3;
+    }).length;
+    /* ...and a person playing right on top of the phone's notes. The phone's own notes land within 0.08 to 0.29 ms of their middle
+       for 3 notes in 4 (his takes of 2026-11-12); nobody plays that steadily, so over 0.7 ms is someone playing. Not the median:
+       where the player is late the phone's own hit is the one found, so half the notes look exact even with someone playing. */
+    var heard = [], dMid; for (i = 0; i < n; i++) if (out.pk[i] > -199) heard.push(out.d[i]);
+    heard.sort(function (x, y) { return x - y; }); dMid = heard[heard.length >> 1];
+    var res = heard.map(function (v) { return Math.abs(v - dMid); }).sort(function (x, y) { return x - y; });
+    out.spreadMs = (res.length ? res[Math.floor(res.length * 0.75)] : 0) / sr * 1000;
+    out.verdict = out.strays >= 3 || out.spreadMs > 0.7 ? "playing" : "phone";
+    return out;
+  }
+
+  return { learnPass: learnPass, detect: detect, detectBands: detectBands, listen: listen, notchAll: notchAll, highpass: highpass, aicPick: aicPick, DEFAULTS: DEFAULTS, DEFAULTS2: DEFAULTS2 };
 });
