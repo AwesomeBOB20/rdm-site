@@ -11,7 +11,17 @@
   var $ = function (id) { return document.getElementById(id); };
   /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
      the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
-  var VERSION = 16;
+  var VERSION = 18;
+  /* the Start button as the app's play button: a play icon, and a stop square while running (2026-11-12, "make it feel like the
+     actual app") */
+  var ICON_PLAY = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>';
+  var ICON_STOP = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><rect x="5.5" y="5.5" width="13" height="13" rx="2" fill="currentColor"/></svg>';
+  function setPlayBtn(running) {
+    var b = document.getElementById("playBtn");
+    b.className = "tb " + (running ? "tb-orange" : "tb-purple") + " tb-play";
+    b.innerHTML = (running ? ICON_STOP : ICON_PLAY) + "<span>" + (running ? "Stop" : "Start") + "</span>";
+    b.setAttribute("aria-label", running ? "Stop" : "Start");
+  }
   document.querySelectorAll(".sub").forEach(function (el) { el.textContent = el.textContent.replace(/Prototype v\d+/, "Prototype v" + VERSION); });
   var S = { ctx: null, stream: null, node: null, analyser: null, offset: null, accMs: null, calOut: null, take: null, pads: null };
 
@@ -262,7 +272,7 @@
   ];
   function durOf(len, tup) { return tup ? "8" : len === 1 ? "q" : len === 0.5 ? "8" : "16"; }
   function buildExercise(ex, bars) {
-    var measures = [], times = [], accents = [], stick = 0;
+    var measures = [], times = [], accents = [], evOf = [], stick = 0;
     for (var m = 0; m < bars; m++) {
       var events = [], beams = [], tuplets = [];
       ex.beats.forEach(function (key, bi) {
@@ -273,7 +283,7 @@
           events.push({ rest: false, beats: len, dur: durOf(len, b.tup), dots: 0, step: "c", oct: 5, head: "normal", heads: null,
             accent: acc, marcato: false, tenuto: false, staccato: false, roll: 0, buzz: false, flam: false,
             graces: null, stick1: (stick++ % 2) ? "L" : "R", stick2: null, dynamic: null });
-          times.push(at); accents.push(acc); at += len;
+          times.push(at); accents.push(acc); evOf.push([m, events.length - 1]); at += len;
         });
         if (idx.length > 1) beams.push(idx);
         if (b.tup) tuplets.push({ idx: idx, num: 3, inSpaceOf: 2, bracket: false, show: true });
@@ -281,22 +291,39 @@
       measures.push({ timeSig: m === 0 ? [4, 4] : null, repeatStart: false, repeatEndTimes: 0, events: events,
                       beams: beams, tuplets: tuplets, wedges: [], extraVoices: [] });
     }
-    return { ex: ex, bars: bars, rdm: { measures: measures }, times: times, accents: accents };
+    return { ex: ex, bars: bars, repBeats: bars * 4, rdm: { measures: measures }, times: times, accents: accents, evOf: evOf };
+  }
+  /* AN EXERCISE FROM THE PLAYALONGS CATALOG (catalog-exercises.js, made by dev/catalog-to-lab.cjs; Anthony, 2026-11-12: "Put another
+     exercise inside of this website ... Like 16th One Note 2 Note 3 Note or triplet 7s or gallop or 7/8 paradiddle"). Its own bars,
+     meters (7/8 too), rests and tempo; a pass is the whole exercise with its repeats written out, and a diddle is two sounds on one
+     written note. */
+  var CATALOG = window.TL_CATALOG || [];
+  function catalogOf(id) { return CATALOG.filter(function (c) { return c.id === id; })[0] || null; }
+  function buildCatalog(cx) {
+    var measures = cx.measures.map(function (m) {
+      return { timeSig: m.timeSig, repeatStart: false, repeatEndTimes: 0, beams: m.beams, tuplets: m.tuplets, wedges: [], extraVoices: [],
+        events: m.events.map(function (e) { return { rest: e.rest, beats: e.beats, dur: e.dur, dots: e.dots || 0, step: e.step || "c", oct: e.oct || 5, head: e.head || "normal", heads: null,
+          accent: !!e.accent, marcato: false, tenuto: false, staccato: false, roll: e.roll || 0, buzz: false, flam: false, graces: null, stick1: e.stick1 || null, stick2: null, dynamic: null }; }) };
+    });
+    return { ex: { id: cx.id, name: cx.name }, bars: measures.length, repBeats: cx.beats, rdm: { measures: measures },
+      times: cx.sounds.map(function (q) { return q.t; }), accents: cx.sounds.map(function (q) { return q.acc; }), evOf: cx.sounds.map(function (q) { return q.ev; }) };
   }
   var SHEET = null, CURSOR = null;
   // ONE cursor element, re-attached after every draw: the renderer clears the box it draws into
   function cursorEl() { if (!CURSOR) CURSOR = $("cursor"); return CURSOR; }
   function drawSheet() {
-    var ex = EXERCISES.filter(function (x) { return x.id === $("ex").value; })[0] || EXERCISES[0];
+    var cx = catalogOf($("ex").value), ex = EXERCISES.filter(function (x) { return x.id === $("ex").value; })[0] || EXERCISES[0];
     var bars = Math.max(1, Math.min(8, +$("bars").value || 2)), host = $("sheet");
     var inner = $("sheetInner");
     if (!inner) { inner = document.createElement("div"); inner.id = "sheetInner"; inner.style.position = "relative"; host.appendChild(inner); }
-    var built = buildExercise(ex, bars);
+    var built = cx ? buildCatalog(cx) : buildExercise(ex, bars);
+    if ($("exTitle")) $("exTitle").textContent = cx ? cx.name : ex.name;
     built.anchors = [];
     SHEET = built;
     if (!window.RDMRender) { inner.textContent = "Notation could not load (offline?)."; return; }
     var out = window.RDMRender.render(built.rdm, inner, { width: Math.max(280, inner.clientWidth || host.clientWidth - 8) });
-    built.rdm.measures.forEach(function (mm, mi) { mm.events.forEach(function (_, ei) { built.anchors.push(out.notes[mi] && out.notes[mi][ei]); }); });
+    built.anchors = built.evOf.map(function (q) { return out.notes[q[0]] && out.notes[q[0]][q[1]]; });   // each sound on its written note
+    if (LOOP != null) window.__tlSheet = { sounds: built.times.length, anchored: built.anchors.filter(Boolean).length, repBeats: built.repBeats, bars: built.bars };
     var cur = cursorEl(); inner.appendChild(cur); cur.style.display = "none";
   }
   function clearMarks() { document.querySelectorAll("#sheetInner .mark, #sheetInner .mlabel").forEach(function (el) { el.remove(); }); }
@@ -310,7 +337,7 @@
       var now = S.ctx.currentTime - (S.ctx.outputLatency || 0), pos = (now - P) / beat, i = -1;
       for (var k = 0; k < built.times.length; k++) if (built.times[k] <= pos + 1e-6) i = k;
       var a = i >= 0 ? built.anchors[i] : null;
-      if (a && pos < built.bars * 4) {
+      if (a && pos < built.repBeats) {
         cur.style.display = "block"; cur.style.left = a.x + "px"; cur.style.top = a.cTop + "px"; cur.style.height = Math.max(20, a.cBot - a.cTop) + "px";
       } else cur.style.display = "none";
       if (S.ctx.currentTime < endT) requestAnimationFrame(tick); else cur.style.display = "none";
@@ -321,7 +348,7 @@
   async function hear() {
     $("hearBtn").disabled = true; drawSheet(); clearMarks();
     var P0 = await pads(), taps = P0.filter(function (p) { return p.tap; }), accs = P0.filter(function (p) { return !p.tap; });
-    var built = SHEET, beat = 60 / (+$("bpm").value || 90), t0 = S.ctx.currentTime + 0.3, P = t0 + 4 * beat, end = P + built.bars * 4 * beat;
+    var built = SHEET, beat = 60 / (+$("bpm").value || 90), t0 = S.ctx.currentTime + 0.3, P = t0 + 4 * beat, end = P + built.repBeats * beat;
     for (var k = 0; k < 4; k++) play(beep(), t0 + k * beat, k === 0 ? 1 : 0.6);
     built.times.forEach(function (bt, i) {
       var pool = built.accents[i] ? accs : taps, pad = pool[i % pool.length];
@@ -331,7 +358,7 @@
     (function tick() {
       if (run !== cursorRun) return;
       var pos = (S.ctx.currentTime - (S.ctx.outputLatency || 0) - P) / beat;
-      placeCursor(built, pos >= 0 && pos < built.bars * 4 ? pos : -1);
+      placeCursor(built, pos >= 0 && pos < built.repBeats ? pos : -1);
       if (S.ctx.currentTime < end + 0.2) requestAnimationFrame(tick); else cur.style.display = "none";
     })();
     setTimeout(function () { $("hearBtn").disabled = false; }, (end - S.ctx.currentTime + 0.3) * 1000);
@@ -371,9 +398,15 @@
     var inner = $("sheetInner"), a = L && L.built.anchors[i], vd = verdict(v);
     if (!inner || !a || !vd) return;
     document.querySelectorAll('#sheetInner [data-n="' + i + '"]').forEach(function (el) { el.remove(); });
+    /* as wide as the room this note has (2026-11-12: on the catalog's 16ths the 26px marks ran into one green wall and the numbers
+       overlapped); where the notes are tight only an early or late note keeps its number */
+    var gap = Infinity, an = L.built.anchors;
+    [i - 1, i + 1].forEach(function (j) { var o = an[j]; if (o && o !== a && o.cTop === a.cTop) gap = Math.min(gap, Math.abs(o.x - a.x)); });
+    var wpx = Math.max(10, Math.min(26, gap - 3));
     var mk = document.createElement("div"); mk.className = "mark " + vd.cls; mk.setAttribute("data-n", i);
-    mk.style.left = a.x + "px"; mk.style.top = a.cTop + "px"; mk.style.height = Math.max(20, a.cBot - a.cTop) + "px"; inner.appendChild(mk);
-    var lb = document.createElement("div"); lb.className = "mlabel " + vd.cls; lb.textContent = vd.txt; lb.setAttribute("data-n", i);
+    mk.style.left = a.x + "px"; mk.style.width = wpx + "px"; mk.style.marginLeft = (-wpx / 2) + "px";
+    mk.style.top = a.cTop + "px"; mk.style.height = Math.max(20, a.cBot - a.cTop) + "px"; inner.appendChild(mk);
+    var lb = document.createElement("div"); lb.className = "mlabel " + vd.cls + (gap < 34 && vd.cls === "on" ? " quiet" : ""); lb.textContent = vd.txt; lb.setAttribute("data-n", i);
     lb.style.left = a.x + "px"; lb.style.top = (a.cBot + 2) + "px"; inner.appendChild(lb);
   }
   function repaintAll() {
@@ -427,7 +460,7 @@
     drawSheet(); clearMarks();
     var ctx = S.ctx, sr = ctx.sampleRate, bpm = +$("bpm").value || 90, beat = 60 / bpm, built = SHEET;
     var t0 = ctx.currentTime + 0.5;
-    L = { built: built, sr: sr, bpm: bpm, beat: beat, P: t0 + 4 * beat, repBeats: built.bars * 4,
+    L = { built: built, sr: sr, bpm: bpm, beat: beat, P: t0 + 4 * beat, repBeats: built.repBeats,
           clickAll: document.querySelector('input[name="click"]:checked').value === "all" && !onSpeaker(),
           along: document.querySelector('input[name="click"]:checked').value === "along",
           off: S.offset, selfTimed: S.offset == null, lockMsg: S.offset == null ? "Locking on to your beat..." : "",
@@ -452,7 +485,7 @@
       for (var c = L.chunks.length - 1; c >= 0; c--) { total += L.chunks[c].data.length; if (total > keep) { L.chunks.splice(0, c); break; } }
     };
     port.postMessage("start");
-    $("playBtn").textContent = "Stop"; $("playBtn").className = "purple"; $("hearBtn").disabled = true;
+    setPlayBtn(true); $("hearBtn").disabled = true;
     if (L.along && L.knownAtStart) $("playMsg").innerHTML = "<b>I already know your phone at this tempo. Play from the first note after the count-in.</b> " +
       '<button type="button" id="relearnBtn" class="link">Changed the volume? Listen to the phone again</button>';
     else $("playMsg").textContent = L.along ? "Count-in, then LISTEN once through (stay quiet). Play from the second time through. Press Stop when done."
@@ -473,7 +506,7 @@
     if (!L) return;
     L.running = false; clearInterval(L.timer); ++cursorRun; cursorEl().style.display = "none";
     S.node.port.postMessage("stop");
-    $("playBtn").textContent = "Start"; $("playBtn").className = "orange"; $("hearBtn").disabled = false; $("playMsg").textContent = "";
+    setPlayBtn(false); $("hearBtn").disabled = false; $("playMsg").textContent = "";
     // a download of the whole session (last 5 minutes), with every note that was judged
     var f0 = L.chunks.length ? L.chunks[0].frame : 0, x = segment(f0, L.lastFrame), sched = [];
     for (var k = 0; k < L.next; k++) { var nk = noteAt(k); sched.push(schedFrame(nk.r, nk.i) / L.sr); }
@@ -556,7 +589,7 @@
      at half volume he sat 11 to 16 dB over it and 40 of 40 were, with 0 of 24 read in the bars he sat out. The click's 2 kHz beep
      is filtered out first (NOTCH), which works once the speaker is not being driven flat out. */
   var ALONG_VOL = (function () { var m = /[?&]alongvol=([\d.]+)/.exec(location.search); return m ? +m[1] : 1; })();   // TEST: the phone's own playing, scaled
-  var OVER_DB = 10, SURE_DB = 16, TOO_LOUD_DBFS = -3;
+  var OVER_DB = 10, SURE_DB = 16, TOO_LOUD_DBFS = -3, RISE_DB = 6;
   function alongNotes(b) {   // the exercise itself, on pad sounds, exactly on the grid
     var rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
     L.built.times.forEach(function (t, i) {
@@ -596,9 +629,17 @@
          build read such a note up to 6.4 ms wrong. So: the level around the note, the click filtered out; the player is there from
          the first moment it stands OVER_DB over the phone's own note at this place, and starts where it first left the phone's
          level behind (4 dB over it). The phone's own place was read the same way in the listening pass, so the two times compare. */
-      var env = envAround(place - w, place + w + 0.012 * sr), thr = L.own.lv[q.i] + OVER_DB, hitF = -1;
-      for (var f = 0; f < env.E.length; f++) if (env.E[f] >= thr) { hitF = f; break; }
-      var v, tHit = hitF < 0 ? null : env.base + crossBack(env, hitF, L.own.lv[q.i] + 4) * env.hop + env.win - env.hop;
+      /* A NEW HIT, NOT THE LAST ONE STILL RINGING (2026-11-12, the catalog exercises: on 16ths and diddles the previous note's tail
+         was still 10 dB over the phone when this note's window opened, and was read as this note, up to 38 ms wrong). The hit is
+         where the level JUMPS: over the bar, and RISE_DB over the quietest of the 2 ms before it. Its start is then read back to
+         where it left that quiet behind, never into the tail before. A hit that never stands clear of the tail is "?", not a guess. */
+      var lead = Math.round(0.004 * sr), env = envAround(place - w - lead, place + w + 0.012 * sr), thr = L.own.lv[q.i] + OVER_DB, hitF = -1, s0 = Math.round(lead / env.hop), back = 6, low = 0;
+      for (var f = s0; f < env.E.length; f++) {
+        if (env.E[f] < thr) continue;
+        low = Infinity; for (var g = Math.max(0, f - back); g < f; g++) if (env.E[g] < low) low = env.E[g];
+        if (env.E[f] - low >= RISE_DB) { hitF = f; break; }
+      }
+      var v, tHit = hitF < 0 ? null : env.base + crossBack(env, hitF, Math.max(L.own.lv[q.i] + 4, low + 3)) * env.hop + env.win - env.hop;
       if (tHit != null && Math.abs(tHit - place) <= w) {
         var lvl = -200; for (f = hitF; f < env.E.length && (f - hitF) * env.hop < 0.008 * sr; f++) lvl = Math.max(lvl, env.E[f]);
         v = { found: true, errMs: (tHit - place) / sr * 1000, how: "over the phone" };
@@ -621,8 +662,10 @@
     if (mh2 != null) L.onsets.forEach(function (o) {
       if (o.used || o.f > settled || o.f < schedFrame(L.learnRep + 1, 0) || o.pk < mh2 - 10) return;
       o.used = true;
-      var k = Math.max(0, Math.round(((o.f - L.own.dMed) / sr - L.P) / L.beat * (n / L.repBeats))), r = Math.floor(k / n);
-      for (var dk = -1; dk <= 1; dk++) { var qq = noteAt(Math.max(0, k + dk)); if (Math.abs(o.f - (schedFrame(qq.r, qq.i) + L.own.d[qq.i])) < 0.006 * sr) return; }   // the phone's own note
+      /* which pass, then the nearest of its notes by time (not by an even spread of notes over the pass: the catalog ones have
+         rests, gallops and diddles), and the notes either side of that pass's edges */
+      var r = Math.max(0, Math.floor(((o.f - L.own.dMed) / sr - L.P) / (L.repBeats * L.beat)));
+      for (var rr = Math.max(0, r - 1); rr <= r + 1; rr++) for (var ii = 0; ii < n; ii++) if (Math.abs(o.f - (schedFrame(rr, ii) + L.own.d[ii])) < 0.006 * sr) return;   // the phone's own note
       if (!L.reps[r]) L.reps[r] = { notes: new Array(n), extras: 0, done: false };
       L.reps[r].extras++; done = true;
     });
@@ -790,10 +833,22 @@
   };
   $("hearBtn").onclick = hear;
   EXERCISES.forEach(function (x) { var o = document.createElement("option"); o.value = x.id; o.textContent = x.name; $("ex").appendChild(o); });
+  if (CATALOG.length) {
+    var grp = document.createElement("optgroup"); grp.label = "From Playalongs";
+    CATALOG.forEach(function (c) { var o = document.createElement("option"); o.value = c.id; o.textContent = c.name; grp.appendChild(o); });
+    $("ex").appendChild(grp);
+  }
   $("ex").value = "e";
-  $("ex").onchange = function () { drawSheet(); clearMarks(); };
+  $("ex").onchange = function () {
+    var cx = catalogOf($("ex").value);
+    $("bars").disabled = !!cx;
+    if (cx) { $("bpm").value = cx.tempo; $("bars").value = cx.measures.length; }   // its own length, shown, not changeable
+    drawSheet(); clearMarks();
+  };
   $("bars").onchange = function () { drawSheet(); clearMarks(); };
-  window.addEventListener("resize", function () { if (!S.take) drawSheet(); });
+  /* never while it is running: phone Chrome resizes the page each time its address bar hides on a scroll, and a redraw wipes every
+     mark on the notes (2026-11-12) */
+  window.addEventListener("resize", function () { if (!S.take && !(L && L.running)) drawSheet(); });
   drawSheet();
   $("robotBtn").onclick = robot;
   /* NO CLICK WHILE YOU PLAY ON A SPEAKER (a real phone, 2026-11-11, Anthony's S22: "downloaded, its off"). With the click on the
