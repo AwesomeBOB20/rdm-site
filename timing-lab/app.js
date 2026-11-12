@@ -11,7 +11,7 @@
   var $ = function (id) { return document.getElementById(id); };
   /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
      the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
-  var VERSION = 18;
+  var VERSION = 19;
   /* the Start button as the app's play button: a play icon, and a stop square while running (2026-11-12, "make it feel like the
      actual app") */
   var ICON_PLAY = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>';
@@ -291,7 +291,7 @@
       measures.push({ timeSig: m === 0 ? [4, 4] : null, repeatStart: false, repeatEndTimes: 0, events: events,
                       beams: beams, tuplets: tuplets, wedges: [], extraVoices: [] });
     }
-    return { ex: ex, bars: bars, repBeats: bars * 4, rdm: { measures: measures }, times: times, accents: accents, evOf: evOf };
+    return { ex: ex, bars: bars, repBeats: bars * 4, rdm: { measures: measures }, times: times, accents: accents, evOf: evOf, kinds: accents.map(function (a) { return a ? "acc" : "tap"; }) };
   }
   /* AN EXERCISE FROM THE PLAYALONGS CATALOG (catalog-exercises.js, made by dev/catalog-to-lab.cjs; Anthony, 2026-11-12: "Put another
      exercise inside of this website ... Like 16th One Note 2 Note 3 Note or triplet 7s or gallop or 7/8 paradiddle"). Its own bars,
@@ -306,6 +306,7 @@
           accent: !!e.accent, marcato: false, tenuto: false, staccato: false, roll: e.roll || 0, buzz: false, flam: false, graces: null, stick1: e.stick1 || null, stick2: null, dynamic: null }; }) };
     });
     return { ex: { id: cx.id, name: cx.name }, bars: measures.length, repBeats: cx.beats, rdm: { measures: measures },
+      kinds: cx.sounds.map(function (q, k) { var p = cx.sounds[k - 1]; return q.acc ? "acc" : p && p.ev[0] === q.ev[0] && p.ev[1] === q.ev[1] ? "dd" : "tap"; }),   // dd: a diddle's second stroke
       times: cx.sounds.map(function (q) { return q.t; }), accents: cx.sounds.map(function (q) { return q.acc; }), evOf: cx.sounds.map(function (q) { return q.ev; }) };
   }
   var SHEET = null, CURSOR = null;
@@ -391,8 +392,9 @@
     if (!v) return null;
     if (!v.found) return v.busy ? { cls: "unsure", txt: "?" } : { cls: "missed", txt: "miss" };
     var e = Math.abs(v.errMs) < 0.05 ? 0 : v.errMs;
-    if (Math.abs(e) <= strictMs()) return { cls: "on", txt: (e >= 0 ? "+" : "") + e.toFixed(1) };
-    return e < 0 ? { cls: "early", txt: "\u25C2" + Math.abs(e).toFixed(0) } : { cls: "late", txt: Math.abs(e).toFixed(0) + "\u25B8" };
+    /* minus = early, plus = late, in ms (Anthony, 2026-11-12: "-12 / +12"; an "L" for late would sit under the sticking's L) */
+    if (Math.abs(e) <= strictMs()) return { cls: "on", txt: (e < 0 ? "\u2212" : "+") + Math.abs(e).toFixed(1) };
+    return e < 0 ? { cls: "early", txt: "\u2212" + Math.abs(e).toFixed(0) } : { cls: "late", txt: "+" + Math.abs(e).toFixed(0) };
   }
   function paintNote(i, v) {
     var inner = $("sheetInner"), a = L && L.built.anchors[i], vd = verdict(v);
@@ -403,7 +405,7 @@
     var gap = Infinity, an = L.built.anchors;
     [i - 1, i + 1].forEach(function (j) { var o = an[j]; if (o && o !== a && o.cTop === a.cTop) gap = Math.min(gap, Math.abs(o.x - a.x)); });
     var wpx = Math.max(10, Math.min(26, gap - 3));
-    var mk = document.createElement("div"); mk.className = "mark " + vd.cls; mk.setAttribute("data-n", i);
+    var mk = document.createElement("div"); mk.className = "mark " + vd.cls + (v.found ? " v-" + (v.loud > 0 ? "loud" : v.loud < 0 ? "quiet" : "ok") : ""); mk.setAttribute("data-n", i);
     mk.style.left = a.x + "px"; mk.style.width = wpx + "px"; mk.style.marginLeft = (-wpx / 2) + "px";
     mk.style.top = a.cTop + "px"; mk.style.height = Math.max(20, a.cBot - a.cTop) + "px"; inner.appendChild(mk);
     var lb = document.createElement("div"); lb.className = "mlabel " + vd.cls + (gap < 34 && vd.cls === "on" ? " quiet" : ""); lb.textContent = vd.txt; lb.setAttribute("data-n", i);
@@ -467,7 +469,7 @@
           chunks: [], lastFrame: 0, next: 0, schedUntil: t0, reps: [], last: [], extrasSeen: [], hits: [], running: true, truth: {} };
     if (L.along) {   // no calibration: the pass where the phone plays alone is the calibration (alongTick)
       L.off = 0; L.selfTimed = false; L.lockMsg = "Listening to the phone. Stay quiet the first time through.";
-      L.own = null; L.learnRep = 0; L.onsets = []; L.heardPk = []; L.margins = [];
+      L.own = null; L.learnRep = 0; L.onsets = []; L.heardPk = []; L.margins = []; L.kindLv = {};
       L.accs = S.pads.filter(function (p) { return !p.tap; }); L.taps = S.pads.filter(function (p) { return p.tap; });
       /* THE PHONE IS REMEMBERED (2026-11-12, Anthony: "then I press stop and then I press start again then I start playing with it and
          nothing happens"). Learned once, it is kept for this exercise, tempo and bars on this page, so a new Start judges from the
@@ -589,7 +591,7 @@
      at half volume he sat 11 to 16 dB over it and 40 of 40 were, with 0 of 24 read in the bars he sat out. The click's 2 kHz beep
      is filtered out first (NOTCH), which works once the speaker is not being driven flat out. */
   var ALONG_VOL = (function () { var m = /[?&]alongvol=([\d.]+)/.exec(location.search); return m ? +m[1] : 1; })();   // TEST: the phone's own playing, scaled
-  var OVER_DB = 10, SURE_DB = 16, TOO_LOUD_DBFS = -3, RISE_DB = 6;
+  var OVER_DB = 10, SURE_DB = 16, TOO_LOUD_DBFS = -3, RISE_DB = 6, LOUD_DB = 4;
   function alongNotes(b) {   // the exercise itself, on pad sounds, exactly on the grid
     var rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
     L.built.times.forEach(function (t, i) {
@@ -642,7 +644,14 @@
       var v, tHit = hitF < 0 ? null : env.base + crossBack(env, hitF, Math.max(L.own.lv[q.i] + 4, low + 3)) * env.hop + env.win - env.hop;
       if (tHit != null && Math.abs(tHit - place) <= w) {
         var lvl = -200; for (f = hitF; f < env.E.length && (f - hitF) * env.hop < 0.008 * sr; f++) lvl = Math.max(lvl, env.E[f]);
-        v = { found: true, errMs: (tHit - place) / sr * 1000, how: "over the phone" };
+        v = { found: true, errMs: (tHit - place) / sr * 1000, how: "over the phone", lvl: lvl, loud: 0 };
+        /* TOO LOUD OR TOO QUIET (Anthony, 2026-11-12: "use a color for too loud or too quiet", then "Red loud, blue quiet"): against
+           the player's own recent notes of the same kind (taps with taps, accents with accents, a diddle's second stroke with
+           second strokes), more than LOUD_DB off. Nothing is said until 4 of that kind have been heard. */
+        var kind = (L.built.kinds && L.built.kinds[q.i]) || "tap", kl = L.kindLv[kind] || (L.kindLv[kind] = []);
+        if (kl.length >= 4) { var ref = median(kl); v.loud = lvl - ref > LOUD_DB ? 1 : lvl - ref < -LOUD_DB ? -1 : 0; }
+        kl.push(lvl); if (kl.length > 40) kl.shift();
+        if (TEST_DRUMMER != null) window.__tlLoud[q.r + ":" + q.i] = v.loud;
         L.heardPk.push(lvl); L.margins.push(lvl - L.own.lv[q.i]);
         if (L.heardPk.length > 32) { L.heardPk.shift(); L.margins.shift(); }
         L.onsets.forEach(function (o) { if (Math.abs(o.f - tHit) < 0.008 * sr) o.used = true; });
@@ -755,7 +764,8 @@
 
   var TEST_DRUMMER = (function () { var m = /[?&]drummer=([\d.]+)/.exec(location.search); return LOOP != null && m ? +m[1] : null; })();
   var TEST_DRUMMER_ALL = TEST_DRUMMER != null && /[?&]drummerall=1/.test(location.search);
-  window.__tlTruth = {}; window.__tlSeen = {};
+  var TEST_LOUD = TEST_DRUMMER != null && /[?&]loudtest=1/.test(location.search);
+  window.__tlTruth = {}; window.__tlSeen = {}; window.__tlLoud = {}; window.__tlLoudTruth = {};
   function testDrummer(b) {
     if (!S.pads || b < 0) return;
     var n = L.built.times.length, rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
@@ -768,7 +778,8 @@
          plays an accent is only 4 dB over it, and is rightly left unread: 2 of 42 in the first run of dev/along-test.cjs.) */
       if (L.along) { var pool = L.built.accents[i] ? L.accs : L.taps; pad = pool[(rep * n + i) % pool.length]; }
       window.__tlTruth[rep + ":" + i] = dMs;
-      play(pad.buf, L.P + (rep * L.repBeats + t) * L.beat + dMs / 1000 - pad.start, pad.tap ? 0.3 : 0.9);
+      var gain = 1; if (TEST_LOUD) { var lt = i % 7 === 3 ? 1 : i % 11 === 5 ? -1 : 0; gain = lt > 0 ? 2 : lt < 0 ? 0.5 : 1; window.__tlLoudTruth[rep + ":" + i] = lt; }   // ?loudtest=1: +6 / -6 dB
+      play(pad.buf, L.P + (rep * L.repBeats + t) * L.beat + dMs / 1000 - pad.start, (pad.tap ? 0.3 : 0.9) * gain);
     });
   }
 
