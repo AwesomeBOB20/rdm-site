@@ -544,7 +544,7 @@
      at half volume he sat 11 to 16 dB over it and 40 of 40 were, with 0 of 24 read in the bars he sat out. The click's 2 kHz beep
      is filtered out first (NOTCH), which works once the speaker is not being driven flat out. */
   var ALONG_VOL = (function () { var m = /[?&]alongvol=([\d.]+)/.exec(location.search); return m ? +m[1] : 1; })();   // TEST: the phone's own playing, scaled
-  var OVER_DB = 10, SURE_DB = 16;
+  var OVER_DB = 10, SURE_DB = 16, TOO_LOUD_DBFS = -3;
   function alongNotes(b) {   // the exercise itself, on pad sounds, exactly on the grid
     var rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
     L.built.times.forEach(function (t, i) {
@@ -645,6 +645,15 @@
       return o.pk >= floor - 3;
     }).length;
     if (stray > 1) { L.learnRep++; L.next = (L.learnRep + 1) * n; L.lockMsg = "I heard playing. Stay quiet for one time through."; showReps(); return; }
+    /* THE PHONE TOO LOUD FOR ITS OWN MIC (Anthony's take, 2026-11-12). The phone alone peaked at -0.5 dBFS: his hits clipped the
+       mic, stood only 5 to 13 dB over the phone, and a third of them could be read. The half-volume take that read 40 of 40 had the
+       phone alone at about -6 dBFS. So a phone over -3 dBFS in the quiet pass leaves no room above it for the player: say so now,
+       before anyone plays, and listen again (turning it down changes how loud its notes are, so they are learned again). */
+    var raw = segment(a, b + best.d + 0.05 * sr), peak = 0;
+    for (i = 0; i < raw.length; i++) { var s = raw[i] < 0 ? -raw[i] : raw[i]; if (s > peak) peak = s; }
+    var peakDb = 20 * Math.log10(peak + 1e-9);
+    if (LOOP != null) window.__tlPhonePeak = +peakDb.toFixed(1);
+    if (peakDb > TOO_LOUD_DBFS) { L.learnRep++; L.next = (L.learnRep + 1) * n; L.lockMsg = "<b>Too loud.</b> The phone is filling its own mic, so I can't hear you over it. Turn the volume down 2 steps and stay quiet one more time through."; showReps(); return; }
     /* each of its own notes, read off the level: how loud it gets (lv) and where it starts (t: the first moment it is within 10 dB
        of that, the same kind of mark the player's start is read from). A note the detector never listed is still measured here. */
     var lv = [], t = [];
@@ -654,7 +663,7 @@
       lv.push(mx);
       t.push(env.base + crossBack(env, at, mx - 10) * env.hop + env.win - env.hop - schedFrame(r0, i));
     }
-    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d }; L.next = (L.learnRep + 1) * n; L.lockMsg = "Got the phone. Play now."; showReps();
+    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; L.lockMsg = "Got the phone. Play now."; showReps();
   }
   function alongAdvice(rp) {
     var read = rp.notes.filter(function (v) { return v && v.found; }).length, m = median(L.margins);
