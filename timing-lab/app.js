@@ -9,6 +9,10 @@
 (function () {
   "use strict";
   var $ = function (id) { return document.getElementById(id); };
+  /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
+     the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
+  var VERSION = 14;
+  document.querySelectorAll(".sub").forEach(function (el) { el.textContent = el.textContent.replace(/Prototype v\d+/, "Prototype v" + VERSION); });
   var S = { ctx: null, stream: null, node: null, analyser: null, offset: null, accMs: null, calOut: null, take: null, pads: null };
 
   /* ---------- microphone ---------- */
@@ -465,7 +469,7 @@
     // a download of the whole session (last 5 minutes), with every note that was judged
     var f0 = L.chunks.length ? L.chunks[0].frame : 0, x = segment(f0, L.lastFrame), sched = [];
     for (var k = 0; k < L.next; k++) { var nk = noteAt(k); sched.push(schedFrame(nk.r, nk.i) / L.sr); }
-    S.take = { kind: L.along ? "along" : "live", along: L.along ? { own: L.own, learnRep: L.learnRep, vol: ALONG_VOL } : undefined,
+    S.take = { version: VERSION, kind: L.along ? "along" : "live", along: L.along ? { own: L.own, learnRep: L.learnRep, vol: ALONG_VOL } : undefined,
                r: { x: x, frame0: f0, gaps: 0 }, sr: L.sr, sched: sched, offset: L.off, bpm: L.bpm, bars: L.built.bars, exercise: L.built.ex.id,
                plan: L.reps.map(function (r) { return { on: r.on, clean: r.clean, extras: r.extras }; }) };
   }
@@ -663,7 +667,7 @@
       lv.push(mx);
       t.push(env.base + crossBack(env, at, mx - 10) * env.hop + env.win - env.hop - schedFrame(r0, i));
     }
-    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; L.lockMsg = "Got the phone. Play now."; showReps();
+    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; L.lockMsg = "Got the phone. Play now, and leave the volume where it is."; showReps();
   }
   function alongAdvice(rp) {
     var read = rp.notes.filter(function (v) { return v && v.found; }).length, m = median(L.margins);
@@ -774,7 +778,7 @@
     var tk = S.take; if (!tk) return;
     var stamp = new Date().toISOString().replace(/[:.]/g, "-"), meta = {
       kind: tk.kind, sampleRate: tk.sr, deviceDelayFrames: tk.offset, accMs: S.accMs, output: S.calOut,
-      expectedSeconds: expectedOf(tk).map(function (e) { return e.t; }), bpm: tk.bpm, exercise: tk.exercise, bars: tk.bars, plan: tk.plan, gaps: tk.r.gaps, along: tk.along,
+      version: tk.version, expectedSeconds: expectedOf(tk).map(function (e) { return e.t; }), bpm: tk.bpm, exercise: tk.exercise, bars: tk.bars, plan: tk.plan, gaps: tk.r.gaps, along: tk.along,
       device: $("devInfo").textContent
     };
     save(wav(tk.r.x, tk.sr), "timing-" + tk.kind + "-" + stamp + ".wav");
