@@ -11,7 +11,12 @@
   var $ = function (id) { return document.getElementById(id); };
   /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
      the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
-  var VERSION = 19;
+  var VERSION = 20;
+  /* VOLUME IS OFF FOR NOW (Anthony, 2026-11-12: "volume wouldn't be smart to do yet because that will need accent and tap
+     calibration. Keep it to rhythm now?"). It is still measured; ?volume=1 shows it (red too loud, blue too quiet) for testing. */
+  var SHOW_VOLUME = /[?&]volume=1/.test(location.search);
+  document.querySelectorAll(".chip.vol").forEach(function (el) { el.hidden = !SHOW_VOLUME; });
+  document.querySelectorAll(".chip.time").forEach(function (el) { el.hidden = SHOW_VOLUME; });
   /* the Start button as the app's play button: a play icon, and a stop square while running (2026-11-12, "make it feel like the
      actual app") */
   var ICON_PLAY = '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>';
@@ -405,7 +410,7 @@
     var gap = Infinity, an = L.built.anchors;
     [i - 1, i + 1].forEach(function (j) { var o = an[j]; if (o && o !== a && o.cTop === a.cTop) gap = Math.min(gap, Math.abs(o.x - a.x)); });
     var wpx = Math.max(10, Math.min(26, gap - 3));
-    var mk = document.createElement("div"); mk.className = "mark " + vd.cls + (v.found ? " v-" + (v.loud > 0 ? "loud" : v.loud < 0 ? "quiet" : "ok") : ""); mk.setAttribute("data-n", i);
+    var mk = document.createElement("div"); mk.className = "mark " + vd.cls + (SHOW_VOLUME && v.found ? " v-" + (v.loud > 0 ? "loud" : v.loud < 0 ? "quiet" : "ok") : ""); mk.setAttribute("data-n", i);
     mk.style.left = a.x + "px"; mk.style.width = wpx + "px"; mk.style.marginLeft = (-wpx / 2) + "px";
     mk.style.top = a.cTop + "px"; mk.style.height = Math.max(20, a.cBot - a.cTop) + "px"; inner.appendChild(mk);
     var lb = document.createElement("div"); lb.className = "mlabel " + vd.cls + (gap < 34 && vd.cls === "on" ? " quiet" : ""); lb.textContent = vd.txt; lb.setAttribute("data-n", i);
@@ -640,6 +645,13 @@
         if (env.E[f] < thr) continue;
         low = Infinity; for (var g = Math.max(0, f - back); g < f; g++) if (env.E[g] < low) low = env.E[g];
         if (env.E[f] - low >= RISE_DB) { hitF = f; break; }
+      }
+      /* ...and if a clearly bigger jump follows within 10 ms, that one is the hit (2026-11-12, Triplet Sevens: the phone's own note
+         landing on the last stroke's ring jumped just enough to be taken for the player, 8 ms before the player's real hit) */
+      if (hitF >= 0) for (var g2 = hitF + 1; g2 < env.E.length && (g2 - hitF) * env.hop < 0.010 * sr; g2++) {
+        if (env.E[g2] < env.E[hitF] + RISE_DB) continue;
+        var low2 = Infinity; for (var h2 = Math.max(0, g2 - back); h2 < g2; h2++) if (env.E[h2] < low2) low2 = env.E[h2];
+        if (env.E[g2] - low2 >= RISE_DB) { hitF = g2; low = low2; break; }
       }
       var v, tHit = hitF < 0 ? null : env.base + crossBack(env, hitF, Math.max(L.own.lv[q.i] + 4, low + 3)) * env.hop + env.win - env.hop;
       if (tHit != null && Math.abs(tHit - place) <= w) {

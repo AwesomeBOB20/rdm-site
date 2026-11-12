@@ -16,7 +16,7 @@
   :root{
     --purple:#96318d; --teal:#047078; --orange:#d35400; --nav:#1f343b;
     --ink:#111; --muted:#6b6f76; --line:#d9d9d9;
-    --good:#2e9d57; --loud:#d62828; --quiet:#1d6fe0; --missed:#555a63; --unsure:#7a7f8a;
+    --good:#2e9d57; --dirty:#c0392b; --loud:#d62828; --quiet:#1d6fe0; --missed:#555a63; --unsure:#7a7f8a;
     --r:14px; --shadow:0 6px 18px rgba(0,0,0,.35);
   }
   *{box-sizing:border-box}
@@ -53,12 +53,14 @@
   .sheet svg{display:block}
   .cursor{position:absolute;width:26px;margin-left:-13px;border-radius:6px;background:rgba(211,84,0,.22);pointer-events:none;display:none}
   .mark{position:absolute;margin-left:-13px;width:26px;border-radius:6px;pointer-events:none;opacity:.34}
-  .mark.v-ok{background:var(--good)} .mark.v-loud{background:var(--loud);opacity:.42} .mark.v-quiet{background:var(--quiet);opacity:.42} .mark.missed{background:var(--missed)} .mark.unsure{background:var(--unsure);opacity:.3}
+  .mark.on{background:var(--good)} .mark.early,.mark.late{background:var(--dirty)} .mark.missed{background:var(--missed)}
+  .mark.v-ok{background:var(--good)} .mark.v-loud{background:var(--loud);opacity:.42} .mark.v-quiet{background:var(--quiet);opacity:.42} .mark.unsure{background:var(--unsure);opacity:.3}
   .mlabel{position:absolute;transform:translateX(-50%);font:700 10px Ubuntu,Arial,sans-serif;color:#fff;border-radius:5px;padding:1px 3px;white-space:nowrap;pointer-events:none}
   .mlabel.quiet{display:none}
   .mlabel.on{background:var(--good)} .mlabel.early,.mlabel.late{background:#111} .mlabel.missed{background:var(--missed)} .mlabel.unsure{background:var(--unsure)}
   .cardfoot{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding-top:8px}
   .chip{display:inline-flex;align-items:center;gap:5px;font-size:.8rem;font-weight:700;color:var(--ink);border:2px solid #000;border-radius:999px;padding:3px 9px;background:#fff}
+  .chip[hidden]{display:none}
   .chip i{width:10px;height:10px;border-radius:50%;display:inline-block}
   .chip .num{background:#111;color:#fff;border-radius:5px;padding:0 4px;font-size:.75rem}
 
@@ -132,13 +134,15 @@
   <section class="card">
     <div class="cardhead">
       <h1 id="exTitle">Timing Lab</h1>
-      <p class="sub">Timing check · Prototype v19</p>
+      <p class="sub">Timing check · Prototype v20</p>
     </div>
     <div class="sheet" id="sheet"><div class="cursor" id="cursor"></div></div>
     <div class="cardfoot">
-      <span class="chip"><i style="background:var(--good)"></i>Right volume</span>
-      <span class="chip"><i style="background:var(--loud)"></i>Too loud</span>
-      <span class="chip"><i style="background:var(--quiet)"></i>Too quiet</span>
+      <span class="chip time"><i style="background:var(--good)"></i>On time</span>
+      <span class="chip time"><i style="background:var(--dirty)"></i>Off time</span>
+      <span class="chip vol" hidden><i style="background:var(--good)"></i>Right volume</span>
+      <span class="chip vol" hidden><i style="background:var(--loud)"></i>Too loud</span>
+      <span class="chip vol" hidden><i style="background:var(--quiet)"></i>Too quiet</span>
       <span class="chip"><b class="num">&minus;12</b> early &middot; <b class="num">+12</b> late</span>
     </div>
   </section>
@@ -203,9 +207,9 @@
 </main>
 <script>document.getElementById("setupTab").onclick = function () { var d = document.getElementById("setup"); d.open = !d.open; if (d.open) d.scrollIntoView({ behavior: "smooth", block: "start" }); };</script>
 <script src="https://cdn.jsdelivr.net/npm/vexflow@4.2.3/build/cjs/vexflow.js"></script>
-<script src="mini-render.js?v=19"></script>
-<script src="catalog-exercises.js?v=19"></script>
-<script src="detector.js?v=19"></script>
-<script src="app.js?v=19"></script>
+<script src="mini-render.js?v=20"></script>
+<script src="catalog-exercises.js?v=20"></script>
+<script src="detector.js?v=20"></script>
+<script src="app.js?v=20"></script>
 </body>
 </html>
