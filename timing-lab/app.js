@@ -11,7 +11,7 @@
   var $ = function (id) { return document.getElementById(id); };
   /* THE VERSION ON THE PAGE COMES FROM THIS FILE (2026-11-12: his second take ran the old code under a page that said v13, because
      the label lives in index.html and the code in this file, and only one of them was fetched fresh). It is written into every take. */
-  var VERSION = 14;
+  var VERSION = 15;
   document.querySelectorAll(".sub").forEach(function (el) { el.textContent = el.textContent.replace(/Prototype v\d+/, "Prototype v" + VERSION); });
   var S = { ctx: null, stream: null, node: null, analyser: null, offset: null, accMs: null, calOut: null, take: null, pads: null };
 
@@ -622,6 +622,10 @@
   }
   /* the pass where the phone plays alone: the delay that lines the most hits up with the notes (the phone is exact, so 3 ms wide),
      then each note's own place and level. A pass with someone playing in it is not used: the next one is. */
+  /* what the listening pass says goes by the Start button too (2026-11-12: "i played along with it, nothing happened"; the page
+     had been asking him to stay quiet in the small print under the score the whole time) */
+  var HEARD_PLAYING = "I heard you playing. Stay quiet this time through: I'm learning what the phone sounds like.";
+  function learnSay(msg) { L.lockMsg = msg; $("playMsg").innerHTML = "<b>" + msg + "</b>"; showReps(); }
   function learnPhone(cur) {
     var sr = L.sr, n = L.built.times.length, r0 = L.learnRep, a = schedFrame(r0, 0), b = schedFrame(r0 + 1, 0);
     if (cur < b + 0.75 * sr) return;
@@ -634,7 +638,9 @@
       for (var q = p; q < ds.length && ds[q].d - ds[p].d <= W; q++) if (!seen[ds[q].i]) { seen[ds[q].i] = 1; m++; }
       if (!best || m > best.n) best = { n: m, d: ds[p].d + W / 2 };
     }
-    if (!best || best.n < Math.max(3, Math.ceil(n * 0.5))) { L.learnRep++; L.next = (L.learnRep + 1) * n; L.lockMsg = "I could not hear the phone's own notes. Turn the volume up a little. Listening again..."; showReps(); return; }
+    /* no steady line of the phone's notes: with plenty of hits that is someone playing over it (his v14 take: he played every pass
+       and was told to turn the volume UP), with few it is the phone being too quiet */
+    if (!best || best.n < Math.max(3, Math.ceil(n * 0.5))) { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay(hits.length >= n ? HEARD_PLAYING : "I could not hear the phone's own notes. Turn the volume up a little. Listening again..."); return; }
     var d = [], pk = [];
     for (i = 0; i < n; i++) {
       var want = schedFrame(r0, i) + best.d, near = null;
@@ -648,16 +654,22 @@
       for (var j = 0; j < n; j++) if (Math.abs(o.f - (schedFrame(r0, j) + d[j])) <= 0.004 * sr) return false;
       return o.pk >= floor - 3;
     }).length;
-    if (stray > 1) { L.learnRep++; L.next = (L.learnRep + 1) * n; L.lockMsg = "I heard playing. Stay quiet for one time through."; showReps(); return; }
+    /* ...and a person playing right on top of the phone's notes. The phone's own notes land within 0.12 to 0.29 ms of their middle
+       for 3 notes in 4 (his two takes of 2026-11-12); nobody plays that steadily, so over 0.7 ms is someone playing. Not the median:
+       where the player is late the phone's own hit is the one found, so half the notes look exact even with someone playing. */
+    var dMid = median(d), res = d.filter(function (v, k) { return pk[k] > -199; }).map(function (v) { return Math.abs(v - dMid); }).sort(function (x, y) { return x - y; });
+    var spreadMs = (res.length ? res[Math.floor(res.length * 0.75)] : 0) / sr * 1000;
+    if (LOOP != null) { window.__tlLearnSpreadMs = +spreadMs.toFixed(2); (window.__tlLearnLog = window.__tlLearnLog || []).push({ rep: r0, spread: +spreadMs.toFixed(2), stray: stray, found: best.n }); }
+    if (stray > 1 || spreadMs > 0.7) { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay(HEARD_PLAYING); return; }
     /* THE PHONE TOO LOUD FOR ITS OWN MIC (Anthony's take, 2026-11-12). The phone alone peaked at -0.5 dBFS: his hits clipped the
        mic, stood only 5 to 13 dB over the phone, and a third of them could be read. The half-volume take that read 40 of 40 had the
        phone alone at about -6 dBFS. So a phone over -3 dBFS in the quiet pass leaves no room above it for the player: say so now,
        before anyone plays, and listen again (turning it down changes how loud its notes are, so they are learned again). */
-    var raw = segment(a, b + best.d + 0.05 * sr), peak = 0;
+    var raw = segment(a, b + best.d - 0.02 * sr), peak = 0;   // ends before the NEXT pass's first note: v14 took in his first hit there
     for (i = 0; i < raw.length; i++) { var s = raw[i] < 0 ? -raw[i] : raw[i]; if (s > peak) peak = s; }
     var peakDb = 20 * Math.log10(peak + 1e-9);
     if (LOOP != null) window.__tlPhonePeak = +peakDb.toFixed(1);
-    if (peakDb > TOO_LOUD_DBFS) { L.learnRep++; L.next = (L.learnRep + 1) * n; L.lockMsg = "<b>Too loud.</b> The phone is filling its own mic, so I can't hear you over it. Turn the volume down 2 steps and stay quiet one more time through."; showReps(); return; }
+    if (peakDb > TOO_LOUD_DBFS) { L.learnRep++; L.next = (L.learnRep + 1) * n; learnSay("Too loud. The phone is filling its own mic, so I couldn't hear you over it. Turn the volume down 2 steps and stay quiet one more time through."); return; }
     /* each of its own notes, read off the level: how loud it gets (lv) and where it starts (t: the first moment it is within 10 dB
        of that, the same kind of mark the player's start is read from). A note the detector never listed is still measured here. */
     var lv = [], t = [];
@@ -667,7 +679,7 @@
       lv.push(mx);
       t.push(env.base + crossBack(env, at, mx - 10) * env.hop + env.win - env.hop - schedFrame(r0, i));
     }
-    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; L.lockMsg = "Got the phone. Play now, and leave the volume where it is."; showReps();
+    L.own = { d: d, pk: pk, lv: lv, t: t, dMed: best.d, peakDb: +peakDb.toFixed(1) }; L.next = (L.learnRep + 1) * n; learnSay("Got the phone. Play now, and leave the volume where it is.");
   }
   function alongAdvice(rp) {
     var read = rp.notes.filter(function (v) { return v && v.found; }).length, m = median(L.margins);
@@ -717,11 +729,12 @@
   function expectedOf(tk) { return tk.sched.map(function (t) { return { t: (t * tk.sr - tk.r.frame0 + tk.offset) / tk.sr }; }); }
 
   var TEST_DRUMMER = (function () { var m = /[?&]drummer=([\d.]+)/.exec(location.search); return LOOP != null && m ? +m[1] : null; })();
+  var TEST_DRUMMER_ALL = TEST_DRUMMER != null && /[?&]drummerall=1/.test(location.search);
   window.__tlTruth = {}; window.__tlSeen = {};
   function testDrummer(b) {
     if (!S.pads || b < 0) return;
     var n = L.built.times.length, rep = Math.floor(b / L.repBeats), inRep = b - rep * L.repBeats;
-    if (L.along && rep === 0) return;                       // the pass where the phone plays alone
+    if (L.along && rep === 0 && !TEST_DRUMMER_ALL) return;  // the pass where the phone plays alone (?drummerall: a player who does not wait)
     L.built.times.forEach(function (t, i) {
       if (t < inRep || t >= inRep + 1) return;
       var g = 0; for (var z = 0; z < 6; z++) g += Math.random(); g = (g - 3) * Math.sqrt(2);   // ~N(0,1)
