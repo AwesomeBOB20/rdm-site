@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RDM: You're Booked</title>
+<meta name="description" content="You're booked. Here's what we'll talk about.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- The signature face, subset to the one word it draws (text=Anthony), so it costs a few KB. -->
+<link href="https://fonts.googleapis.com/css2?family=Mrs+Saint+Delafield&text=Anthony&display=swap" rel="stylesheet">
+<style>
+:root{
+  --purple:#96318d; --purple-deep:#792671;
+  --blue:#06aeb9; --blue-deep:#058890; --blue-darker:#047078;
+  --orange:#d35400; --orange-deep:#d35400;
+  --tan:#fff0d3; --ink:#000; --dark:#0c0810;
+  --b:2px solid #000; --rad:20px; --shadow:0 6px 18px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{overscroll-behavior:none;scroll-behavior:smooth;}
+body{overscroll-behavior:none;font-family:Ubuntu,Helvetica,Arial,sans-serif;background:var(--dark);color:#fff;line-height:1.6;
+  min-height:100vh;min-height:100svh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+img{max-width:100%;height:auto;}
+.bg-fx{transform:translateZ(0);backface-visibility:hidden;position:fixed;inset:0;bottom:auto;height:100vh;height:100lvh;z-index:0;pointer-events:none;
+  background:linear-gradient(rgba(12,8,16,.74),rgba(12,8,16,.88)),url('Background%203.png') center/cover no-repeat;background-color:var(--dark);}
+.site{position:relative;z-index:1;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;}
+/* No footer any more, so nothing caps the page: give the shell its own dark wash so the area below
+   the one-viewport .bg-fx layer does not fall back to a bare colour. */
+.shell{background:rgba(12,8,16,.35);}
+.topbar{display:flex;align-items:center;justify-content:center;padding:16px;border-bottom:var(--b);background:var(--purple);}
+.topbar img{height:38px;}
+.shell{flex:1;padding:34px 18px 56px;}
+.wrap{width:100%;max-width:760px;margin:0 auto;}
+.eyebrow{display:inline-block;background:var(--orange);color:#fff;border:var(--b);font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;padding:6px 16px;border-radius:999px;margin-bottom:18px;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:700;line-height:1.08;text-shadow:0 3px 16px rgba(0,0,0,.45);margin-bottom:14px;}
+.sub{color:rgba(255,255,255,.88);font-size:clamp(1.02rem,1.7vw,1.18rem);margin-bottom:30px;}
+.co{color:var(--orange);} .cb{color:var(--blue);}
+/* video */
+.video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:var(--b);border-radius:var(--rad);
+  box-shadow:var(--shadow);overflow:hidden;margin-bottom:34px;}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+/* cards */
+.card{background:var(--tan);color:#000;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);padding:28px 26px;margin-bottom:22px;}
+.card h2{font-size:clamp(1.4rem,3.4vw,2rem);font-weight:700;line-height:1.14;margin-bottom:16px;color:#000;}
+.steps{list-style:none;display:flex;flex-direction:column;gap:16px;}
+.steps li{display:flex;gap:14px;align-items:flex-start;}
+.steps .n{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:var(--purple);color:#fff;border:2px solid #000;
+  display:flex;align-items:center;justify-content:center;font-weight:700;text-shadow:0 1px 1px rgba(0,0,0,.3);}
+.steps .t{font-size:1.02rem;}
+.steps .t b{color:var(--purple-deep);}
+.checks{list-style:none;display:flex;flex-direction:column;gap:11px;margin-top:4px;}
+.checks li{display:flex;gap:11px;align-items:flex-start;font-size:1.01rem;color:#222;}
+.checks .ck{flex:0 0 auto;color:var(--purple-deep);font-weight:700;}
+.card p.lead{font-size:1.01rem;color:#333;margin-bottom:14px;}
+.guar{background:#fff7e6;border:2px solid #000;border-radius:14px;padding:14px 16px;margin-top:14px;font-size:.96rem;color:#333;}
+.guar b{color:var(--purple-deep);}
+/* Rebuilt 2026-09-16 on Anthony's own pre-call PDF plus the confirmation page that used to follow a
+   booking. THREE numbered steps: the training, the investment framing in his words, then the students.
+   (2026-10-01: now FOUR, reordered by Anthony: training, clip, students, investment LAST. The program
+   walkthrough slots in as Step 2 once recorded. Head colours alternate so no two cards in a row match,
+   and each play button / button takes its own step's colour.)
+   ⚠️ There WAS a Step 2, "an inside look at how it works", playing Program Walkthrough.mp4 off his
+   Drive. He cut it 2026-09-17 as outdated. Do not put it back without a new recording: it described a
+   program shape that no longer exists.
+   The students video is the five-student Academy testimonial (2026-09-26), self-hosted at
+   assets/video/academy-testimonial.mp4 with his thumbnail as the cover. It replaced the old Drive file. */
+.steptag{display:inline-block;background:var(--purple);color:#fff;border:2px solid #000;border-radius:999px;
+  font-size:.68rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:5px 13px;margin-bottom:12px;}
+.callout{background:#fff7e6;border:var(--b);border-radius:14px;padding:14px 18px;color:#222;font-size:1.02rem;
+  line-height:1.5;text-align:left;box-shadow:var(--shadow);}
+.callout b{color:var(--purple-deep);}
+.card .video-frame{margin-top:16px;}
+/* ===== THE CLIP ASK (Anthony, 2026-10-01) =====
+   Step 2 asks for a short video, sent as an Instagram DM, so the call can start from what was seen.
+   OPTIONAL by design. ig.me/m/<handle> opens the DM thread directly in the app or on the web.
+   The button takes its STEP's colour (Anthony, 2026-10-01): a blue step gets a blue button, and white
+   text on blue is always --blue-darker (5.84:1), never --blue-deep. */
+.clip-btn{display:inline-block;margin-top:18px;background:var(--blue-darker);color:#fff;text-decoration:none;font-weight:700;
+  font-size:1.2rem;border:var(--b);border-radius:var(--rad);padding:13px 26px;box-shadow:var(--shadow);
+  text-shadow:0 1px 2px rgba(0,0,0,.35);transition:transform .14s,filter .2s;}
+@media (hover:hover){ .clip-btn:hover{transform:translateY(-1px);filter:brightness(1.06);} }
+.clip-btn:active{transform:translateY(1px);}
+.clip-handle{display:block;margin-top:10px;font-size:.92rem;color:#555;}
+/* Black and handwritten, like a real signature (Anthony, 2026-10-01). */
+.sig{margin-top:6px;font-family:"Mrs Saint Delafield",cursive;font-weight:400;color:#000;font-size:3rem;line-height:1.1;}
+/* ===== COLOURED PANEL HEADS (Anthony, 2026-09-17: "color each panel of the pre call guide") =====
+   The FILL carries the heading only; paragraphs stay on tan. White measures 6.73:1 on purple, 5.84:1 on
+   blue-darker and 4.17:1 on orange: all fine for a large heading, and orange would fail the 4.5:1
+   body-text bar, which is why the body was not filled. Same shape as the quiz result card.
+   (2026-10-14 audit X1: teal moved from --blue-deep 4.26:1 to --blue-darker so it matches the Step 2 button.) */
+.card{padding:0;overflow:hidden;}
+.cardhead{padding:20px 26px 18px;border-bottom:var(--b);}
+.cardhead--purple{background:var(--purple);}
+.cardhead--orange{background:var(--orange);}
+.cardhead--teal{background:var(--blue-darker);}
+.cardhead h2{color:#fff;margin-bottom:0;text-shadow:0 2px 10px rgba(0,0,0,.35);}
+.cardhead .steptag{background:rgba(0,0,0,.28);border-color:rgba(0,0,0,.5);}
+.cardbody{padding:24px 26px 26px;}
+.cardbody > *:last-child{margin-bottom:0;}
+@media (max-width:560px){ .cardhead{padding:16px 18px 14px;} .cardbody{padding:18px 18px 20px;} }
+
+/* ===== TESTIMONIAL POSTER =====
+   His thumbnail is the cover and the player is swapped in on click, so the video never loads for anyone
+   who does not press it. */
+.vf-poster{cursor:pointer;container-type:inline-size;}
+/* ⚠️ contain, NOT cover. The poster is Anthony's designed cover with four captioned panels, so any
+   crop cuts one of them. The box is 16:9 and so is the cover, but the 3px border makes the content
+   box very slightly wider than 16:9, and cover was shaving the top and bottom. */
+.vf-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;background:#0c0810;}
+/* The play button scales WITH the cover, border and shadow included (cqw = % of the cover's width), so it looks
+   identical at every size: the phone-view proportions he picked (2026-09-26), 16% wide, centred.
+   Its colour MATCHES ITS STEP's header (Anthony, 2026-10-01): --purple / --teal modifiers below. */
+.vf-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;aspect-ratio:1;border-radius:50%;
+  background:var(--orange);border:2px solid #000;box-shadow:0 6px 18px rgba(0,0,0,.35);cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:transform .14s;padding:0;}
+@media (hover:hover){ .vf-play:hover{transform:translate(-50%,-50%) scale(1.06);} }
+.vf-play:active{transform:translate(-50%,calc(-50% + 1px));}
+.vf-play--purple{background:var(--purple);} .vf-play--teal{background:var(--blue-darker);} .vf-play--orange{background:var(--orange);}
+.vf-play span{display:block;width:32%;height:38%;margin-left:9%;background:#fff;clip-path:polygon(0 0,100% 50%,0 100%);}
+.parent-box{background:var(--blue-darker);color:#fff;border:var(--b);border-radius:var(--rad);box-shadow:var(--shadow);
+  padding:24px 24px;margin-bottom:22px;}
+.parent-box h3{font-size:1.2rem;font-weight:700;margin-bottom:8px;}
+.parent-box p{color:#fff;font-size:1rem;}
+/* ⚠️ THIS LINE HAS NOW BEEN INVISIBLE IN BOTH DIRECTIONS, SO IT NO LONGER DEPENDS ON WHAT IS BEHIND IT.
+   It was white at 70% while sitting inside the tan card (1.09:1, which is what Anthony spotted). Dark ink
+   fixed that, and then the rebuild moved it out of the card onto the purple page, where dark ink measured
+   1.11:1 and it vanished again. A colour that only works in one location will keep breaking every time
+   the markup moves.
+   So it carries its own surface: a tan pill with the same border as everything else on the page. Wherever
+   it ends up, the background under the text is the one declared right here.
+   Checkable with dev/contrast.cjs, which walks every text node and resolves the real painted ancestor. */
+.foot{display:block;width:fit-content;max-width:92%;margin:26px auto 0;text-align:center;
+  background:var(--tan);color:#333;border:var(--b);border-radius:999px;box-shadow:0 6px 18px rgba(0,0,0,.35);
+  padding:11px 22px;font-size:.92rem;line-height:1.5;overflow-wrap:anywhere;}
+.foot a{color:var(--purple-deep);font-weight:700;text-decoration:underline;}
+/* unified site footer (matches start.html) */
+/* Footer sits on --dark, NOT --purple. This page's BODY is --purple, so a purple footer was the same
+   colour as the page behind it — the band disappeared and left the white pills and social buttons
+   floating with nothing under them (Anthony, 2026-07-30: "the footer is like hidden"). The other
+   funnel pages have dark bodies, which is why purple reads fine there and nobody caught it here.
+   start.html has the same purple-on-purple body and is fixed the same way. */
+/* ⚠️ --purple-deep, NOT --dark and NOT --purple (Anthony, 2026-09-11: "the bottom footer the background
+   is black but that's not what it should be").
+
+   Both previous values were wrong in opposite directions, and the history explains why. It started as
+   --purple, the same colour as the body, so the band vanished and left the white pills floating on
+   nothing ("the footer is like hidden", 2026-07-30). The fix swapped it to --dark, which is #0c0810 and
+   reads as a black slab bolted to the bottom of a purple page. --purple-deep is the brand's own darker
+   purple: dark enough to separate from the body, still part of the page.
+
+   academy-vsl.html was still on the original --purple and had never been fixed at all, which is why the
+   funnel had two different footers. All four pages use this one value now. */
+.site-footer{background:var(--purple-deep);border-top:var(--b);padding:48px 22px;text-align:center;}
+.foot-pill{display:inline-block;max-width:92%;box-sizing:border-box;background:#fff;color:#1a1a1a;border:var(--b);border-radius:999px;padding:11px 24px;font-size:.95rem;line-height:1.5;overflow-wrap:anywhere;box-shadow:0 6px 18px rgba(0,0,0,.35);margin:0 auto;}
+.foot-pill b{font-weight:700;} .foot-pill a{color:#7a1fb0;font-weight:700;text-decoration:underline;}
+.foot-social{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0;}
+.foot-btn{display:inline-block;color:#fff;text-decoration:none;font-weight:700;font-size:.95rem;border:var(--b);border-radius:999px;padding:11px 26px;box-shadow:0 6px 18px rgba(0,0,0,.35);text-shadow:0 1px 1px rgba(0,0,0,.3);transition:transform .14s,filter .2s;}
+@media (hover:hover){ .foot-btn:hover{transform:translateY(-1px);filter:brightness(1.06);} }
+.foot-btn:active{transform:translateY(1px);}
+.foot-ig{background:#c13584;} .foot-yt{background:#ff0000;} .foot-fb{background:#3b5998;}
+/* Keyboard focus: white on the dark page and over the video covers, black on the tan cards and pills. */
+a:focus-visible,button:focus-visible{outline:2px solid #fff;outline-offset:3px;}
+.cardbody a:focus-visible,.foot a:focus-visible,.foot-pill a:focus-visible{outline-color:#000;}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  .clip-btn,.vf-play,.foot-btn{transition:none;}
+  .clip-btn:hover,.clip-btn:active,.foot-btn:hover,.foot-btn:active{transform:none;}
+  .vf-play:hover,.vf-play:active{transform:translate(-50%,-50%);}
+}
+</style>
+  <script src="analytics.js"></script>
+<link rel="canonical" href="https://rudimentaldrummingmastery.com/booked.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rudimental Drumming Mastery">
+<meta property="og:title" content="RDM: You're Booked">
+<meta property="og:description" content="You're booked. Here's what we'll talk about.">
+<meta property="og:url" content="https://rudimentaldrummingmastery.com/booked.html">
+<meta property="og:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rudimental Drumming Mastery">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RDM: You're Booked">
+<meta name="twitter:description" content="You're booked. Here's what we'll talk about.">
+<meta name="twitter:image" content="https://rudimentaldrummingmastery.com/og-rdm.png">
+</head>
+<body>
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="site">
+  <div class="topbar"><a href="index.html"><img src="Steller%20Drums%20-%20PNG%20file-07.png" alt="RDM"></a></div>
+  <div class="shell">
+    <div class="wrap">
+
+      <span class="eyebrow">Your call is confirmed</span>
+      <h1>You're booked. <span class="co">See you soon.</span></h1>
+      <p class="sub" id="when" style="margin-bottom:10px;" hidden></p>
+      <p class="sub">You'll get a text and email reminder before we talk.</p>
+
+      <div class="card">
+        <div class="cardhead cardhead--purple">
+          <h2>What we'll talk about</h2>
+        </div>
+        <div class="cardbody">
+        <ul class="checks">
+          <li><span class="ck">&rarr;</span><span>Where your playing is right now</span></li>
+          <li><span class="ck">&rarr;</span><span>The line you're going for</span></li>
+          <li><span class="ck">&rarr;</span><span>What's been getting in the way</span></li>
+        </ul>
+        <p class="lead" style="margin-top:14px;margin-bottom:0;">Just you and me, about 30 minutes.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardhead cardhead--teal">
+          <h2>Before we talk</h2>
+        </div>
+        <div class="cardbody">
+        <ul class="checks">
+          <li><span class="ck">&rarr;</span><span>Know the line you're going for.</span></li>
+          <li><span class="ck">&rarr;</span><span>Be somewhere quiet. Not driving, not at practice.</span></li>
+          <li><span class="ck">&rarr;</span><span>Have your sticks and a pad nearby in case I ask you to play something.</span></li>
+        </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="cardhead cardhead--orange">
+          <h2>Hear from my students</h2>
+        </div>
+        <div class="cardbody">
+        <div class="video-frame vf-poster" data-video="assets/video/academy-testimonial.mp4">
+          <img src="assets/video/academy-testimonial.jpg" alt="Five RDM coaching students on what working with Anthony did for their drumming" width="1280" height="720" loading="lazy">
+          <button type="button" class="vf-play vf-play--orange" aria-label="Play the video"><span></span></button>
+        </div>
+        </div>
+      </div>
+
+      <p class="foot">Need to reschedule? Use the link in your confirmation email, or reach me at <a href="mailto:anthony@rudimentaldrummingmastery.com">anthony@rudimentaldrummingmastery.com</a>.</p>
+
+    </div>
+  </div>
+</div>
+<script>
+/* Swap the poster for the real player on click. The video is never in the document until then, so a
+   visitor who does not press play downloads none of it (2026-09-26: the five-student testimonial is
+   self-hosted now, 720p ~17 MB, replacing the old Drive file). */
+/* data-hls (the training, 2026-10-01): an HLS stream, so a 21-minute video starts at once and only the
+   part being watched downloads. Safari plays HLS natively; everyone else gets hls.js, fetched only on
+   click. data-rate is the STARTING speed: set before play and re-asserted once on loadedmetadata,
+   because some browsers reset the rate when the source attaches. After that the viewer's own choice
+   in the player wins. */
+var HLS_JS = "https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.6.15/hls.min.js";
+function loadHls(cb) {
+  if (window.Hls) return cb();
+  var s = document.createElement("script");
+  s.src = HLS_JS; s.onload = cb; s.onerror = cb;
+  document.head.appendChild(s);
+}
+document.querySelectorAll(".vf-poster").forEach(function (box) {
+  box.addEventListener("click", function () {
+    var v = document.createElement("video");
+    var hls = box.dataset.hls;
+    var rate = parseFloat(box.dataset.rate) || 1;
+    v.controls = true; v.autoplay = true; v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.poster = box.querySelector("img").src;
+    v.style.cssText = "position:absolute;inset:0;width:100%;height:100%;background:#000;";
+    v.defaultPlaybackRate = rate; v.playbackRate = rate;
+    v.addEventListener("loadedmetadata", function () { v.playbackRate = rate; }, { once: true });
+    box.innerHTML = "";
+    box.classList.remove("vf-poster");
+    box.appendChild(v);
+    var start = function () { v.play().catch(function () {}); };
+    if (!hls) { v.src = box.dataset.video; start(); }
+    else if (v.canPlayType("application/vnd.apple.mpegurl")) { v.src = hls; start(); }
+    else loadHls(function () {
+      if (window.Hls && window.Hls.isSupported()) {
+        var h = new window.Hls();
+        h.loadSource(hls); h.attachMedia(v);
+        h.on(window.Hls.Events.MANIFEST_PARSED, start);
+      } else { v.src = hls; start(); }
+    });
+    if (window.rdmTrack) window.rdmTrack(box.dataset.name === "training" ? "training_play" : "testimonial_play",
+      { page: "precall", video: box.dataset.name || "academy" });
+  }, { once: true });   // once: a later click lands on the real player (pause, seek) and must not re-run this
+});
+/* Count the clip-ask clicks, so it is measurable whether people actually send one. */
+var clipBtn = document.getElementById("clipBtn");
+if (clipBtn) clipBtn.addEventListener("click", function () {
+  if (window.rdmTrack) window.rdmTrack("clip_dm_click", { page: "precall" });
+});
+/* Say WHEN the call is (2026-10-14 audit A5). The application passes cal.com's start time as ?t=, and
+   it is shown in the visitor's own timezone so a parent can put it straight into the family calendar.
+   No ?t (an old link, a booking from somewhere else) and the line simply stays hidden. */
+(function () {
+  try {
+    var t = new URLSearchParams(location.search).get("t");
+    var d = t ? new Date(t) : null;
+    if (!d || isNaN(d.getTime())) return;
+    var when = new Intl.DateTimeFormat(undefined, {
+      weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"
+    }).format(d);
+    var p = document.getElementById("when");
+    p.textContent = "Your call: ";
+    var b = document.createElement("b"); b.textContent = when + ".";
+    p.appendChild(b);
+    p.hidden = false;
+  } catch (e) { /* keep the page as it was */ }
+})();
+</script>
+</body>
+</html>

@@ -690,7 +690,7 @@ Cal.ns["rdm-strategy"]("on",{
     if(window.rdmTrack) rdmTrack('Schedule',{product:'Academy'});
     var d = (e && e.detail && e.detail.data) || {};
     var t = d.startTime || d.date || (d.booking && d.booking.startTime) || '';
-    window.location.href = "precall-guide.html" + (t ? "?t=" + encodeURIComponent(t) : "");
+    window.location.href = "booked.html" + (t ? "?t=" + encodeURIComponent(t) : "");
   }
 });
 </script>
