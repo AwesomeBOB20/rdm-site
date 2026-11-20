@@ -155,11 +155,39 @@ textarea.field{min-height:120px;resize:vertical;line-height:1.5;}
 .consent.show{display:block;}
 .consent a{color:#fff;text-decoration:underline;}
 
-/* Privacy / Terms row (audit X2): this page collects a minor's details. Same --purple-deep band as the
-   start.html / book.html footers, but one slim line so it does not pull the centered step off center. */
-.site-footer{background:var(--purple-deep);border-top:var(--b);padding:10px 12px;text-align:center;
+/* Privacy / Terms row (audit X2): this page collects a minor's details. One slim line so it does not pull the centered step off
+   center. BLUE since 2026-11-20 (Anthony: "make the academy application blue footer, not purple"): --blue-darker, the blue white text
+   may sit on (CLAUDE.md §8). */
+.site-footer{background:var(--blue-darker);border-top:var(--b);padding:10px 12px;text-align:center;
   font-size:.8rem;color:rgba(255,255,255,.75);}
 .site-footer a{color:#fff;text-decoration:underline;}
+
+/* ON A COMPUTER, EVERY STEP FITS WITHOUT SCROLLING (Anthony, 2026-11-20: "make it to where like the application doesn't need to
+   scroll on desktop where all fits nicely"). Measured before: on a 1366x657 laptop window 7 of the 11 screens scrolled (the contact
+   step by 295px, the checklist by 355px). A computer is wide, so the page uses the width: a slimmer header, a wider step, the
+   contact fields and every list of answers two to a row (an odd last answer takes the full row). Phones keep the one column. */
+@media (min-width:761px){
+  .topbar{min-height:58px;padding:10px 16px;} .topbar img{height:34px;}
+  .progress-wrap,.stage{max-width:880px;} .progress-wrap{padding-top:12px;} .progress-row{margin-bottom:6px;}
+  .shell{padding:14px 18px 18px;}
+  .q-hint{margin-bottom:16px;}
+  .row{margin-top:18px;}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .opts > .opt:last-child:nth-child(odd){grid-column:1 / -1;}
+  .opt{padding:13px 18px;line-height:1.35;}
+  #s-body.fgrid{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;}
+  .fcell .field-label{display:inline-block;}
+  .fcell .field-hint{display:inline-block;margin:0 0 6px 8px;}
+  .result-card{padding:28px 30px;}
+}
+/* a short window (a laptop with the browser's bars): a little tighter still */
+@media (min-width:761px) and (max-height:720px){
+  .q-title{font-size:1.65rem;margin-bottom:6px;} .q-hint{font-size:.94rem;margin-bottom:12px;}
+  .opt{padding:11px 16px;} .opts{gap:10px;}
+  .field{padding:11px 14px;margin-bottom:12px;} .iti{margin-bottom:12px;}
+  textarea.field{min-height:100px;}
+  .result-card{padding:22px 26px;} .result-card p{margin-bottom:10px;}
+}
 
 @media (prefers-reduced-motion:reduce){
   .screen{animation:none;}
@@ -378,24 +406,27 @@ function renderStep(nav){
   body.innerHTML = '';
   next.style.display = 'none';
 
+  body.classList.toggle('fgrid', step.type === 'fields');
   if(step.type === 'fields'){
     step.fields.forEach(f=>{
+      /* each field in its own cell, so a computer can set them two to a row (.fgrid); a phone stacks the cells as before */
+      const cell = document.createElement('div'); cell.className = 'fcell'; body.appendChild(cell);
       const lab = document.createElement('label');
       lab.className = 'field-label';
       lab.htmlFor = 'f-'+f.k;
       lab.innerHTML = f.label + (f.tag ? ' <span class="opt-tag">'+f.tag+'</span>' : '');
-      body.appendChild(lab);
+      cell.appendChild(lab);
       let hintId = '';
       if(f.hint){
         const h = document.createElement('p');
         h.className = 'field-hint'; h.id = hintId = 'h-'+f.k; h.textContent = f.hint;
-        body.appendChild(h);
+        cell.appendChild(h);
       }
       if(f.k === 'phone'){
         const inp = document.createElement('input');
         inp.className = 'field'; inp.type = 'tel'; inp.id = 'f-'+f.k; inp.autocomplete = 'tel';
         if(hintId) inp.setAttribute('aria-describedby', hintId);
-        body.appendChild(inp);
+        cell.appendChild(inp);
         const iti = window.intlTelInput(inp, {
           initialCountry: 'us',
           countryOrder: ['us','ca','gb','au'],
@@ -414,7 +445,7 @@ function renderStep(nav){
         if(f.k==='lastName') inp.autocomplete='family-name';
         if(f.k==='email') inp.autocomplete='email';
         if(f.k==='instagram'){ inp.autocapitalize='none'; inp.setAttribute('autocorrect','off'); inp.spellcheck=false; }
-        body.appendChild(inp);
+        cell.appendChild(inp);
       }
     });
     /* The keyboard's Next key walks the fields and Go on the last one continues (audit A4). Typing in a
